@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import DesktopMenu from './desktop.menu';
+import MobileMenu from './mobile.menu';
 
 export default function Header() {
     const { scrollY } = useScroll();
@@ -21,32 +22,51 @@ export default function Header() {
     });
 
     return (
-        <motion.header
-            className={`sticky top-0 z-40 lg:mt-5 mt-3 w-full h-max lg:px-12 md:px-8 px-4 ${scrolled ? "bg-fun-blue-950/5 backdrop-blur" : "bg-fun-blue-950"}`}
-        >
-            <nav className='w-full max-w-7xl mx-auto flex items-center justify-between py-3 h-full'>
-                <Link
-                    href={"/"}
-                    className='relative'
-                    aria-label='Logo'
-                >
-                    <Image
-                        src={"/images/logo/nzusi_logo.avif"}
-                        alt='North Zone chapter of Urological Society of India'
-                        width={120}
-                        height={40}
-                        priority
-                        className='w-16 h-auto'
+        <>
+            <motion.header
+                className={`sticky top-0 z-40 lg:mt-5 mt-3 w-full h-max lg:px-12 md:px-8 px-4 ${scrolled ? "bg-fun-blue-950/5 backdrop-blur" : "bg-fun-blue-950"}`}
+            >
+                <nav className='w-full max-w-7xl mx-auto flex items-center justify-between py-3 h-full'>
+                    <Link
+                        href={"/"}
+                        className='relative'
+                        aria-label='Logo'
+                    >
+                        <Image
+                            src={"/images/logo/nzusi_logo.avif"}
+                            alt='North Zone chapter of Urological Society of India'
+                            width={120}
+                            height={40}
+                            priority
+                            className='w-16 h-auto'
 
-                    />
-                    <span className='sr-only'>
-                        North Zone chapter of Urological Society of India Logo
-                    </span>
-                </Link>
+                        />
+                        <span className='sr-only'>
+                            North Zone chapter of Urological Society of India Logo
+                        </span>
+                    </Link>
 
-                <DesktopMenu/>
+                    <DesktopMenu />
 
-            </nav>
-        </motion.header>
+                    <button className='relative h-full w-12 cursor-pointer' onClick={() => setOpenMenu(!openMenu)}>
+                        <motion.span
+                            className="w-full h-px absolute left-1/2 -translate-x-1/2 top-[43%] bg-white inline-block"
+                            animate={openMenu ? { top: "50%", rotate: 45 } : { top: "43%", rotate: 0 }}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                        />
+                        <motion.span
+                            className="w-full h-px absolute left-1/2 -translate-x-1/2 top-[57%] bg-white inline-block"
+                            animate={openMenu ? { top: "50%", rotate: -45 } : { top: "57%", rotate: 0 }}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                        />
+                    </button>
+
+                </nav>
+            </motion.header>
+            <MobileMenu
+                isOpen={openMenu}
+                onClose={() => setOpenMenu(false)}
+            />
+        </>
     )
 }
