@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { DM_Serif_Display, DM_Sans } from "next/font/google";
 import "./globals.css";
+import SmoothScrollProvider from "@/lib/smooth_scroll";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const serif_display = DM_Serif_Display({
+  variable: "--font-dm-serif-display",
   subsets: ["latin"],
+  weight: ["400"]
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const dm_sans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
 });
 
@@ -25,9 +27,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${serif_display.variable} ${dm_sans.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <SmoothScrollProvider>
+          {children}
+        </SmoothScrollProvider>
+      </body>
     </html>
   );
 }
