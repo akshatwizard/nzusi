@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Serif_Display, DM_Sans } from "next/font/google";
 import "./globals.css";
 import SmoothScrollProvider from "@/lib/smooth_scroll";
+import Header from "@/components/navbar/header";
 
 const serif_display = DM_Serif_Display({
   variable: "--font-dm-serif-display",
@@ -31,6 +32,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <SmoothScrollProvider>
+          <Header />
           {children}
         </SmoothScrollProvider>
       </body>
