@@ -1,18 +1,11 @@
 'use client';
 import { Section, Wrapper } from './ui/sections'
-import { PageHeading } from './ui/headings'
 import { motion } from 'motion/react'
 import { HeroBackground } from './hero-background';
 import { ArrowRight, Calendar, ChevronRight, MapPin } from 'lucide-react';
 
 
 const EXPLORE_TAGS = ['Membership', 'Adyatan Journal', 'NZUSICON 2026', 'Education', 'Council']
-const STATS = [
-    { num: '500+', label: 'Active members' },
-    { num: '28', label: 'Conferences hosted' },
-    { num: '140+', label: 'Research publications' },
-    { num: '6', label: 'North Indian states' },
-]
 
 export default function Hero() {
     const fadeUp = {
