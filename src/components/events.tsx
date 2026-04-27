@@ -1,9 +1,9 @@
 'use client'
 
 import { Section, Wrapper } from "@/components/ui/sections"
-import { motion, useInView } from "motion/react"
+import { motion, useInView, AnimatePresence } from "motion/react"
 import { useRef, useState } from "react"
-import { Calendar, MapPin, ArrowRight, Clock } from "lucide-react"
+import { Calendar, MapPin, ArrowRight, ArrowUpRight } from "lucide-react"
 
 const events = [
     {
@@ -14,8 +14,8 @@ const events = [
         type: "NZUSI",
         category: "Academic",
         tag: "Completed",
-        color: "bg-fun-blue-600",
         highlight: false,
+        index: "01",
     },
     {
         id: 2,
@@ -25,8 +25,8 @@ const events = [
         type: "NZUSI",
         category: "CME",
         tag: "Upcoming",
-        color: "bg-fun-blue-500",
         highlight: true,
+        index: "02",
     },
     {
         id: 3,
@@ -36,8 +36,8 @@ const events = [
         type: "USI",
         category: "Conference",
         tag: "Upcoming",
-        color: "bg-slate-500",
         highlight: false,
+        index: "03",
     },
     {
         id: 4,
@@ -47,8 +47,8 @@ const events = [
         type: "NZUSI",
         category: "Conclave",
         tag: "Upcoming",
-        color: "bg-fun-blue-600",
         highlight: false,
+        index: "04",
     },
     {
         id: 5,
@@ -58,8 +58,8 @@ const events = [
         type: "USI",
         category: "Conference",
         tag: "Upcoming",
-        color: "bg-slate-500",
         highlight: false,
+        index: "05",
     },
     {
         id: 6,
@@ -69,15 +69,15 @@ const events = [
         type: "NZUSI",
         category: "Conference",
         tag: "Flagship",
-        color: "bg-fun-blue-600",
         highlight: true,
+        index: "06",
     },
 ]
 
-const tagStyles: Record<string, string> = {
-    Completed: "bg-zinc-100 text-zinc-500",
-    Upcoming: "bg-fun-blue-50 text-fun-blue-700",
-    Flagship: "bg-amber-50 text-amber-700 border border-amber-200",
+const tagConfig: Record<string, { dot: string; text: string }> = {
+    Completed: { dot: "bg-zinc-300", text: "text-zinc-400" },
+    Upcoming: { dot: "bg-fun-blue-400", text: "text-fun-blue-600" },
+    Flagship: { dot: "bg-amber-500 animate-pulse", text: "text-amber-600" },
 }
 
 const filters = ["All", "NZUSI", "USI"]
@@ -86,42 +86,47 @@ export default function EventsSection() {
     const ref = useRef(null)
     const isInView = useInView(ref, { once: true, margin: "-80px" })
     const [active, setActive] = useState("All")
+    const [hovered, setHovered] = useState<number | null>(null)
 
     const filtered = events.filter(e => active === "All" || e.type === active)
 
     return (
-        <Section>
+        <Section className="bg-fun-blue-50">
             <Wrapper>
                 <div ref={ref} className="w-full">
+
                     {/* Header */}
-                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-14">
                         <motion.div
-                            initial={{ opacity: 0, y: 24 }}
+                            initial={{ opacity: 0, y: 28 }}
                             animate={isInView ? { opacity: 1, y: 0 } : {}}
-                            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                         >
-                            <span className="text-xs font-semibold tracking-widest uppercase text-fun-blue-500 mb-3 block">
-                                Calendar 2026
-                            </span>
-                            <h2 className="text-3xl md:text-4xl lg:text-5xl text-fun-blue-950 leading-tight">
-                                Upcoming <em className="not-italic text-fun-blue-500">Events</em> &<br />
-                                Conferences
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-8 h-px bg-fun-blue-400" />
+                                <span className="text-xs font-semibold tracking-[0.2em] uppercase text-fun-blue-500">
+                                    Calendar 2026
+                                </span>
+                            </div>
+                            <h2 className="text-3xl lg:text-4xl text-fun-blue-950 leading-[1.05] tracking-tight">
+                                Events & <em className="not-italic text-fun-blue-400">Conferences</em>
                             </h2>
                         </motion.div>
 
+                        {/* Filter pill group */}
                         <motion.div
                             initial={{ opacity: 0, y: 16 }}
                             animate={isInView ? { opacity: 1, y: 0 } : {}}
-                            transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
-                            className="flex items-center gap-2"
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                            className="flex items-center gap-1 p-1 bg-white rounded-full border border-fun-blue-100 shadow-sm w-max"
                         >
                             {filters.map(f => (
                                 <button
                                     key={f}
                                     onClick={() => setActive(f)}
-                                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer ${active === f
-                                        ? "bg-fun-blue-950 text-white"
-                                        : "bg-white text-fun-blue-700 border border-fun-blue-200 hover:border-fun-blue-400"
+                                    className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer ${active === f
+                                            ? "bg-fun-blue-950 text-white shadow-md"
+                                            : "text-fun-blue-600 hover:text-fun-blue-900"
                                         }`}
                                 >
                                     {f}
@@ -130,78 +135,130 @@ export default function EventsSection() {
                         </motion.div>
                     </div>
 
-                    {/* Events Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {filtered.map((event, idx) => (
-                            <motion.div
-                                key={event.id}
-                                initial={{ opacity: 0, y: 32 }}
-                                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                                transition={{
-                                    duration: 0.5,
-                                    delay: 0.1 + idx * 0.08,
-                                    ease: [0.22, 1, 0.36, 1],
-                                }}
-                            >
-                                <div
-                                    className={`group relative bg-white rounded-2xl p-5 border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer overflow-hidden ${event.highlight
-                                        ? "border-fun-blue-300 shadow-md shadow-fun-blue-100"
-                                        : "border-zinc-200"
-                                        }`}
-                                >
-                                    {/* Top accent line */}
-                                    <div className={`absolute inset-x-0 top-0 h-0.5 ${event.type === "NZUSI" ? "bg-fun-blue-500" : "bg-slate-400"}`} />
-
-                                    <div className="flex items-start justify-between mb-4">
-                                        <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${tagStyles[event.tag]}`}>
-                                            {event.tag}
-                                        </span>
-                                        <span className={`text-xs font-bold px-2 py-1 rounded-md ${event.type === "NZUSI" ? "bg-fun-blue-50 text-fun-blue-700" : "bg-slate-100 text-slate-600"}`}>
-                                            {event.type}
-                                        </span>
-                                    </div>
-
-                                    <h3 className="font-semibold text-fun-blue-950 text-base leading-snug mb-4 group-hover:text-fun-blue-700 transition-colors">
-                                        {event.title}
-                                    </h3>
-
-                                    <div className="space-y-2">
-                                        <div className="flex items-center gap-2 text-sm text-zinc-500">
-                                            <Calendar size={13} className="shrink-0 text-fun-blue-400" />
-                                            <span>{event.date}</span>
-                                        </div>
-                                        <div className="flex items-center gap-2 text-sm text-zinc-500">
-                                            <MapPin size={13} className="shrink-0 text-fun-blue-400" />
-                                            <span>{event.location}</span>
-                                        </div>
-                                    </div>
-
-                                    <div className="mt-4 pt-4 border-t border-zinc-100 flex items-center justify-between">
-                                        <span className="text-xs text-zinc-400 bg-zinc-50 px-2 py-1 rounded-md">
-                                            {event.category}
-                                        </span>
-                                        <span className="text-xs font-medium text-fun-blue-600 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                            Learn more <ArrowRight size={12} />
-                                        </span>
-                                    </div>
-                                </div>
-                            </motion.div>
+                    {/* Column headers — desktop only */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={isInView ? { opacity: 1 } : {}}
+                        transition={{ duration: 0.4, delay: 0.15 }}
+                        className="hidden lg:grid grid-cols-[28px_120px_1fr_160px_160px_80px_40px] gap-4 px-5 mb-2"
+                    >
+                        {["#", "Status", "Event", "Date", "Location", "Type", ""].map(h => (
+                            <span key={h} className="text-[10px] font-bold uppercase tracking-widest text-fun-blue-300">{h}</span>
                         ))}
-                    </div>
+                    </motion.div>
+
+                    {/* Divider */}
+                    <div className="hidden lg:block h-px bg-fun-blue-100 mb-1" />
+
+                    {/* Event rows */}
+                    <AnimatePresence mode="popLayout">
+                        <div className="flex flex-col divide-y divide-fun-blue-100/70">
+                            {filtered.map((event, idx) => {
+                                const tag = tagConfig[event.tag]
+                                const isHov = hovered === event.id
+                                return (
+                                    <motion.div
+                                        key={event.id}
+                                        layout
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0 }}
+                                        exit={{ opacity: 0, y: -8 }}
+                                        transition={{ duration: 0.4, delay: idx * 0.07, ease: [0.22, 1, 0.36, 1] }}
+                                        onHoverStart={() => setHovered(event.id)}
+                                        onHoverEnd={() => setHovered(null)}
+                                        className={`group relative flex flex-col sm:flex-row sm:items-center gap-3 py-5 px-5 rounded-2xl cursor-pointer transition-all duration-300 ${isHov
+                                                ? "bg-white shadow-xl shadow-fun-blue-100 -mx-2 px-7 scale-[1.005]"
+                                                : event.highlight ? "bg-white/50" : ""
+                                            }`}
+                                    >
+                                        {/* Desktop layout */}
+                                        <div className="hidden lg:grid grid-cols-[28px_120px_1fr_160px_160px_80px_40px] gap-4 items-center w-full">
+                                            <span className={`text-xs font-bold tabular-nums transition-colors duration-300 ${isHov ? "text-fun-blue-500" : "text-fun-blue-200"}`}>
+                                                {event.index}
+                                            </span>
+
+                                            <div className="flex items-center gap-2">
+                                                <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${tag.dot}`} />
+                                                <span className={`text-xs font-semibold ${tag.text}`}>{event.tag}</span>
+                                            </div>
+
+                                            <div>
+                                                <h3 className={`leading-snug transition-colors duration-300 ${isHov ? "text-fun-blue-700" : "text-fun-blue-950"}`}>
+                                                    {event.title}
+                                                </h3>
+                                                {event.highlight && (
+                                                    <span className="inline-flex items-center mt-0.5 px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 text-[9px] font-bold uppercase tracking-wide">
+                                                        ★ Key Event
+                                                    </span>
+                                                )}
+                                            </div>
+
+                                            <div className="flex items-center gap-1.5 text-xs text-zinc-500">
+                                                <Calendar size={11} className="text-fun-blue-300 shrink-0" />
+                                                <span className="font-medium">{event.date}</span>
+                                            </div>
+
+                                            <div className="flex items-center gap-1.5 text-xs text-zinc-500">
+                                                <MapPin size={11} className="text-fun-blue-300 shrink-0" />
+                                                <span>{event.location}</span>
+                                            </div>
+
+                                            <span className={`text-[10px] font-bold px-2 py-1 rounded-md tracking-wider w-max ${event.type === "NZUSI"
+                                                    ? "bg-fun-blue-100 text-fun-blue-600"
+                                                    : "bg-slate-100 text-slate-500"
+                                                }`}>
+                                                {event.type}
+                                            </span>
+
+                                            <motion.div
+                                                animate={{ opacity: isHov ? 1 : 0, scale: isHov ? 1 : 0.7 }}
+                                                transition={{ duration: 0.2 }}
+                                                className="w-8 h-8 rounded-full bg-fun-blue-950 flex items-center justify-center"
+                                            >
+                                                <ArrowUpRight size={13} className="text-white" />
+                                            </motion.div>
+                                        </div>
+
+                                        {/* Mobile layout */}
+                                        <div className="lg:hidden flex flex-col gap-2 w-full">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <span className={`w-1.5 h-1.5 rounded-full ${tag.dot}`} />
+                                                    <span className={`text-xs font-semibold ${tag.text}`}>{event.tag}</span>
+                                                </div>
+                                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${event.type === "NZUSI" ? "bg-fun-blue-100 text-fun-blue-600" : "bg-slate-100 text-slate-500"
+                                                    }`}>{event.type}</span>
+                                            </div>
+                                            <h3 className="font-semibold text-fun-blue-950 text-sm leading-snug">{event.title}</h3>
+                                            <div className="flex flex-wrap gap-3 text-xs text-zinc-500">
+                                                <span className="flex items-center gap-1"><Calendar size={10} className="text-fun-blue-300" />{event.date}</span>
+                                                <span className="flex items-center gap-1"><MapPin size={10} className="text-fun-blue-300" />{event.location}</span>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                )
+                            })}
+                        </div>
+                    </AnimatePresence>
 
                     {/* Bottom CTA */}
                     <motion.div
                         initial={{ opacity: 0, y: 16 }}
                         animate={isInView ? { opacity: 1, y: 0 } : {}}
                         transition={{ duration: 0.5, delay: 0.7 }}
-                        className="mt-10 flex justify-center"
+                        className="mt-12 flex items-center justify-between"
                     >
+                        <p className="text-sm text-fun-blue-300 hidden md:block">
+                            {filtered.length} of {events.length} events shown
+                        </p>
                         <a
                             href="/events"
-                            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-fun-blue-300 text-fun-blue-700 text-sm font-medium hover:bg-fun-blue-950 hover:text-white hover:border-fun-blue-950 transition-all duration-300"
+                            className="group ml-auto inline-flex items-center gap-3 px-7 py-3.5 bg-fun-blue-950 text-white rounded-full text-sm font-semibold hover:bg-fun-blue-800 transition-colors duration-300"
                         >
-                            View Full Events Calendar
-                            <ArrowRight size={14} />
+                            Full Events Calendar
+                            <span className="w-5 h-5 rounded-full bg-white/15 flex items-center justify-center group-hover:bg-white/25 transition-colors">
+                                <ArrowRight size={11} />
+                            </span>
                         </a>
                     </motion.div>
                 </div>
