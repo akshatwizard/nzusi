@@ -11,10 +11,9 @@ export default function Header() {
     const { scrollY } = useScroll();
     const [scrolled, setScrolled] = useState<boolean | null>(false);
     const [openMenu, setOpenMenu] = useState<boolean>(false);
-    const { startScroll, stopScroll } = useLenisControl()
 
     useMotionValueEvent(scrollY, "change", (current) => {
-        if (current > 100) {
+        if (current > 50) {
             setScrolled(true);
         } else {
             setScrolled(null);
@@ -24,7 +23,7 @@ export default function Header() {
     return (
         <>
             <motion.header
-                className={`sticky top-0 z-40 lg:mt-5 mt-3 w-full h-max lg:px-12 md:px-8 px-4 ${scrolled ? "bg-fun-blue-950/5 backdrop-blur" : "bg-fun-blue-950"}`}
+                className={`fixed top-0 z-40 w-full h-20 lg:px-12 md:px-8 px-4 ${scrolled ? "bg-fun-blue-950/5 backdrop-blur border-b border-white/6" : "bg-transparent"} transition-colors duration-300 ease-in-out`}
             >
                 <nav className='w-full max-w-7xl mx-auto flex items-center justify-between py-3 h-full'>
                     <Link
@@ -38,7 +37,7 @@ export default function Header() {
                             width={120}
                             height={40}
                             priority
-                            className='w-16 h-auto'
+                            className={`w-14 h-auto transition-all duration-300 ease-in-out'`}
 
                         />
                         <span className='sr-only'>
@@ -48,7 +47,7 @@ export default function Header() {
 
                     <DesktopMenu />
 
-                    <button className='relative h-full w-12 cursor-pointer' onClick={() => setOpenMenu(!openMenu)}>
+                    <button aria-label="Open menu" className='md:hidden relative h-full w-12 cursor-pointer' onClick={() => setOpenMenu(!openMenu)}>
                         <motion.span
                             className="w-full h-px absolute left-1/2 -translate-x-1/2 top-[43%] bg-white inline-block"
                             animate={openMenu ? { top: "50%", rotate: 45 } : { top: "43%", rotate: 0 }}

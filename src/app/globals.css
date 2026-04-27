@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@theme inline {
+@theme {
   --color-fun-blue-50: #f2f7fd;
   --color-fun-blue-100: #e4eefa;
   --color-fun-blue-200: #c2dcf5;
@@ -15,6 +15,17 @@
 
   --font-sans: var(--font-dm-sans);
   --font-serif: var(--font-dm-serif-display);
+
+  --animate-shimmer: shimmer 8s linear infinite;
+
+  @keyframes shimmer {
+    0% {
+      background-position: 200% center;
+    }
+    100% {
+      background-position: -200% center;
+    }
+  }
 }
 
 html,

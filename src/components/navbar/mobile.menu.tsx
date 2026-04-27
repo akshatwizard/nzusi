@@ -33,6 +33,7 @@ export default function MobileMenu({ isOpen, onClose }: Props) {
                         transition={{ type: "spring", stiffness: 300, damping: 30, duration: 0.5 }}
                         className="md:hidden fixed inset-y-0 left-0 z-50 w-[85%] max-w-sm bg-white p-5 shadow-xl rounded-r-3xl flex flex-col"
                         data-lenis-prevent
+                        role="dialog" aria-modal="true"
                     >
                         <div className="flex items-center justify-between">
                             <h2 className="text-lg text-fun-blue-950">Menu</h2>
