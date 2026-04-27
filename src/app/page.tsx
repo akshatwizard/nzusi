@@ -2,6 +2,7 @@ import AboutSection from '@/components/about'
 import BlogSection from '@/components/blog'
 import EventsSection from '@/components/events'
 import Hero from '@/components/hero'
+import MembershipSection from '@/components/membership'
 import StatsSection from '@/components/stats'
 
 export default function HomePage() {
@@ -12,6 +13,7 @@ export default function HomePage() {
       <AboutSection />
       <BlogSection />
       <EventsSection />
+      <MembershipSection/>
     </main>
   )
 }
