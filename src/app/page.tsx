@@ -1,4 +1,5 @@
 import AboutSection from '@/components/about'
+import BlogSection from '@/components/blog'
 import Hero from '@/components/hero'
 import StatsSection from '@/components/stats'
 
@@ -8,6 +9,7 @@ export default function HomePage() {
       <Hero />
       <StatsSection/>
       <AboutSection/>
+      <BlogSection/>
     </main>
   )
 }
