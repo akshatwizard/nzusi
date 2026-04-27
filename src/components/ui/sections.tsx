@@ -14,7 +14,7 @@ type WrapperProps = ComponentProps<"div"> & {
 export function Section({ children, className, ...rest }: SectionProps) {
     return (
         <section
-            className={cn("w-full lg:px-12 md:px-8 px-4 bg-white", className)}
+            className={cn("w-full lg:px-12 md:px-8 px-4 bg-fun-blue-50", className)}
             {...rest}
         >
             {children}
