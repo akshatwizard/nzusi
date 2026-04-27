@@ -3,6 +3,7 @@ import { DM_Serif_Display, DM_Sans } from "next/font/google";
 import "./globals.css";
 import SmoothScrollProvider from "@/lib/smooth_scroll";
 import Header from "@/components/navbar/header";
+import Footer from "@/components/footer";
 
 const serif_display = DM_Serif_Display({
   variable: "--font-dm-serif-display",
@@ -35,6 +36,7 @@ export default function RootLayout({
         <SmoothScrollProvider>
           {children}
         </SmoothScrollProvider>
+        <Footer />
       </body>
     </html>
   );
