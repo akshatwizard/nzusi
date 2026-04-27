@@ -23,7 +23,7 @@ export default function Header() {
     return (
         <>
             <motion.header
-                className={`fixed top-0 z-40 w-full h-20 lg:px-12 md:px-8 px-4 ${scrolled ? "bg-fun-blue-950/5 backdrop-blur border-b border-white/6" : "bg-transparent"} transition-colors duration-300 ease-in-out`}
+                className={`fixed top-0 z-40 w-full h-20 lg:px-12 md:px-8 px-4 ${scrolled ? "bg-fun-blue-950/5 backdrop-blur border-b border-white/6" : "bg-transparent border-b border-white/0"} transition-colors duration-300 ease-in-out`}
             >
                 <nav className='w-full max-w-7xl mx-auto flex items-center justify-between py-3 h-full'>
                     <Link

@@ -198,7 +198,7 @@ function GlassCard({ children, className = '', accent = false, delay = 0, }: {
     )
 }
 
-export function HeroRightColumn() {
+function HeroRightColumn() {
     return (
         <div className="flex flex-col gap-3 lg:gap-2.5">
 
