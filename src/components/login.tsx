@@ -11,18 +11,18 @@ import { Dispatch, SetStateAction, useEffect, useState, useRef } from "react";
 import toast from "react-hot-toast";
 
 type Props = {
-    isOpen?: boolean;
-    onClose?: () => void;
+    isOpen: boolean;
+    onClose: () => void;
 }
 type Step = "email" | "otp";
 const OTP_LENGTH = 6;
 
-export default function Login({ isOpen = true, onClose }: Props) {
+export default function Login({ isOpen, onClose }: Props) {
     const router = useRouter();
     const { startScroll, stopScroll } = useLenisControl();
     const [email, setEmail] = useState<string>("");
     const [otp, setOtp] = useState<string>("");
-    const [currentStep, setCurrentStep] = useState<Step>("otp");
+    const [currentStep, setCurrentStep] = useState<Step>("email");
 
     const containerVariants = {
         hidden: { opacity: 0, y: 20 },
@@ -108,7 +108,7 @@ export default function Login({ isOpen = true, onClose }: Props) {
                         />
 
                         <div className="w-full p-7">
-                            <LoginHeader onClose={onClose!} />
+                            <LoginHeader onClose={onClose} />
 
                             <AnimatePresence>
                                 {currentStep === "email" &&
@@ -295,7 +295,7 @@ function VerifyOtp({ email, otp, setOtp, verifyOtp, verifyingOtp, changeStep }: 
                     onClick={() => { changeStep("email"); setOtp(""); }}
                     className="text-xs text-stone-400 hover:text-zinc-600 transition-colors cursor-pointer"
                 >
-                    ← Change contact
+                    ← Change email
                 </button>
                 <button
                     // onClick={handleResend}
