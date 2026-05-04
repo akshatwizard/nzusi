@@ -38,8 +38,8 @@ export default function RootLayout({
             <Header />
             {children}
           </QueryProvider>
+          <Footer />
         </SmoothScrollProvider>
-        <Footer />
       </body>
     </html>
   );
