@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import DesktopMenu from './desktop.menu';
 import MobileMenu from './mobile.menu';
+import Login from '../login';
 
 export default function Header() {
     const { scrollY } = useScroll();
@@ -66,6 +67,7 @@ export default function Header() {
                 isOpen={openMenu}
                 onClose={() => setOpenMenu(false)}
             />
+            <Login />
         </>
     )
 }
