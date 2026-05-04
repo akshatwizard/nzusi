@@ -13,7 +13,7 @@ type Props = {
 export default function AboutSidebar({ active, onSelect }: Props) {
     return (
         <aside
-            className='lg:w-60 xl:w-64 shrink-0 border-b lg:border-b-0 lg:border-r border-fun-blue-100
+            className='lg:sticky lg:top-22 h-max lg:w-60 shrink-0 border-b lg:border-b-0 lg:border-r border-fun-blue-100
             bg-[#EEEEE9] px-3 py-8 lg:py-12 flex flex-col gap-6
         '>
             {About_Tab.map((group) => (
