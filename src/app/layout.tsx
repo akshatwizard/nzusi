@@ -5,6 +5,7 @@ import SmoothScrollProvider from "@/lib/smooth_scroll";
 import Header from "@/components/navbar/header";
 import Footer from "@/components/footer";
 import { QueryProvider } from "@/lib/query-provider";
+import { AuthProvider } from "@/context/auth_context";
 
 const serif_display = DM_Serif_Display({
   variable: "--font-dm-serif-display",
@@ -35,8 +36,10 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <QueryProvider>
           <SmoothScrollProvider>
-            <Header />
-            {children}
+            <AuthProvider>
+              <Header />
+              {children}
+            </AuthProvider>
           </SmoothScrollProvider>
         </QueryProvider>
         <Footer />
