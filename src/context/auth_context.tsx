@@ -1,5 +1,5 @@
 'use client';
-import { api } from "@/services/api";
+import { authService, User } from "@/services/auth";
 import { tokenStore } from "@/services/tokenStore";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -7,21 +7,14 @@ import { useRouter } from "next/navigation";
 import React, { createContext, useContext, useState } from "react";
 import toast from "react-hot-toast";
 
-type User = {
-    id: number;
-    name: string;
-    email: string;
-    customer_id: string;
-};
-
 type AuthContextType = {
     user: User | null;
     token: string | null;
     isAuthenticated: boolean;
     loading: boolean;
     isLoggingOut: boolean;
-    login: (data: any) => void;
-    logout: () => void;
+    login: (email: string, otp: string) => Promise<void>;
+    logout: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -34,14 +27,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const { data: user, isLoading } = useQuery<User | null, AxiosError>({
         queryKey: ["user_profile"],
-        queryFn: async () => {
-            const res = await api.get("");
-            const userRaw = res.data.data;
-            return {
-                ...userRaw,
-                customer_id: userRaw.customer_id || userRaw.id,
-            };
-        },
+        queryFn: authService.getProfile,
         enabled: !!token,
         placeholderData: null,
         retry: (failureCount, error: AxiosError) => {
@@ -58,11 +44,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         },
     });
 
-    const login = (data: any) => {
+    const login = async (email: string, otp: string) => {
+        const data = await authService.login({ email, otp });
+
         const accessToken = data.access_token;
         const userRaw = data.customer;
-
-        const user = {
+        const user: User = {
             ...userRaw,
             customer_id: userRaw.customer_id || userRaw.id,
         };
@@ -70,7 +57,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         tokenStore.setAccessToken(accessToken);
         setToken(accessToken);
         queryClient.setQueryData(["user_profile"], user);
-
         router.push(`/profile/${user.customer_id}`);
     };
 
@@ -79,9 +65,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setIsLoggingOut(true);
 
         try {
-            if (token) {
-                await api.post("")
-            }
+            await authService.logout();
         } catch (e) {
             console.error("Logout error", e);
         }
