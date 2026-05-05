@@ -3,264 +3,438 @@
 import { Section, Wrapper } from "@/components/ui/sections"
 import { motion, useInView, AnimatePresence } from "motion/react"
 import { useRef, useState } from "react"
-import { Calendar, MapPin, ArrowRight, ArrowUpRight } from "lucide-react"
+import { Calendar, MapPin, ArrowUpRight, Users, Tag, ChevronRight } from "lucide-react"
+import { ALL_EVENTS } from "@/constant/events"
 
-const events = [
-    {
-        id: 1,
-        title: "Online Academic Series — NZUSI",
-        date: "Jan 11, 2026",
-        location: "Online / Zoom",
-        type: "NZUSI",
-        category: "Academic",
-        tag: "Completed",
-        highlight: false,
-        index: "01",
-    },
-    {
-        id: 2,
-        title: "Mid-term CME — Karnal Chapter",
-        date: "Apr 24–25, 2026",
-        location: "Karnal, Haryana",
-        type: "NZUSI",
-        category: "CME",
-        tag: "Upcoming",
-        highlight: true,
-        index: "02",
-    },
-    {
-        id: 3,
-        title: "USICON 2026 — Annual Conference",
-        date: "Jun 12–14, 2026",
-        location: "Mumbai, Maharashtra",
-        type: "USI",
-        category: "Conference",
-        tag: "Upcoming",
-        highlight: false,
-        index: "03",
-    },
-    {
-        id: 4,
-        title: "Youth Conclave — North Zone",
-        date: "Aug 22–23, 2026",
-        location: "New Delhi",
-        type: "NZUSI",
-        category: "Conclave",
-        tag: "Upcoming",
-        highlight: false,
-        index: "04",
-    },
-    {
-        id: 5,
-        title: "Endourology Society Meeting",
-        date: "Sep 18–20, 2026",
-        location: "Chandigarh, Punjab",
-        type: "USI",
-        category: "Conference",
-        tag: "Upcoming",
-        highlight: false,
-        index: "05",
-    },
-    {
-        id: 6,
-        title: "NZUSICON 2026 — Annual Congress",
-        date: "Nov 27–29, 2026",
-        location: "Amritsar, Punjab",
-        type: "NZUSI",
-        category: "Conference",
-        tag: "Flagship",
-        highlight: true,
-        index: "06",
-    },
-]
+const FILTERS = ["All", "NZUSI", "USI"]
+const CATEGORIES = ["All Categories", "Conference", "CME", "Academic", "Conclave"]
 
-const tagConfig: Record<string, { dot: string; text: string }> = {
-    Completed: { dot: "bg-zinc-300", text: "text-zinc-400" },
-    Upcoming: { dot: "bg-fun-blue-400", text: "text-fun-blue-600" },
-    Flagship: { dot: "bg-amber-500 animate-pulse", text: "text-amber-600" },
+/* ─── Style maps ────────────────────────────────────────────── */
+const tagStyle: Record<string, { dot: string; pill: string; text: string }> = {
+    Completed: {
+        dot: "bg-zinc-300",
+        pill: "bg-zinc-100 text-zinc-500 border border-zinc-200",
+        text: "text-zinc-400",
+    },
+    Upcoming: {
+        dot: "bg-fun-blue-400",
+        pill: "bg-fun-blue-50 text-fun-blue-600 border border-fun-blue-200",
+        text: "text-fun-blue-600",
+    },
+    Flagship: {
+        dot: "bg-amber-500 animate-pulse",
+        pill: "bg-amber-50 text-amber-700 border border-amber-200",
+        text: "text-amber-600",
+    },
 }
 
-const filters = ["All", "NZUSI", "USI"]
+/** Big featured card for NZUSICON */
+function FeaturedCard({ event }: { event: typeof ALL_EVENTS[number] }) {
+    const ref = useRef(null)
+    const isInView = useInView(ref, { once: true, margin: "-60px" })
+
+    return (
+        <motion.div
+            ref={ref}
+            initial={{ opacity: 0, y: 32 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="relative rounded-3xl overflow-hidden bg-fun-blue-950 border border-fun-blue-800 group"
+        >
+            {/* Background texture */}
+            <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-fun-blue-600/15 blur-[80px]" />
+                <div
+                    className="absolute inset-0 opacity-[0.04]"
+                    style={{
+                        backgroundImage: "radial-gradient(circle, #c2dcf5 1px, transparent 1px)",
+                        backgroundSize: "28px 28px",
+                    }}
+                />
+                {/* Amber top border */}
+                <div className="absolute inset-x-0 top-0 h-0.5 bg-linear-to-r from-transparent via-amber-400 to-transparent" />
+            </div>
+
+            <div className="relative z-10 p-8 md:p-10 grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 items-center">
+                {/* Left */}
+                <div>
+                    <div className="flex items-center gap-3 mb-5">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-bold tracking-widest uppercase">
+                            <span className="w-1 h-1 rounded-full bg-amber-400 animate-pulse" />
+                            Flagship · {event.type}
+                        </span>
+                        <span className="text-fun-blue-600 text-xs font-semibold tabular-nums">{event.index}</span>
+                    </div>
+
+                    <h3 className="text-3xl md:text-4xl text-white mb-1 leading-tight">
+                        {event.title}
+                    </h3>
+                    <p className="text-fun-blue-400 text-sm mb-5">{event.subtitle}</p>
+
+                    <p className="text-fun-blue-300/70 text-sm leading-relaxed mb-6 max-w-lg">
+                        {event.description}
+                    </p>
+
+                    <div className="flex flex-wrap gap-4 mb-8">
+                        <div className="flex items-center gap-2 text-fun-blue-200 text-sm">
+                            <Calendar size={13} className="text-fun-blue-500" />
+                            {event.date}
+                        </div>
+                        <div className="w-px h-4 bg-fun-blue-800 self-center hidden sm:block" />
+                        <div className="flex items-center gap-2 text-fun-blue-200 text-sm">
+                            <MapPin size={13} className="text-fun-blue-500" />
+                            {event.location}
+                        </div>
+                        <div className="w-px h-4 bg-fun-blue-800 self-center hidden sm:block" />
+                        <div className="flex items-center gap-2 text-fun-blue-200 text-sm">
+                            <Users size={13} className="text-fun-blue-500" />
+                            {event.attendees} expected
+                        </div>
+                    </div>
+
+                    <div className="flex gap-3">
+                        <a
+                            href={event.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-white rounded-xl font-bold text-sm transition-colors"
+                        >
+                            Register Now <ArrowUpRight size={14} />
+                        </a>
+                        <a
+                            href="#"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 border border-fun-blue-700 text-fun-blue-300 hover:bg-fun-blue-800 rounded-xl font-semibold text-sm transition-colors"
+                        >
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+
+                {/* Right — large date block */}
+                <div className="hidden lg:flex flex-col items-center justify-center w-36 h-36 rounded-2xl bg-white/5 border border-white/10 shrink-0">
+                    <span className="text-fun-blue-400 text-xs font-bold tracking-widest uppercase mb-1">{event.month}</span>
+                    <span className="text-6xl font-bold text-white leading-none tabular-nums">{event.day}</span>
+                    <span className="text-fun-blue-500 text-xs mt-1">2026</span>
+                </div>
+            </div>
+        </motion.div>
+    )
+}
+
+/** Regular event row (list view) */
+function EventRow({ event, idx, isInView }: {
+    event: typeof ALL_EVENTS[number]
+    idx: number
+    isInView: boolean
+}) {
+    const [expanded, setExpanded] = useState(false)
+    const ts = tagStyle[event.tag]
+
+    return (
+        <motion.div
+            layout
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.4, delay: idx * 0.07, ease: [0.22, 1, 0.36, 1] }}
+            className={`rounded-2xl border transition-all duration-300 overflow-hidden ${event.highlight
+                ? "border-fun-blue-200 bg-white shadow-sm shadow-fun-blue-100"
+                : "border-zinc-200 bg-white hover:border-fun-blue-200 hover:shadow-sm"
+                }`}
+        >
+            <button
+                className="w-full text-left"
+                onClick={() => setExpanded(v => !v)}
+            >
+                <div className="flex items-center gap-4 p-5">
+                    {/* Date block */}
+                    <div className="hidden sm:flex flex-col items-center justify-center w-14 h-14 rounded-xl bg-fun-blue-50 border border-fun-blue-100 shrink-0">
+                        <span className="text-[10px] font-bold text-fun-blue-400 tracking-widest uppercase">{event.month}</span>
+                        <span className="text-xl font-bold text-fun-blue-950 leading-none tabular-nums">{event.day}</span>
+                    </div>
+
+                    {/* Main content */}
+                    <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-3">
+                            <div className="min-w-0">
+                                <div className="flex items-center gap-2 mb-1 flex-wrap">
+                                    <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full ${ts.pill}`}>
+                                        <span className={`w-1 h-1 rounded-full ${ts.dot}`} />
+                                        {event.tag}
+                                    </span>
+                                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${event.type === "NZUSI"
+                                        ? "bg-fun-blue-100 text-fun-blue-600"
+                                        : "bg-slate-100 text-slate-500"
+                                        }`}>
+                                        {event.type}
+                                    </span>
+                                    <span className="text-[10px] text-zinc-400 bg-zinc-50 px-2 py-0.5 rounded-md border border-zinc-100">
+                                        {event.category}
+                                    </span>
+                                </div>
+
+                                <h3 className="text-fun-blue-950 text-lg leading-snug truncate">
+                                    {event.title}
+                                    <span className="text-zinc-400 font-normal text-sm ml-1.5">— {event.subtitle}</span>
+                                </h3>
+                            </div>
+
+                            <motion.div
+                                animate={{ rotate: expanded ? 90 : 0 }}
+                                transition={{ duration: 0.2 }}
+                                className="shrink-0 mt-0.5"
+                            >
+                                <ChevronRight size={15} className="text-fun-blue-300" />
+                            </motion.div>
+                        </div>
+
+                        {/* Meta row */}
+                        <div className="flex flex-wrap gap-4 mt-2">
+                            <div className="flex items-center gap-1.5 text-xs text-zinc-500">
+                                <Calendar size={11} className="text-fun-blue-300 shrink-0" />
+                                <span className="font-medium">{event.date}</span>
+                            </div>
+                            <div className="flex items-center gap-1.5 text-xs text-zinc-500">
+                                <MapPin size={11} className="text-fun-blue-300 shrink-0" />
+                                <span>{event.location}</span>
+                            </div>
+                            <div className="flex items-center gap-1.5 text-xs text-zinc-500">
+                                <Users size={11} className="text-fun-blue-300 shrink-0" />
+                                <span>{event.attendees} expected</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </button>
+
+            {/* Expanded detail panel */}
+            <AnimatePresence initial={false}>
+                {expanded && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                        className="overflow-hidden"
+                    >
+                        <div className="px-5 pb-5 pt-0 border-t border-zinc-100 ml-0 sm:ml-18">
+                            <p className="text-zinc-500 text-sm leading-relaxed mt-4 mb-4">
+                                {event.description}
+                            </p>
+                            <a
+                                href={event.link}
+                                target={event.link !== "#" ? "_blank" : undefined}
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1.5 text-xs font-semibold text-fun-blue-600 hover:text-fun-blue-800 transition-colors"
+                            >
+                                {event.tag === "Completed" ? "View Summary" : "More Details"} <ArrowUpRight size={12} />
+                            </a>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </motion.div>
+    )
+}
 
 export default function EventsSection() {
     const ref = useRef(null)
     const isInView = useInView(ref, { once: true, margin: "-80px" })
-    const [active, setActive] = useState("All")
-    const [hovered, setHovered] = useState<number | null>(null)
 
-    const filtered = events.filter(e => active === "All" || e.type === active)
+    const [typeFilter, setTypeFilter] = useState("All")
+    const [catFilter, setCatFilter] = useState("All Categories")
+
+    const featured = ALL_EVENTS.find(e => e.tag === "Flagship")!
+
+    const rest = ALL_EVENTS.filter(e => {
+        if (e.tag === "Flagship") return false
+        if (typeFilter !== "All" && e.type !== typeFilter) return false
+        if (catFilter !== "All Categories" && e.category !== catFilter) return false
+        return true
+    })
+
+    /* Stats */
+    const nzusiCount = ALL_EVENTS.filter(e => e.type === "NZUSI").length
+    const usiCount = ALL_EVENTS.filter(e => e.type === "USI").length
+    const upcomingCount = ALL_EVENTS.filter(e => e.tag === "Upcoming" || e.tag === "Flagship").length
 
     return (
         <Section className="bg-fun-blue-50">
             <Wrapper>
-                <div ref={ref} className="w-full">
+                <div ref={ref} className="w-full flex flex-col gap-12">
 
-                    {/* Header */}
-                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-14">
+                    {/* ── Page header ── */}
+                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                         <motion.div
-                            initial={{ opacity: 0, y: 28 }}
+                            initial={{ opacity: 0, y: 24 }}
                             animate={isInView ? { opacity: 1, y: 0 } : {}}
-                            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                         >
-                            <div className="flex items-center gap-3 mb-4">
-                                <div className="w-8 h-px bg-fun-blue-400" />
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="w-6 h-px bg-fun-blue-400" />
                                 <span className="text-xs font-semibold tracking-[0.2em] uppercase text-fun-blue-500">
-                                    Calendar 2026
+                                    Full Calendar · 2026
                                 </span>
                             </div>
-                            <h2 className="text-3xl lg:text-4xl text-fun-blue-950 leading-[1.05] tracking-tight">
-                                Events & <em className="not-italic text-fun-blue-400">Conferences</em>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl text-fun-blue-950 leading-tight">
+                                Events &{" "}
+                                <em className="not-italic text-fun-blue-400">Conferences</em>
                             </h2>
                         </motion.div>
 
-                        {/* Filter pill group */}
+                        {/* Stat chips */}
                         <motion.div
                             initial={{ opacity: 0, y: 16 }}
                             animate={isInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.5, delay: 0.2 }}
-                            className="flex items-center gap-1 p-1 bg-white rounded-full border border-fun-blue-100 shadow-sm w-max"
+                            className="flex flex-wrap gap-2"
                         >
-                            {filters.map(f => (
+                            {[
+                                { label: "Total Events", val: ALL_EVENTS.length },
+                                { label: "Upcoming", val: upcomingCount },
+                                { label: "NZUSI", val: nzusiCount },
+                                { label: "USI", val: usiCount },
+                            ].map(s => (
+                                <div key={s.label} className="flex items-center gap-2 px-3 py-1.5 bg-white border border-fun-blue-100 rounded-xl shadow-sm">
+                                    <span className="font-bold text-fun-blue-700 text-sm">{s.val}</span>
+                                    <span className="text-[11px] text-fun-blue-400">{s.label}</span>
+                                </div>
+                            ))}
+                        </motion.div>
+                    </div>
+
+                    {/* ── Year timeline strip ── */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={isInView ? { opacity: 1 } : {}}
+                        transition={{ duration: 0.5, delay: 0.15 }}
+                        className="flex items-center gap-0 overflow-x-auto pb-1 scrollbar-hide"
+                    >
+                        {ALL_EVENTS.map((e, i) => {
+                            const ts = tagStyle[e.tag]
+                            return (
+                                <div key={e.id} className="flex items-center gap-0 min-w-0 shrink-0">
+                                    {/* Node */}
+                                    <div className="flex flex-col items-center gap-1.5">
+                                        <span className="text-[10px] text-fun-blue-400 font-medium whitespace-nowrap">
+                                            {e.dateShort}
+                                        </span>
+                                        <div className={`w-3 h-3 rounded-full border-2 border-fun-blue-50 ${ts.dot}`} />
+                                        <span className="text-[9px] text-zinc-400 whitespace-nowrap max-w-20 text-center leading-tight">
+                                            {e.title.split(" ").slice(0, 2).join(" ")}
+                                        </span>
+                                    </div>
+                                    {/* Connector */}
+                                    {i < ALL_EVENTS.length - 1 && (
+                                        <div className="h-px w-10 md:w-16 lg:w-24 bg-fun-blue-100 mx-1 -mt-3" />
+                                    )}
+                                </div>
+                            )
+                        })}
+                    </motion.div>
+
+                    {/* ── Featured NZUSICON card ── */}
+                    <FeaturedCard event={featured} />
+
+                    {/* ── Filters ── */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={isInView ? { opacity: 1, y: 0 } : {}}
+                        transition={{ duration: 0.4, delay: 0.25 }}
+                        className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between"
+                    >
+                        <div className="flex items-center gap-1 p-1 bg-white rounded-full border border-fun-blue-100 shadow-sm">
+                            {FILTERS.map(f => (
                                 <button
                                     key={f}
-                                    onClick={() => setActive(f)}
-                                    className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer ${active === f
-                                            ? "bg-fun-blue-950 text-white shadow-md"
-                                            : "text-fun-blue-600 hover:text-fun-blue-900"
+                                    onClick={() => setTypeFilter(f)}
+                                    className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer ${typeFilter === f
+                                        ? "bg-fun-blue-950 text-white shadow-sm"
+                                        : "text-fun-blue-600 hover:text-fun-blue-900"
                                         }`}
                                 >
                                     {f}
                                 </button>
                             ))}
-                        </motion.div>
-                    </div>
+                        </div>
 
-                    {/* Column headers — desktop only */}
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={isInView ? { opacity: 1 } : {}}
-                        transition={{ duration: 0.4, delay: 0.15 }}
-                        className="hidden lg:grid grid-cols-[28px_120px_1fr_160px_160px_80px_40px] gap-4 px-5 mb-2"
-                    >
-                        {["#", "Status", "Event", "Date", "Location", "Type", ""].map(h => (
-                            <span key={h} className="text-[10px] font-bold uppercase tracking-widest text-fun-blue-300">{h}</span>
-                        ))}
+                        <div className="flex items-center gap-1 p-1 bg-white rounded-full border border-fun-blue-100 shadow-sm flex-wrap">
+                            {CATEGORIES.map(c => (
+                                <button
+                                    key={c}
+                                    onClick={() => setCatFilter(c)}
+                                    className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer whitespace-nowrap ${catFilter === c
+                                        ? "bg-fun-blue-100 text-fun-blue-800"
+                                        : "text-zinc-500 hover:text-fun-blue-700"
+                                        }`}
+                                >
+                                    {c === "All Categories" ? <Tag size={11} className="inline mr-1" /> : null}
+                                    {c}
+                                </button>
+                            ))}
+                        </div>
                     </motion.div>
 
-                    {/* Divider */}
-                    <div className="hidden lg:block h-px bg-fun-blue-100 mb-1" />
+                    {/* ── Events list ── */}
+                    <div>
+                        {/* Column header */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={isInView ? { opacity: 1 } : {}}
+                            transition={{ duration: 0.3, delay: 0.3 }}
+                            className="flex items-center justify-between px-1 mb-3"
+                        >
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-fun-blue-300">
+                                {rest.length} Event{rest.length !== 1 ? "s" : ""} — Click to expand
+                            </span>
+                            <div className="h-px flex-1 bg-fun-blue-100 ml-4" />
+                        </motion.div>
 
-                    {/* Event rows */}
-                    <AnimatePresence mode="popLayout">
-                        <div className="flex flex-col divide-y divide-fun-blue-100/70">
-                            {filtered.map((event, idx) => {
-                                const tag = tagConfig[event.tag]
-                                const isHov = hovered === event.id
-                                return (
+                        <AnimatePresence mode="popLayout">
+                            <div className="flex flex-col gap-3">
+                                {rest.length > 0 ? (
+                                    rest.map((event, idx) => (
+                                        <EventRow
+                                            key={event.id}
+                                            event={event}
+                                            idx={idx}
+                                            isInView={isInView}
+                                        />
+                                    ))
+                                ) : (
                                     <motion.div
-                                        key={event.id}
-                                        layout
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0 }}
-                                        exit={{ opacity: 0, y: -8 }}
-                                        transition={{ duration: 0.4, delay: idx * 0.07, ease: [0.22, 1, 0.36, 1] }}
-                                        onHoverStart={() => setHovered(event.id)}
-                                        onHoverEnd={() => setHovered(null)}
-                                        className={`group relative flex flex-col sm:flex-row sm:items-center gap-3 py-5 px-5 rounded-2xl cursor-pointer transition-all duration-300 ${isHov
-                                                ? "bg-white shadow-xl shadow-fun-blue-100 -mx-2 px-7 scale-[1.005]"
-                                                : event.highlight ? "bg-white/50" : ""
-                                            }`}
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        className="text-center py-14 text-fun-blue-300 text-sm"
                                     >
-                                        {/* Desktop layout */}
-                                        <div className="hidden lg:grid grid-cols-[28px_120px_1fr_160px_160px_80px_40px] gap-4 items-center w-full">
-                                            <span className={`text-xs font-bold tabular-nums transition-colors duration-300 ${isHov ? "text-fun-blue-500" : "text-fun-blue-200"}`}>
-                                                {event.index}
-                                            </span>
-
-                                            <div className="flex items-center gap-2">
-                                                <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${tag.dot}`} />
-                                                <span className={`text-xs font-semibold ${tag.text}`}>{event.tag}</span>
-                                            </div>
-
-                                            <div>
-                                                <h3 className={`leading-snug transition-colors duration-300 ${isHov ? "text-fun-blue-700" : "text-fun-blue-950"}`}>
-                                                    {event.title}
-                                                </h3>
-                                                {event.highlight && (
-                                                    <span className="inline-flex items-center mt-0.5 px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 text-[9px] font-bold uppercase tracking-wide">
-                                                        ★ Key Event
-                                                    </span>
-                                                )}
-                                            </div>
-
-                                            <div className="flex items-center gap-1.5 text-xs text-zinc-500">
-                                                <Calendar size={11} className="text-fun-blue-300 shrink-0" />
-                                                <span className="font-medium">{event.date}</span>
-                                            </div>
-
-                                            <div className="flex items-center gap-1.5 text-xs text-zinc-500">
-                                                <MapPin size={11} className="text-fun-blue-300 shrink-0" />
-                                                <span>{event.location}</span>
-                                            </div>
-
-                                            <span className={`text-[10px] font-bold px-2 py-1 rounded-md tracking-wider w-max ${event.type === "NZUSI"
-                                                    ? "bg-fun-blue-100 text-fun-blue-600"
-                                                    : "bg-slate-100 text-slate-500"
-                                                }`}>
-                                                {event.type}
-                                            </span>
-
-                                            <motion.div
-                                                animate={{ opacity: isHov ? 1 : 0, scale: isHov ? 1 : 0.7 }}
-                                                transition={{ duration: 0.2 }}
-                                                className="w-8 h-8 rounded-full bg-fun-blue-950 flex items-center justify-center"
-                                            >
-                                                <ArrowUpRight size={13} className="text-white" />
-                                            </motion.div>
-                                        </div>
-
-                                        {/* Mobile layout */}
-                                        <div className="lg:hidden flex flex-col gap-2 w-full">
-                                            <div className="flex items-center justify-between">
-                                                <div className="flex items-center gap-2">
-                                                    <span className={`w-1.5 h-1.5 rounded-full ${tag.dot}`} />
-                                                    <span className={`text-xs font-semibold ${tag.text}`}>{event.tag}</span>
-                                                </div>
-                                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${event.type === "NZUSI" ? "bg-fun-blue-100 text-fun-blue-600" : "bg-slate-100 text-slate-500"
-                                                    }`}>{event.type}</span>
-                                            </div>
-                                            <h3 className="font-semibold text-fun-blue-950 text-sm leading-snug">{event.title}</h3>
-                                            <div className="flex flex-wrap gap-3 text-xs text-zinc-500">
-                                                <span className="flex items-center gap-1"><Calendar size={10} className="text-fun-blue-300" />{event.date}</span>
-                                                <span className="flex items-center gap-1"><MapPin size={10} className="text-fun-blue-300" />{event.location}</span>
-                                            </div>
-                                        </div>
+                                        No events match the selected filters.
                                     </motion.div>
-                                )
-                            })}
-                        </div>
-                    </AnimatePresence>
+                                )}
+                            </div>
+                        </AnimatePresence>
+                    </div>
 
-                    {/* Bottom CTA */}
+                    {/* ── Info strip ── */}
                     <motion.div
                         initial={{ opacity: 0, y: 16 }}
                         animate={isInView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.5, delay: 0.7 }}
-                        className="mt-12 flex items-center justify-between"
+                        transition={{ duration: 0.5, delay: 0.6 }}
+                        className="rounded-2xl bg-fun-blue-950 px-7 py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
                     >
-                        <p className="text-sm text-fun-blue-300 hidden md:block">
-                            {filtered.length} of {events.length} events shown
-                        </p>
+                        <div>
+                            <p className="text-white font-semibold text-sm mb-1">Want to host an NZUSI event?</p>
+                            <p className="text-fun-blue-400 text-xs leading-relaxed">
+                                Full members can bid to organise conferences and CMEs under the NZUSI aegis.
+                            </p>
+                        </div>
                         <a
-                            href="/events"
-                            className="group ml-auto inline-flex items-center gap-3 px-7 py-3.5 bg-fun-blue-950 text-white rounded-full text-sm font-semibold hover:bg-fun-blue-800 transition-colors duration-300"
+                            href="/about/bids"
+                            className="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 bg-fun-blue-100 text-fun-blue-900 rounded-xl font-semibold text-xs hover:bg-white transition-colors"
                         >
-                            Full Events Calendar
-                            <span className="w-5 h-5 rounded-full bg-white/15 flex items-center justify-center group-hover:bg-white/25 transition-colors">
-                                <ArrowRight size={11} />
-                            </span>
+                            View Bid Guidelines <ArrowUpRight size={12} />
                         </a>
                     </motion.div>
+
                 </div>
             </Wrapper>
         </Section>
