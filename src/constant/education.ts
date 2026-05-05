@@ -1,0 +1,197 @@
+import { BookOpen, FlaskConical, Stethoscope } from "lucide-react"
+
+export const ANATOMY_PARTS = [
+    {
+        id: 'kidneys',
+        label: 'Kidneys',
+        icon: '🫘',
+        color: 'bg-fun-blue-100 border-fun-blue-300 text-fun-blue-800',
+        activeColor: 'bg-fun-blue-600 border-fun-blue-600 text-white',
+        desc: 'Bean-shaped organs near the middle of your back, just below the rib cage. About the size of your fists. They contain millions of tiny filtering units called nephrons that remove urea and waste from the blood.',
+        fact: 'Each kidney contains about 1 million nephrons.',
+    },
+    {
+        id: 'ureters',
+        label: 'Ureters',
+        icon: '〰️',
+        color: 'bg-fun-blue-100 border-fun-blue-300 text-fun-blue-800',
+        activeColor: 'bg-fun-blue-600 border-fun-blue-600 text-white',
+        desc: 'Two thin tubes, 8–10 inches long, that carry urine from the kidneys down to the bladder. Muscles in the ureter walls constantly tighten and relax to push urine downward. Small amounts enter the bladder every 10–15 seconds.',
+        fact: 'Ureters use peristalsis — rhythmic muscular contractions — to move urine.',
+    },
+    {
+        id: 'bladder',
+        label: 'Bladder',
+        icon: '💧',
+        color: 'bg-fun-blue-100 border-fun-blue-300 text-fun-blue-800',
+        activeColor: 'bg-fun-blue-600 border-fun-blue-600 text-white',
+        desc: 'A hollow muscular organ shaped like a balloon, sitting in your pelvis. It stores urine until you are ready to empty it. A healthy bladder can comfortably hold up to 2 cups (16 oz) of urine for 2–5 hours.',
+        fact: 'The bladder wall can stretch to hold urine, then contract forcefully to expel it.',
+    },
+    {
+        id: 'sphincters',
+        label: 'Sphincters',
+        icon: '⭕',
+        color: 'bg-fun-blue-100 border-fun-blue-300 text-fun-blue-800',
+        activeColor: 'bg-fun-blue-600 border-fun-blue-600 text-white',
+        desc: 'Circular muscles that close tightly around the opening of the bladder into the urethra, preventing urine from leaking. There are two sphincter muscles — one internal and one external — that coordinate during urination.',
+        fact: 'You consciously control the external sphincter when deciding when to urinate.',
+    },
+    {
+        id: 'urethra',
+        label: 'Urethra',
+        icon: '➡️',
+        color: 'bg-fun-blue-100 border-fun-blue-300 text-fun-blue-800',
+        activeColor: 'bg-fun-blue-600 border-fun-blue-600 text-white',
+        desc: 'The tube that carries urine from the bladder to the outside of the body. In women it is short (about 1.5 inches); in men it runs the length of the penis (about 8 inches) and also carries semen.',
+        fact: 'Women have a shorter urethra, which is why they are more susceptible to UTIs.',
+    },
+]
+
+export const HOW_IT_WORKS = [
+    {
+        num: '01',
+        title: 'Filtration',
+        body: 'Your kidneys filter waste products — especially urea from protein digestion — out of the blood through microscopic nephrons. About 200 litres of blood pass through the kidneys every day.',
+    },
+    {
+        num: '02',
+        title: 'Urine Formation',
+        body: 'Urea, water, and other waste substances travel through the renal tubules and collect as urine. Useful substances like glucose and amino acids are reabsorbed back into the bloodstream.',
+    },
+    {
+        num: '03',
+        title: 'Transport',
+        body: 'Urine travels from each kidney down the ureters to the bladder. Smooth muscle in the ureter walls contracts rhythmically, preventing backflow that could cause kidney infection.',
+    },
+    {
+        num: '04',
+        title: 'Storage',
+        body: 'The bladder expands as it fills. Stretch receptors in the bladder wall signal increasing fullness to the brain. Adults produce about 1–2 litres of urine per day depending on fluid intake.',
+    },
+    {
+        num: '05',
+        title: 'Voiding',
+        body: 'When you decide to urinate, the brain signals the bladder muscles to contract and the sphincter muscles to relax simultaneously. Urine exits through the urethra. This coordination requires healthy nerves and muscles.',
+    },
+]
+
+export const DISORDERS = [
+    {
+        id: 'bph',
+        name: 'Benign Prostatic Hyperplasia (BPH)',
+        severity: 'Moderate',
+        severityColor: 'bg-amber-50 text-amber-700 border border-amber-200',
+        affectsIcon: '👨',
+        affects: 'Men over 60',
+        summary: 'Enlargement of the prostate gland that squeezes the urethra, making it difficult to urinate.',
+        detail: 'BPH is an enlargement of the prostate gland that can interfere with urinary function in older men. It causes blockage by squeezing the urethra, which can make it difficult to urinate. Men with BPH frequently have other bladder symptoms including an increase in frequency of bladder emptying both during the day and at night. Most men over age 60 have some BPH, but not all have problems with blockage. Many different treatment options exist.',
+    },
+    {
+        id: 'ic',
+        name: 'Interstitial Cystitis (IC)',
+        severity: 'Chronic',
+        severityColor: 'bg-red-50 text-red-700 border border-red-200',
+        affectsIcon: '👩',
+        affects: 'Primarily women',
+        summary: 'Chronic bladder disorder causing inflammation, pain, and reduced bladder capacity.',
+        detail: 'Also known as painful bladder syndrome, IC causes the bladder wall to become inflamed and irritated. The inflammation can lead to scarring and stiffening of the bladder, decreased bladder capacity, pinpoint bleeding, and in rare cases, ulcers in the bladder lining. The cause of IC is currently unknown.',
+    },
+    {
+        id: 'stones',
+        name: 'Kidney Stones',
+        severity: 'Variable',
+        severityColor: 'bg-orange-50 text-orange-700 border border-orange-200',
+        affectsIcon: '👨',
+        affects: 'Men more than women',
+        summary: 'Calculi forming in the kidneys, ranging from painless to extremely painful.',
+        detail: 'Stones form in the kidneys and may be found anywhere in the urinary system. They vary greatly in size. Some stones cause intense pain while others cause very little. The aim of treatment is to remove the stones, prevent infection, and prevent recurrence. Both non-surgical and surgical treatments are used, including shock wave lithotripsy and ureteroscopy.',
+    },
+    {
+        id: 'prostatitis',
+        name: 'Prostatitis',
+        severity: 'Moderate',
+        severityColor: 'bg-amber-50 text-amber-700 border border-amber-200',
+        affectsIcon: '👨',
+        affects: 'Men of all ages',
+        summary: 'Inflammation of the prostate causing urinary frequency, urgency, and pelvic pain.',
+        detail: 'Prostatitis results in urinary frequency and urgency, burning or painful urination (dysuria), and pain in the lower back and genital area. In some cases it is caused by bacterial infection and can be treated with antibiotics. But the more common forms are not associated with any known infecting organism, making treatment more challenging.',
+    },
+    {
+        id: 'proteinuria',
+        name: 'Proteinuria',
+        severity: 'Indicator',
+        severityColor: 'bg-purple-50 text-purple-700 border border-purple-200',
+        affectsIcon: '🧑',
+        affects: 'Anyone',
+        summary: 'Abnormal amounts of protein in the urine, often a sign of kidney dysfunction.',
+        detail: 'Healthy kidneys take wastes out of the blood but leave protein in. Protein in the urine does not cause a problem by itself, but it may be a sign that your kidneys are not working properly. It is often detected on routine urinalysis and warrants further investigation.',
+    },
+    {
+        id: 'renal-failure',
+        name: 'Renal (Kidney) Failure',
+        severity: 'Serious',
+        severityColor: 'bg-red-50 text-red-700 border border-red-200',
+        affectsIcon: '🧑',
+        affects: 'Anyone',
+        summary: 'Acute or chronic inability of the kidneys to regulate water, chemicals, and waste.',
+        detail: 'Acute renal failure (ARF) is the sudden onset — caused by injury, blood loss, or toxins — and may recover with treatment. Chronic renal failure (CRF) is the gradual reduction of kidney function, potentially leading to end-stage renal disease (ESRD). You may go several years without knowing you have CRF, making early detection crucial.',
+    },
+    {
+        id: 'uti',
+        name: 'Urinary Tract Infections (UTIs)',
+        severity: 'Common',
+        severityColor: 'bg-sky-50 text-sky-700 border border-sky-200',
+        affectsIcon: '👩',
+        affects: 'Women more often',
+        summary: 'Bacterial infections anywhere in the urinary tract — bladder (cystitis) or kidneys (pyelonephritis).',
+        detail: 'UTIs are caused by bacteria in the urinary tract and are treated with antibiotics. Drinking lots of fluids helps by flushing out the bacteria. Cystitis (bladder infection) is most common. Pyelonephritis (kidney infection) is more serious and can cause permanent damage if not adequately treated.',
+    },
+    {
+        id: 'incontinence',
+        name: 'Urinary Incontinence',
+        severity: 'Common',
+        severityColor: 'bg-sky-50 text-sky-700 border border-sky-200',
+        affectsIcon: '👩',
+        affects: 'Women more often',
+        summary: 'Involuntary loss of urine — ranging from occasional leakage to complete inability to hold urine.',
+        detail: 'There are many causes and types of incontinence, and many treatment options — from simple pelvic floor exercises to medication to surgery. Stress incontinence, urge incontinence, and mixed incontinence are the most common types. Women are affected more often than men, particularly after childbirth or menopause.',
+    },
+    {
+        id: 'retention',
+        name: 'Urinary Retention',
+        severity: 'Variable',
+        severityColor: 'bg-orange-50 text-orange-700 border border-orange-200',
+        affectsIcon: '🧑',
+        affects: 'Anyone',
+        summary: 'Inability to completely empty the bladder — acute (sudden, painful) or chronic (persistent).',
+        detail: 'Acute urinary retention is the sudden inability to urinate, causing pain and discomfort, and requires immediate treatment. Causes include obstruction, stress, or neurological problems. Chronic urinary retention refers to persistent urine left in the bladder after incomplete emptying, caused by bladder muscle failure, nerve damage, or obstructions.',
+    },
+]
+
+export const DIAGNOSTICS = [
+    {
+        icon: FlaskConical,
+        name: 'Urinalysis',
+        desc: 'Studies the content of urine for abnormal substances such as protein or signs of infection. Simple, non-invasive urine sample test.',
+    },
+    {
+        icon: Stethoscope,
+        name: 'Urodynamic Tests',
+        desc: 'Evaluate the storage of urine in the bladder and the flow of urine through the urethra. Measures bladder muscle contraction as it fills and empties using a small catheter.',
+    },
+    {
+        icon: BookOpen,
+        name: 'Imaging (X-ray / Dye)',
+        desc: 'X-ray dye is used instead of water so pictures can be taken when the bladder fills and empties, detecting abnormalities in shape and function. Tests take about one hour.',
+    },
+]
+
+export const SPECIALISTS = [
+    { role: 'Urologist', desc: 'Specialises in urinary system and male reproductive system disorders. The primary specialist for most urological conditions.' },
+    { role: 'Nephrologist', desc: 'Specialises in kidney diseases — particularly chronic kidney disease, kidney failure, and electrolyte disorders.' },
+    { role: 'Gynecologist', desc: 'Specialises in female reproductive system; can help with some urinary problems in women.' },
+    { role: 'Urogynecologist', desc: 'A gynecologist with additional specialisation in the female urinary system — ideal for incontinence and pelvic floor disorders.' },
+    { role: 'General Practitioner', desc: 'Your primary doctor can diagnose and treat many common urinary problems and refer you to a specialist when needed.' },
+    { role: 'Pediatrician', desc: 'Can treat many urinary problems in children and refer to a pediatric urologist when required.' },
+]

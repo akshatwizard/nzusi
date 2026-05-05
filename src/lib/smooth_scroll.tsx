@@ -8,7 +8,7 @@ import {
     createContext,
     useContext,
 } from "react";
-import { motionValue } from "framer-motion";
+import { motionValue } from "motion/react";
 
 interface LenisProviderProps {
     children: ReactNode;

@@ -33,13 +33,13 @@ export default function RootLayout({
       className={`${serif_display.variable} ${dm_sans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <SmoothScrollProvider>
-          <QueryProvider>
+        <QueryProvider>
+          <SmoothScrollProvider>
             <Header />
             {children}
-          </QueryProvider>
-          <Footer />
-        </SmoothScrollProvider>
+          </SmoothScrollProvider>
+        </QueryProvider>
+        <Footer />
       </body>
     </html>
   );

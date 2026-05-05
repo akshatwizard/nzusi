@@ -16,10 +16,10 @@ export const Menu: MenuType[] = [
         name: "Events",
         path: "/events"
     },
-    {
-        name: "Membership",
-        path: "/membershop"
-    },
+    // {
+    //     name: "Membership",
+    //     path: "/membershop"
+    // },
     {
         name: "Education",
         path: "/education"
