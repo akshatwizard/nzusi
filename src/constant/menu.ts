@@ -26,6 +26,6 @@ export const Menu: MenuType[] = [
     },
     {
         name: "Blogs & News",
-        path: "/blogs"
+        path: "/blogs-and-news"
     },
 ]
