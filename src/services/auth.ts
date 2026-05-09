@@ -1,35 +1,26 @@
+import { LoginResponse, Member } from "@/types/user.types";
 import { api } from "./api"
-
-export type User = {
-    id: number;
-    name: string;
-    email: string;
-    customer_id: string | number;
-}
+import { BASE_URI } from "./blog";
 
 export type LoginPayload = {
-    email: string;
+    contact: string;
     otp: string;
 }
 
-export type LoginResponse = {
-    access_token: string;
-    customer: User;
-}
 
 export const authService = {
     getOtp: async ({ email }: { email: string }) => {
-        const { data } = await api.post("/get-opt", { email });
+        const { data } = await api.post(`${BASE_URI}/member/login`, { contact: email });
         return data
     },
     login: async (payload: LoginPayload): Promise<LoginResponse> => {
-        const { data } = await api.post("/auth/login", payload)
+        const { data } = await api.post(`${BASE_URI}/member/verify-otp`, payload)
         return data
     },
     logout: async (): Promise<void> => {
         await api.post("/auth/logout")
     },
-    getProfile: async (): Promise<User> => {
+    getProfile: async (): Promise<Member> => {
         const { data } = await api.get("/customer/profile")
         const userRaw = data.data
         return {

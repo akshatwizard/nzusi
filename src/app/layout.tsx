@@ -6,6 +6,7 @@ import Header from "@/components/navbar/header";
 import Footer from "@/components/footer";
 import { QueryProvider } from "@/lib/query-provider";
 import { AuthProvider } from "@/context/auth_context";
+import { Toaster } from "react-hot-toast";
 
 const serif_display = DM_Serif_Display({
   variable: "--font-dm-serif-display",
@@ -35,14 +36,15 @@ export default function RootLayout({
     >
       <body className="flex flex-col">
         {/* <SmoothScrollProvider> */}
-          <QueryProvider>
-            <AuthProvider>
-              <Header />
-              {children}
-              <Footer />
-            </AuthProvider>
-          </QueryProvider>
+        <QueryProvider>
+          <AuthProvider>
+            <Header />
+            {children}
+            <Footer />
+          </AuthProvider>
+        </QueryProvider>
         {/* </SmoothScrollProvider> */}
+        <Toaster />
       </body>
     </html>
   );

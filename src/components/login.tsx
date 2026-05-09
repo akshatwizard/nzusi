@@ -1,11 +1,12 @@
 "use client"
+import { useAuth } from "@/context/auth_context";
 import { api } from "@/services/api";
+import { authService } from "@/services/auth";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { ArrowRight, Mail, RotateCcw, ShieldCheck, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react"
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useState, useRef } from "react";
 import toast from "react-hot-toast";
 
@@ -17,10 +18,10 @@ type Step = "email" | "otp";
 const OTP_LENGTH = 6;
 
 export default function Login({ isOpen, onClose }: Props) {
-    const router = useRouter();
     const [email, setEmail] = useState<string>("");
     const [otp, setOtp] = useState<string>("");
     const [currentStep, setCurrentStep] = useState<Step>("email");
+    const { login } = useAuth()
 
     const containerVariants = {
         hidden: { opacity: 0, y: 20 },
@@ -59,13 +60,12 @@ export default function Login({ isOpen, onClose }: Props) {
     // }, [isOpen, startScroll, stopScroll]);
 
     const { mutate: sendOtp, isPending: sendingOtp } = useMutation({
-        mutationFn: async () => {
-            const { data } = await api.post("/send-otp", { email });
-            return data
-        },
+        mutationFn: () => authService.getOtp({ email }),
+
         onSuccess: async (val) => {
+            // console.log(val);
             toast.success(val.message);
-            console.log(val.data);
+            // console.log(val.data);
             setCurrentStep("otp");
         },
         onError: (err: AxiosError<{ error: string }>) =>
@@ -73,13 +73,9 @@ export default function Login({ isOpen, onClose }: Props) {
     })
 
     const { mutate: verifyOtp, isPending: verifyingOtp } = useMutation({
-        mutationFn: async () => {
-            const { data } = await api.post("/send-otp", { email });
-            return data
-        },
-        onSuccess: async (val) => {
+        mutationFn: () => login(email, otp),
+        onSuccess: (val) => {
             toast.success(val.message);
-            console.log(val.data);
             setCurrentStep("otp");
         },
         onError: (err: AxiosError<{ error: string }>) =>

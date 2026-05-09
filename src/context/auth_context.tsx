@@ -1,6 +1,7 @@
 'use client';
-import { authService, User } from "@/services/auth";
+import { authService, } from "@/services/auth";
 import { tokenStore } from "@/services/tokenStore";
+import { Member } from "@/types/user.types";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
@@ -8,12 +9,12 @@ import React, { createContext, useContext, useState } from "react";
 import toast from "react-hot-toast";
 
 type AuthContextType = {
-    user: User | null;
+    user: Member | null;
     token: string | null;
     isAuthenticated: boolean;
     loading: boolean;
     isLoggingOut: boolean;
-    login: (email: string, otp: string) => Promise<void>;
+    login: (email: string, otp: string) => Promise<{ message: string }>;
     logout: () => Promise<void>;
 };
 
@@ -25,7 +26,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter();
     const queryClient = useQueryClient();
 
-    const { data: user, isLoading } = useQuery<User | null, AxiosError>({
+    const { data: user, isLoading } = useQuery<Member | null, AxiosError>({
         queryKey: ["user_profile"],
         queryFn: authService.getProfile,
         enabled: !!token,
@@ -45,19 +46,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     });
 
     const login = async (email: string, otp: string) => {
-        const data = await authService.login({ email, otp });
+        const data = await authService.login({ contact: email, otp });
 
-        const accessToken = data.access_token;
-        const userRaw = data.customer;
-        const user: User = {
+        const accessToken = data.data.access_token;
+        const userRaw = data.data.member;
+        const user: Member = {
             ...userRaw,
-            customer_id: userRaw.customer_id || userRaw.id,
+            id: userRaw.id || userRaw.id,
         };
 
         tokenStore.setAccessToken(accessToken);
         setToken(accessToken);
         queryClient.setQueryData(["user_profile"], user);
-        router.push(`/profile/${user.customer_id}`);
+        router.push(`/profile/${user.id}`);
+        return { message: data.message };
     };
 
     const logout = async () => {
