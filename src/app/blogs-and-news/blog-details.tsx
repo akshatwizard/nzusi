@@ -20,7 +20,7 @@ const fadeUp = {
 }
 
 export default function BlogPageClient() {
-    const [activeFilter, setActiveFilter] = useState<Filter>('All')
+    const [activeFilter, setActiveFilter] = useState<string>('all')
 
     const featured = POSTS.find((p) => p.featured)!
     const rest = POSTS.filter((p) => !p.featured)
@@ -29,14 +29,6 @@ export default function BlogPageClient() {
         () => activeFilter === 'All' ? rest : rest.filter((p) => p.category === activeFilter),
         [activeFilter, rest]
     )
-
-    // Count per category for filter badges
-    const counts = useMemo(() => ({
-        All: rest.length,
-        Events: rest.filter((p) => p.category === 'Events').length,
-        Adyatan: rest.filter((p) => p.category === 'Adyatan').length,
-        Academic: rest.filter((p) => p.category === 'Academic').length,
-    }), [rest])
 
     return (
         <>
@@ -130,7 +122,6 @@ export default function BlogPageClient() {
                             <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6'>
                                 <CategoryFilter
                                     active={activeFilter}
-                                    counts={counts}
                                     onChange={setActiveFilter}
                                 />
                                 <span className='text-[11px] text-fun-blue-400/50 shrink-0'>
