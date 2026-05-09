@@ -44,7 +44,7 @@ export function PostCard({ post, index }: Props) {
                 />
 
 
-                <div className='h-36 relative overflow-hidden bg-fun-blue-950 shrink-0'>
+                <div className='h-46 relative overflow-hidden bg-fun-blue-950 shrink-0'>
                     {hasImage ? (
                         <>
                             <Image
