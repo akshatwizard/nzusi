@@ -108,13 +108,13 @@ export default function BlogPageClient() {
                             initial='hidden' animate='show' custom={0.2} variants={fadeUp}
                             className='flex items-center gap-2 flex-wrap mt-6'
                         >
-                            {(['Events', 'Adyatan', 'Academic'] as const).map((cat) => (
+                            {['events', 'adyatan', 'residents', 'surgery-library'].map((slug) => (
                                 <button
-                                    key={cat}
-                                    onClick={() => setActiveFilter(cat)}
-                                    className='text-[11px] font-medium text-fun-blue-300/55 border border-white/8 hover:border-white/2 hover:text-fun-blue-200/80 rounded-full px-3 py-1 transition-all duration-200 cursor-pointer'
+                                    key={slug}
+                                    onClick={() => setActiveFilter(slug)}
+                                    className='text-[11px] font-medium text-fun-blue-300/55 border border-white/8 hover:border-white/20 hover:text-fun-blue-200/80 rounded-full px-3 py-1 transition-all duration-200 cursor-pointer capitalize'
                                 >
-                                    {cat}
+                                    {slug.replace('-', ' ')}
                                 </button>
                             ))}
                         </motion.div>
