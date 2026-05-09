@@ -1,5 +1,4 @@
 'use client'
-import { useLenisControl } from '@/lib/smooth_scroll';
 import { AnimatePresence, motion, useMotionValueEvent, useScroll, Variant, Variants } from 'motion/react'
 import Image from 'next/image';
 import Link from 'next/link';

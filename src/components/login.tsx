@@ -1,5 +1,4 @@
 "use client"
-import { useLenisControl } from "@/lib/smooth_scroll"
 import { api } from "@/services/api";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -19,7 +18,6 @@ const OTP_LENGTH = 6;
 
 export default function Login({ isOpen, onClose }: Props) {
     const router = useRouter();
-    const { startScroll, stopScroll } = useLenisControl();
     const [email, setEmail] = useState<string>("");
     const [otp, setOtp] = useState<string>("");
     const [currentStep, setCurrentStep] = useState<Step>("email");
@@ -49,16 +47,16 @@ export default function Login({ isOpen, onClose }: Props) {
         },
     };
 
-    useEffect(() => {
-        if (isOpen) {
-            stopScroll();
-        } else {
-            startScroll();
-        }
-        return () => {
-            startScroll();
-        };
-    }, [isOpen, startScroll, stopScroll]);
+    // useEffect(() => {
+    //     if (isOpen) {
+    //         stopScroll();
+    //     } else {
+    //         startScroll();
+    //     }
+    //     return () => {
+    //         startScroll();
+    //     };
+    // }, [isOpen, startScroll, stopScroll]);
 
     const { mutate: sendOtp, isPending: sendingOtp } = useMutation({
         mutationFn: async () => {

@@ -49,3 +49,314 @@ a,
 button {
   font-family: var(--font-dm-sans);
 }
+
+/* =========================
+   Headings
+========================= */
+
+.blog-content h1 {
+  font-family: var(--font-serif);
+  color: var(--color-fun-blue-950);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.03em;
+}
+
+.blog-content h2 {
+  font-family: var(--font-serif);
+  color: var(--color-fun-blue-950);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.25;
+}
+
+.blog-content h3 {
+  font-family: var(--font-serif);
+  color: var(--color-fun-blue-900);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.blog-content h4 {
+  color: var(--color-fun-blue-900);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.blog-content h5,
+.blog-content h6 {
+  color: var(--color-fun-blue-800);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* =========================
+   Paragraphs
+========================= */
+
+.blog-content p {
+  color: #52525b;
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+  font-size: 1rem;
+}
+
+/* =========================
+   Strong / Bold
+========================= */
+
+.blog-content strong,
+.blog-content b {
+  color: var(--color-fun-blue-950);
+  font-weight: 700;
+}
+
+/* =========================
+   Italic
+========================= */
+
+.blog-content em,
+.blog-content i {
+  color: var(--color-fun-blue-700);
+  font-style: italic;
+}
+
+/* =========================
+   Links
+========================= */
+
+.blog-content a {
+  color: var(--color-fun-blue-600);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.blog-content a:hover {
+  color: var(--color-fun-blue-700);
+  text-decoration: underline;
+}
+
+/* =========================
+   Images
+========================= */
+
+.blog-content img {
+  border-radius: 1rem;
+  width: 100%;
+  margin: 2rem 0;
+  box-shadow: 0 4px 24px rgba(16, 38, 65, 0.1);
+  object-fit: cover;
+}
+
+/* =========================
+   Blockquote
+========================= */
+
+.blog-content blockquote {
+  position: relative;
+  margin: 2rem 0;
+  padding: 1.25rem 1.5rem;
+  border-left: 4px solid var(--color-fun-blue-400);
+  background: var(--color-fun-blue-50);
+  border-radius: 0.75rem;
+  color: var(--color-fun-blue-900);
+  font-style: italic;
+  line-height: 1.8;
+}
+
+/* =========================
+   Horizontal Rule
+========================= */
+
+.blog-content hr {
+  border: none;
+  height: 1px;
+  background: var(--color-fun-blue-100);
+  margin: 3rem 0;
+}
+
+/* =========================
+   Ordered List
+========================= */
+
+.blog-content ol {
+  counter-reset: ol-counter;
+  list-style: none;
+  padding-left: 0;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.blog-content ol li {
+  counter-increment: ol-counter;
+  position: relative;
+  padding-left: 2.5rem;
+  margin-bottom: 0.75rem;
+  color: #52525b;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.blog-content ol li::before {
+  content: counter(ol-counter) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-fun-blue-400);
+  width: 1.75rem;
+}
+
+/* =========================
+   Unordered List
+========================= */
+
+.blog-content ul {
+  padding-left: 0;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.blog-content ul li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.6rem;
+  color: #52525b;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  list-style: none;
+}
+
+.blog-content ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.7rem;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 9999px;
+  background-color: var(--color-fun-blue-400);
+}
+
+/* =========================
+   Code Inline
+========================= */
+
+.blog-content code {
+  background: var(--color-fun-blue-50);
+  color: var(--color-fun-blue-700);
+  padding: 0.2rem 0.45rem;
+  border-radius: 0.4rem;
+  font-size: 0.875rem;
+  font-family: monospace;
+}
+
+/* =========================
+   Preformatted Code
+========================= */
+
+.blog-content pre {
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  overflow-x: auto;
+  margin: 2rem 0;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.blog-content pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+/* =========================
+   Tables
+========================= */
+
+.blog-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid var(--color-fun-blue-100);
+  background: white;
+}
+
+.blog-content thead {
+  background: var(--color-fun-blue-50);
+}
+
+.blog-content th {
+  color: var(--color-fun-blue-950);
+  font-weight: 700;
+  text-align: left;
+  padding: 1rem;
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--color-fun-blue-100);
+}
+
+.blog-content td {
+  padding: 1rem;
+  color: #52525b;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #f4f4f5;
+  line-height: 1.6;
+}
+
+.blog-content tr:last-child td {
+  border-bottom: none;
+}
+
+.blog-content tbody tr:hover {
+  background: #fafafa;
+}
+
+/* =========================
+   Sup / Sub
+========================= */
+
+.blog-content sup {
+  font-size: 0.65rem;
+  color: var(--color-fun-blue-500);
+  vertical-align: super;
+  line-height: 0;
+}
+
+.blog-content sub {
+  font-size: 0.65rem;
+  vertical-align: sub;
+  line-height: 0;
+}
+
+/* =========================
+   References Section
+========================= */
+
+.blog-content h3:has(+ ol) {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-fun-blue-100);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-fun-blue-400);
+}

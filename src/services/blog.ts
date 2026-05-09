@@ -20,4 +20,9 @@ export const blog = {
         })
         return data
     },
+
+    getBlogDetails: async ({ slug }: { slug: string }) => {
+        const { data } = await api.get(`${BASE_URI}/blog/${slug}`)
+        return data
+    }
 }

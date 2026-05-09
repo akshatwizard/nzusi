@@ -57,3 +57,38 @@ export type CategoryBlogsResponse = {
     data: CategoryBlogPost[]
     pagination: PaginationMeta
 }
+
+export type BlogDetails = {
+    id: number
+    title: string
+    reading_title: string
+    view_count: number
+    short_content: string
+    long_content: string
+    slug: string
+    published_at: string
+    meta_title: string
+    meta_description: string
+    main_image: string
+    category: { id: number; name: string; slug: string }
+    user: { id: number; name: string }
+    label: string | null
+    images: string[]
+}
+
+export type RecentPost = {
+    id: number
+    title: string
+    slug: string
+    image: string
+    view_count: string
+    short_content: string | null
+    published_at: string
+}
+
+export type BlogDetailResponse = {
+    status: boolean
+    message: string
+    data: BlogDetails
+    recent_post: RecentPost[]
+}
