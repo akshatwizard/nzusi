@@ -21,6 +21,8 @@ export type Member = {
     mobile_no: string,
     membership_type_id: string,
     dob: null | string,
+    usi_member?: string,
+    usi_number?: null | string,
     preferred_address: string | null,
     membership_approved_date: string | null,
     status: string,

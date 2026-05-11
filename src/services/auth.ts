@@ -21,7 +21,7 @@ export const authService = {
         await api.post("/auth/logout")
     },
     getProfile: async (): Promise<Member> => {
-        const { data } = await api.get("/customer/profile")
+        const { data } = await api.get(`${BASE_URI}/member/profile`)
         const userRaw = data.data
         return {
             ...userRaw,
