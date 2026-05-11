@@ -1,5 +1,5 @@
 'use client';
-import { authService, } from "@/services/auth";
+import { authService } from "@/services/auth";
 import { tokenStore } from "@/services/tokenStore";
 import { Member } from "@/types/user.types";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -8,10 +8,8 @@ import { useRouter } from "next/navigation";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-
-
-
 const USER_STORAGE_KEY = "nzusi_user";
+
 const userStorage = {
     get: (): Member | null => {
         try {
@@ -33,7 +31,6 @@ const userStorage = {
     },
 };
 
-
 type AuthContextType = {
     user: Member | null;
     token: string | null;
@@ -48,13 +45,12 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-    const [token, setToken] = useState<string | null>(() => tokenStore.getAccessToken());
+    const [token, setToken] = useState<string | null>(null);
+    const [cachedUser, setCachedUser] = useState<Member | null>(null);
+    const [isMounted, setIsMounted] = useState(false);
     const [isLoggingOut, setIsLoggingOut] = useState(false);
     const router = useRouter();
     const queryClient = useQueryClient();
-    const [cachedUser, setCachedUser] = useState<Member | null>(null);
-    const [isMounted, setIsMounted] = useState(false);
-
 
     useEffect(() => {
         const storedToken = tokenStore.getAccessToken();
@@ -64,12 +60,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setIsMounted(true);
     }, []);
 
-
     const { data: user, isLoading } = useQuery<Member | null, AxiosError>({
         queryKey: ["user_profile"],
         queryFn: authService.getProfile,
-        enabled: !!token && !cachedUser,
-        placeholderData: cachedUser,
+        enabled: isMounted && !!token && !cachedUser,
+        placeholderData: () => cachedUser,
         retry: (failureCount, error: AxiosError) => {
             if (error?.response?.status === 401) return false;
             return failureCount < 2;
@@ -78,6 +73,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             if (error?.response?.status === 401) {
                 tokenStore.removeAccessToken();
                 setToken(null);
+                setCachedUser(null);
                 userStorage.remove();
                 queryClient.removeQueries({ queryKey: ["user_profile"] });
             }
@@ -85,16 +81,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         },
     });
 
+    useEffect(() => {
+        if (user && !cachedUser) {
+            userStorage.set(user);
+            setCachedUser(user);
+        }
+    }, [user, cachedUser]);
+
     const login = async (email: string, otp: string) => {
         const data = await authService.login({ contact: email, otp });
 
         const accessToken = data.data.access_token;
         const userRaw = data.data.member;
-
         tokenStore.setAccessToken(accessToken);
         setToken(accessToken);
+        setCachedUser(userRaw);
         userStorage.set(userRaw);
         queryClient.setQueryData(["user_profile"], userRaw);
+
         router.push(`/profile/${userRaw.name.toLocaleLowerCase().split(" ").join("-")}`);
         return { message: data.message };
     };
@@ -111,6 +115,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         tokenStore.removeAccessToken();
         setToken(null);
+        setCachedUser(null);
         userStorage.remove();
         queryClient.removeQueries({ queryKey: ["user_profile"] });
 
@@ -119,19 +124,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setIsLoggingOut(false);
     };
 
-    const isAuthLoading = !!token && !cachedUser && isLoading;
+    const resolvedUser = user ?? cachedUser ?? null;
+    const isAuthLoading = isMounted && !!token && !cachedUser && isLoading;
 
     return (
         <AuthContext.Provider
             value={{
-                user: user ?? null,
+                user: resolvedUser,
                 token,
-                isAuthenticated: !!token && !!(user ?? cachedUser),
+                isAuthenticated: !!token && !!resolvedUser,
                 loading: isAuthLoading,
                 isMounted,
+                isLoggingOut,
                 login,
                 logout,
-                isLoggingOut,
             }}
         >
             {children}
@@ -141,8 +147,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 export const useAuth = () => {
     const context = useContext(AuthContext);
-    if (!context) {
-        throw new Error("useAuth must be used within AuthProvider");
-    }
+    if (!context) throw new Error("useAuth must be used within AuthProvider");
     return context;
 };
