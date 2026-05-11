@@ -5,13 +5,40 @@ import { Member } from "@/types/user.types";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
+
+
+
+
+const USER_STORAGE_KEY = "nzusi_user";
+const userStorage = {
+    get: (): Member | null => {
+        try {
+            const raw = localStorage.getItem(USER_STORAGE_KEY);
+            return raw ? (JSON.parse(raw) as Member) : null;
+        } catch {
+            return null;
+        }
+    },
+    set: (user: Member) => {
+        try {
+            localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
+        } catch { }
+    },
+    remove: () => {
+        try {
+            localStorage.removeItem(USER_STORAGE_KEY);
+        } catch { }
+    },
+};
+
 
 type AuthContextType = {
     user: Member | null;
     token: string | null;
     isAuthenticated: boolean;
+    isMounted: boolean;
     loading: boolean;
     isLoggingOut: boolean;
     login: (email: string, otp: string) => Promise<{ message: string }>;
@@ -25,12 +52,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [isLoggingOut, setIsLoggingOut] = useState(false);
     const router = useRouter();
     const queryClient = useQueryClient();
+    const [cachedUser, setCachedUser] = useState<Member | null>(null);
+    const [isMounted, setIsMounted] = useState(false);
+
+
+    useEffect(() => {
+        const storedToken = tokenStore.getAccessToken();
+        const storedUser = userStorage.get();
+        setToken(storedToken);
+        setCachedUser(storedUser);
+        setIsMounted(true);
+    }, []);
+
 
     const { data: user, isLoading } = useQuery<Member | null, AxiosError>({
         queryKey: ["user_profile"],
         queryFn: authService.getProfile,
-        enabled: !!token,
-        placeholderData: null,
+        enabled: !!token && !cachedUser,
+        placeholderData: cachedUser,
         retry: (failureCount, error: AxiosError) => {
             if (error?.response?.status === 401) return false;
             return failureCount < 2;
@@ -39,6 +78,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             if (error?.response?.status === 401) {
                 tokenStore.removeAccessToken();
                 setToken(null);
+                userStorage.remove();
                 queryClient.removeQueries({ queryKey: ["user_profile"] });
             }
             return false;
@@ -50,15 +90,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         const accessToken = data.data.access_token;
         const userRaw = data.data.member;
-        const user: Member = {
-            ...userRaw,
-            id: userRaw.id || userRaw.id,
-        };
 
         tokenStore.setAccessToken(accessToken);
         setToken(accessToken);
-        queryClient.setQueryData(["user_profile"], user);
-        router.push(`/profile/${user.id}`);
+        userStorage.set(userRaw);
+        queryClient.setQueryData(["user_profile"], userRaw);
+        router.push(`/profile/${userRaw.name.toLocaleLowerCase().split(" ").join("-")}`);
         return { message: data.message };
     };
 
@@ -74,6 +111,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         tokenStore.removeAccessToken();
         setToken(null);
+        userStorage.remove();
         queryClient.removeQueries({ queryKey: ["user_profile"] });
 
         router.push("/");
@@ -81,13 +119,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setIsLoggingOut(false);
     };
 
+    const isAuthLoading = !!token && !cachedUser && isLoading;
+
     return (
         <AuthContext.Provider
             value={{
                 user: user ?? null,
                 token,
-                isAuthenticated: !!token,
-                loading: isLoading,
+                isAuthenticated: !!token && !!(user ?? cachedUser),
+                loading: isAuthLoading,
+                isMounted,
                 login,
                 logout,
                 isLoggingOut,

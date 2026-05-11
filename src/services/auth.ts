@@ -23,9 +23,6 @@ export const authService = {
     getProfile: async (): Promise<Member> => {
         const { data } = await api.get(`${BASE_URI}/member/profile`)
         const userRaw = data.data
-        return {
-            ...userRaw,
-            customer_id: userRaw.customer_id || userRaw.id,
-        }
-    },
+        return userRaw
+    }
 }
