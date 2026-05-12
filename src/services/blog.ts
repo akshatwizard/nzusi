@@ -1,6 +1,6 @@
 import { api } from "./api"
 
-export const BASE_URI = "http://nzusi.wizards.co.in/api"
+export const BASE_URI = "https://nzusi.wizards.co.in/api"
 
 export const blog = {
     getCategory: async () => {
