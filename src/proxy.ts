@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-const TOKEN_NAME = "user_access_token";
+import { tokenStore } from './services/tokenStore';
 
 export default async function proxy(req: NextRequest) {
-    const token = req.cookies.get(TOKEN_NAME)?.value;
+    const token = tokenStore.getFromRequest(req);
     if (!token) return NextResponse.redirect(new URL("/", req.url));
 
     const res = NextResponse.next();
