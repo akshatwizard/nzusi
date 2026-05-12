@@ -10,6 +10,7 @@ import ProfessionalInfoCard from '@/components/profile/professional_info_card';
 import MembershipCard from '@/components/profile/membership_card';
 import ActivityCard from '@/components/profile/active_card';
 import { getProfileCompletion } from '@/lib/profile_completion';
+import ProfilePageSkeleton from '@/components/profile/skeleton';
 
 
 export type ActiveSection = 'overview' | 'personal' | 'professional' | 'membership' | 'activity'
@@ -23,14 +24,18 @@ const fadeUp: Variants = {
 
 
 export default function UserProfile() {
-    const { user, loading } = useAuth()
+    const { user, loading, isMounted } = useAuth()
     const [activeSection, setActiveSection] = useState<ActiveSection>('overview')
 
     if (!user) return null
     const completion = getProfileCompletion(user)
 
+    if (!isMounted || loading) {
+        return <ProfilePageSkeleton />
+    }
+    
     return (
-        <Section className='px-0!'>
+        <Section className='px-0! min-h-screen'>
             <div className='h-36 md:h-44 bg-fun-blue-950 relative overflow-hidden'>
                 <div
                     className='absolute inset-0 opacity-[0.04]'

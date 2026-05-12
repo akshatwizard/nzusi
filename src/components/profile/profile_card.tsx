@@ -17,7 +17,7 @@ export function ProfileCard({ title, icon, onEdit, children, accentColor = 'bg-f
                 <div className='flex items-center gap-2.5'>
                     <div className={`w-7 h-7 rounded-lg ${accentColor} bg-opacity-10 flex items-center justify-center`}
                         style={{ background: '' }}>
-                        <div className='text-fun-blue-600'>{icon}</div>
+                        <div className='text-white'>{icon}</div>
                     </div>
                     <h2 className='font-serif text-[17px] text-slate-900'>{title}</h2>
                 </div>
