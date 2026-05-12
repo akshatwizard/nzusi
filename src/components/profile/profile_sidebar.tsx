@@ -22,7 +22,7 @@ const NAV_ITEMS: { id: ActiveSection; label: string; icon: React.ReactNode }[] =
     { id: 'personal', label: 'Personal Info', icon: <User size={15} /> },
     { id: 'professional', label: 'Professional', icon: <Stethoscope size={15} /> },
     { id: 'membership', label: 'Membership', icon: <Award size={15} /> },
-    { id: 'activity', label: 'Activity', icon: <Activity size={15} /> },
+    // { id: 'activity', label: 'Activity', icon: <Activity size={15} /> },
 ]
 
 export default function ProfileSidebar({ user, completion, active, onSelect }: Props) {

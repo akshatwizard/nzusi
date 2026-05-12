@@ -12,7 +12,6 @@ import ActivityCard from '@/components/profile/active_card';
 import { getProfileCompletion } from '@/lib/profile_completion';
 
 
-
 export type ActiveSection = 'overview' | 'personal' | 'professional' | 'membership' | 'activity'
 const fadeUp: Variants = {
     hidden: { opacity: 0, y: 16 },
@@ -24,7 +23,7 @@ const fadeUp: Variants = {
 
 
 export default function UserProfile() {
-    const { user } = useAuth()
+    const { user, loading } = useAuth()
     const [activeSection, setActiveSection] = useState<ActiveSection>('overview')
 
     if (!user) return null
@@ -50,8 +49,10 @@ export default function UserProfile() {
                 />
             </div>
 
-            <Wrapper>
+            <div className='max-w-6xl mx-auto px-4 md:px-6 lg:px-8 -mt-10 md:-mt-14 pb-16 relative z-10'>
+
                 <ProfileHero completion={completion} user={user} />
+
                 <div className='mt-5 flex flex-col lg:flex-row gap-5 items-start'>
 
                     {/* Left sidebar */}
@@ -95,7 +96,7 @@ export default function UserProfile() {
                             </motion.div>
                         )}
 
-                        {(activeSection === 'overview' || activeSection === 'activity') && (
+                        {/* {(activeSection === 'overview' || activeSection === 'activity') && (
                             <motion.div
                                 key='activity'
                                 initial='hidden' animate='show' custom={0.18}
@@ -103,11 +104,11 @@ export default function UserProfile() {
                             >
                                 <ActivityCard />
                             </motion.div>
-                        )}
+                        )} */}
 
                     </div>
                 </div>
-            </Wrapper>
+            </div>
         </Section>
     )
 }
