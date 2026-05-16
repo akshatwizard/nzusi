@@ -6,6 +6,7 @@ import { Section, Wrapper } from '@/components/ui/sections'
 import { FileText, Download, ArrowRight } from 'lucide-react'
 import RegisterModal from './abstracts_reg_modal'
 import { CATEGORIES } from '@/constant/abstracts'
+import Link from 'next/link'
 
 function CategoryCard({ cat, index, isInView }: {
     cat: typeof CATEGORIES[number]; index: number; isInView: boolean
@@ -143,13 +144,13 @@ export default function AbstractsSection() {
                                 </p>
                             </div>
                             <div className="flex flex-wrap gap-3 shrink-0">
-                                <a
-                                    href="mailto:nzusioffice@gmail.com"
+                                <Link
+                                    href="/abstracts-2026/guidelines"
                                     className="inline-flex items-center gap-2 px-5 py-2.5 border border-fun-blue-700 text-fun-blue-300 rounded-xl font-semibold text-xs hover:border-fun-blue-500 transition-colors"
                                 >
                                     <FileText size={12} />
                                     Guidelines
-                                </a>
+                                </Link>
                                 <button
                                     onClick={() => setModalOpen(true)}
                                     className="inline-flex items-center gap-2 px-5 py-2.5 bg-fun-blue-100 text-fun-blue-900 rounded-xl font-semibold text-xs hover:bg-white transition-colors"
