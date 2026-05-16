@@ -118,12 +118,12 @@ export function HeroCarousel() {
                                         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                                         className='absolute bottom-0 left-0 right-0 p-5'
                                     >
-                                        <div className='text-fun-blue-50 font-serif text-[17px] leading-snug mb-0.5'>
+                                        {/* <div className='text-fun-blue-50 font-serif text-[17px] leading-snug mb-0.5'>
                                             {slide.caption}
                                         </div>
                                         <div className='text-fun-blue-300/60 text-[11px]'>
                                             {slide.sub}
-                                        </div>
+                                        </div> */}
                                     </motion.div>
                                 )}
                             </AnimatePresence>
