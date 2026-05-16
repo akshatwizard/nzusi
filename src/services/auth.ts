@@ -1,6 +1,5 @@
 import { LoginResponse, Member } from "@/types/user.types";
 import { api } from "./api";
-import { BASE_URI } from "./blog";
 
 export type LoginPayload = {
     contact: string;
@@ -9,21 +8,21 @@ export type LoginPayload = {
 
 export const authService = {
     getOtp: async ({ email }: { email: string }) => {
-        const { data } = await api.post(`${BASE_URI}/member/login`, { contact: email });
+        const { data } = await api.post(`/member/login`, { contact: email });
         return data;
     },
 
     login: async (payload: LoginPayload): Promise<LoginResponse> => {
-        const { data } = await api.post(`${BASE_URI}/member/verify-otp`, payload);
+        const { data } = await api.post(`/member/verify-otp`, payload);
         return data;
     },
 
     logout: async (): Promise<void> => {
-        await api.post(`${BASE_URI}/member/logout`);
+        await api.post(`/member/logout`);
     },
 
     getProfile: async (): Promise<Member> => {
-        const { data } = await api.get(`${BASE_URI}/member/profile`);
+        const { data } = await api.get(`/member/profile`);
         return data.data;
     },
 };
