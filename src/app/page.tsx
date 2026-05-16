@@ -1,4 +1,5 @@
 import AboutSection from '@/components/about'
+import AbstractsSection from '@/components/abstracts'
 import NZUSICONBanner from '@/components/banner'
 import BlogSection from '@/components/blog'
 import CouncilSection from '@/components/councils'
@@ -17,6 +18,7 @@ export default function HomePage() {
       <StatsSection />
       <AboutSection />
       <BlogSection />
+      <AbstractsSection />
       <EventsSection />
       <LegacyStrip />
       <MembershipSection />

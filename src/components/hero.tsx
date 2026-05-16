@@ -154,139 +154,139 @@ export default function Hero() {
 }
 
 
-const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    show: (delay: number) => ({
-        opacity: 1,
-        y: 0,
-        transition: {
-            duration: 0.55,
-            ease: [0.22, 1, 0.36, 1] as const,
-            delay
-        },
-    }),
-}
+// const cardVariants = {
+//     hidden: { opacity: 0, y: 20 },
+//     show: (delay: number) => ({
+//         opacity: 1,
+//         y: 0,
+//         transition: {
+//             duration: 0.55,
+//             ease: [0.22, 1, 0.36, 1] as const,
+//             delay
+//         },
+//     }),
+// }
 
-function GlassCard({ children, className = '', accent = false, delay = 0, }: {
-    children: React.ReactNode
-    className?: string
-    accent?: boolean
-    delay?: number
-}) {
-    return (
-        <motion.div
-            initial="hidden"
-            animate="show"
-            custom={delay}
-            variants={cardVariants}
-            className={`
-                rounded-xl border backdrop-blur-sm
-                ${accent
-                    ? 'bg-fun-blue-600/10 border-fun-blue-400/22'
-                    : 'bg-white/4 border-white/9'
-                }
-                ${className}
-            `}
-        >
-            {children}
-        </motion.div>
-    )
-}
+// function GlassCard({ children, className = '', accent = false, delay = 0, }: {
+//     children: React.ReactNode
+//     className?: string
+//     accent?: boolean
+//     delay?: number
+// }) {
+//     return (
+//         <motion.div
+//             initial="hidden"
+//             animate="show"
+//             custom={delay}
+//             variants={cardVariants}
+//             className={`
+//                 rounded-xl border backdrop-blur-sm
+//                 ${accent
+//                     ? 'bg-fun-blue-600/10 border-fun-blue-400/22'
+//                     : 'bg-white/4 border-white/9'
+//                 }
+//                 ${className}
+//             `}
+//         >
+//             {children}
+//         </motion.div>
+//     )
+// }
 
-function HeroRightColumn() {
-    return (
-        <div className="flex flex-col gap-3 lg:gap-2.5">
+// function HeroRightColumn() {
+//     return (
+//         <div className="flex flex-col gap-3 lg:gap-2.5">
 
-            {/* ── Next conference card ── */}
-            <GlassCard accent delay={0.3} className="p-4">
-                <div className="text-[10px] font-medium text-fun-blue-300/55 uppercase tracking-widest mb-3">
-                    Next conference
-                </div>
-                <div className="flex gap-3 items-start">
-                    {/* Date box */}
-                    <div className="min-w-11 w-11 h-12 bg-fun-blue-600 rounded-lg flex flex-col items-center justify-center gap-0.5 shrink-0">
-                        <span className="font-serif text-lg text-white leading-none">27</span>
-                        <span className="text-[9px] font-semibold text-fun-blue-100/70 tracking-wider">NOV</span>
-                    </div>
-                    {/* Info */}
-                    <div>
-                        <div className="text-fun-blue-400 text-[11px] font-medium mb-1">NZUSICON 2026</div>
-                        <div className="text-fun-blue-100/75 text-[13px] font-medium leading-snug mb-2">
-                            Annual Urology Conference &amp; Live Surgery Workshop
-                        </div>
-                        <div className="flex items-center gap-1 text-fun-blue-300/50 text-[11px]">
-                            <MapPin size={10} />
-                            Amritsar, Punjab
-                        </div>
-                    </div>
-                </div>
-                {/* Live bar */}
-                <div className="flex items-center gap-2 mt-3 pt-3 border-t border-white/6">
-                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="text-[10px] text-fun-blue-300/45">
-                        Registration open · 47 days away
-                    </span>
-                </div>
-            </GlassCard>
+//             {/* ── Next conference card ── */}
+//             <GlassCard accent delay={0.3} className="p-4">
+//                 <div className="text-[10px] font-medium text-fun-blue-300/55 uppercase tracking-widest mb-3">
+//                     Next conference
+//                 </div>
+//                 <div className="flex gap-3 items-start">
+//                     {/* Date box */}
+//                     <div className="min-w-11 w-11 h-12 bg-fun-blue-600 rounded-lg flex flex-col items-center justify-center gap-0.5 shrink-0">
+//                         <span className="font-serif text-lg text-white leading-none">27</span>
+//                         <span className="text-[9px] font-semibold text-fun-blue-100/70 tracking-wider">NOV</span>
+//                     </div>
+//                     {/* Info */}
+//                     <div>
+//                         <div className="text-fun-blue-400 text-[11px] font-medium mb-1">NZUSICON 2026</div>
+//                         <div className="text-fun-blue-100/75 text-[13px] font-medium leading-snug mb-2">
+//                             Annual Urology Conference &amp; Live Surgery Workshop
+//                         </div>
+//                         <div className="flex items-center gap-1 text-fun-blue-300/50 text-[11px]">
+//                             <MapPin size={10} />
+//                             Amritsar, Punjab
+//                         </div>
+//                     </div>
+//                 </div>
+//                 {/* Live bar */}
+//                 <div className="flex items-center gap-2 mt-3 pt-3 border-t border-white/6">
+//                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+//                     <span className="text-[10px] text-fun-blue-300/45">
+//                         Registration open · 47 days away
+//                     </span>
+//                 </div>
+//             </GlassCard>
 
-            {/* ── Membership progress card ── */}
-            <GlassCard delay={0.35} className="p-4">
-                <div className="text-[10px] font-medium text-fun-blue-300/55 uppercase tracking-widest mb-3">
-                    Membership this year
-                </div>
-                <div className="grid grid-cols-2 gap-3 mb-3">
-                    <div>
-                        <div className="font-serif text-2xl text-fun-blue-100 leading-none">512</div>
-                        <div className="text-[10px] text-fun-blue-300/45 mt-1">Active members</div>
-                    </div>
-                    <div>
-                        <div className="font-serif text-2xl text-fun-blue-100 leading-none">+38</div>
-                        <div className="text-[10px] text-fun-blue-300/45 mt-1">Joined in 2025</div>
-                    </div>
-                </div>
-                {/* Progress bar */}
-                <div className="h-1 bg-white/[0.07] rounded-full overflow-hidden mb-1.5">
-                    <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: '72%' }}
-                        transition={{ duration: 1, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                        className="h-full bg-fun-blue-500 rounded-full"
-                    />
-                </div>
-                <div className="flex justify-between text-[10px] text-fun-blue-300/40">
-                    <span>Annual target</span>
-                    <span>72%</span>
-                </div>
-            </GlassCard>
+//             {/* ── Membership progress card ── */}
+//             <GlassCard delay={0.35} className="p-4">
+//                 <div className="text-[10px] font-medium text-fun-blue-300/55 uppercase tracking-widest mb-3">
+//                     Membership this year
+//                 </div>
+//                 <div className="grid grid-cols-2 gap-3 mb-3">
+//                     <div>
+//                         <div className="font-serif text-2xl text-fun-blue-100 leading-none">512</div>
+//                         <div className="text-[10px] text-fun-blue-300/45 mt-1">Active members</div>
+//                     </div>
+//                     <div>
+//                         <div className="font-serif text-2xl text-fun-blue-100 leading-none">+38</div>
+//                         <div className="text-[10px] text-fun-blue-300/45 mt-1">Joined in 2025</div>
+//                     </div>
+//                 </div>
+//                 {/* Progress bar */}
+//                 <div className="h-1 bg-white/[0.07] rounded-full overflow-hidden mb-1.5">
+//                     <motion.div
+//                         initial={{ width: 0 }}
+//                         animate={{ width: '72%' }}
+//                         transition={{ duration: 1, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+//                         className="h-full bg-fun-blue-500 rounded-full"
+//                     />
+//                 </div>
+//                 <div className="flex justify-between text-[10px] text-fun-blue-300/40">
+//                     <span>Annual target</span>
+//                     <span>72%</span>
+//                 </div>
+//             </GlassCard>
 
-            {/* ── Mini stat strip ── */}
-            <GlassCard delay={0.4} className="p-3">
-                <div className="grid grid-cols-3 divide-x divide-white/[0.07]">
-                    {[
-                        { num: '28', label: 'Conferences' },
-                        { num: '6', label: 'States' },
-                        { num: '140+', label: 'Publications' },
-                    ].map((s) => (
-                        <div key={s.label} className="text-center px-2 py-1">
-                            <div className="font-serif text-lg text-fun-blue-100 leading-none">{s.num}</div>
-                            <div className="text-[9px] text-fun-blue-300/40 mt-1">{s.label}</div>
-                        </div>
-                    ))}
-                </div>
-            </GlassCard>
+//             {/* ── Mini stat strip ── */}
+//             <GlassCard delay={0.4} className="p-3">
+//                 <div className="grid grid-cols-3 divide-x divide-white/[0.07]">
+//                     {[
+//                         { num: '28', label: 'Conferences' },
+//                         { num: '6', label: 'States' },
+//                         { num: '140+', label: 'Publications' },
+//                     ].map((s) => (
+//                         <div key={s.label} className="text-center px-2 py-1">
+//                             <div className="font-serif text-lg text-fun-blue-100 leading-none">{s.num}</div>
+//                             <div className="text-[9px] text-fun-blue-300/40 mt-1">{s.label}</div>
+//                         </div>
+//                     ))}
+//                 </div>
+//             </GlassCard>
 
-            {/* ── Latest Adyatan post ── */}
-            <GlassCard delay={0.45} className="px-3.5 py-3 flex items-center justify-between gap-3 group cursor-pointer hover:bg-white/6 transition-colors duration-200">
-                <div className="min-w-0">
-                    <div className="text-fun-blue-400 text-[10px] font-medium mb-1">Latest — Adyatan</div>
-                    <div className="text-fun-blue-100/70 text-[12px] leading-snug truncate">
-                        Robotic instruments: rapid review 2025
-                    </div>
-                </div>
-                <div className="w-7 h-7 rounded-full border border-fun-blue-400/30 flex items-center justify-center shrink-0 group-hover:border-fun-blue-400/60 transition-colors duration-200">
-                    <ChevronRight size={12} className="text-fun-blue-400" />
-                </div>
-            </GlassCard>
-        </div>
-    )
-}
+//             {/* ── Latest Adyatan post ── */}
+//             <GlassCard delay={0.45} className="px-3.5 py-3 flex items-center justify-between gap-3 group cursor-pointer hover:bg-white/6 transition-colors duration-200">
+//                 <div className="min-w-0">
+//                     <div className="text-fun-blue-400 text-[10px] font-medium mb-1">Latest — Adyatan</div>
+//                     <div className="text-fun-blue-100/70 text-[12px] leading-snug truncate">
+//                         Robotic instruments: rapid review 2025
+//                     </div>
+//                 </div>
+//                 <div className="w-7 h-7 rounded-full border border-fun-blue-400/30 flex items-center justify-center shrink-0 group-hover:border-fun-blue-400/60 transition-colors duration-200">
+//                     <ChevronRight size={12} className="text-fun-blue-400" />
+//                 </div>
+//             </GlassCard>
+//         </div>
+//     )
+// }
