@@ -9,25 +9,25 @@ import { motion, AnimatePresence } from 'motion/react'
 
 const SLIDES = [
     {
-        src: '/images/hero/hero-bg.jpg',
+        src: '/images/hero/banner-1.png',
         alt: 'NZUSICON 2025 — Annual North Zone Urology Congress',
         caption: 'NZUSICON 2025',
         sub: 'Annual North Zone Urology Congress',
     },
     {
-        src: '/images/hero/hero-bg.jpg',
+        src: '/images/hero/banner-2.png',
         alt: 'Live Surgery Workshop — Karnal CME 2026',
         caption: 'Live Surgery Workshop',
         sub: 'Karnal Mid-term CME · April 2026',
     },
     {
-        src: '/images/hero/hero-bg.jpg',
+        src: '/images/hero/banner-3.png',
         alt: 'ASCENT Academic Series — Online CME',
         caption: 'ASCENT Academic Series',
         sub: 'Monthly online CME for North Zone urologists',
     },
     {
-        src: '/images/hero/hero-bg.jpg',
+        src: '/images/hero/banner-4.png',
         alt: 'Youth Conclave — Young urologists, North Zone',
         caption: 'Youth Conclave 2026',
         sub: 'New Delhi · August 22–23, 2026',
