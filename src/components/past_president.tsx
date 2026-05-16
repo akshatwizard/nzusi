@@ -34,6 +34,12 @@ const PRESIDENTS = [
     { year: '2017–2018', name: 'Dr. Satya Prakash Yadav', city: 'Gurugram' },
     { year: '2018–2019', name: 'Dr. Anil Elhence', city: 'Meerut' },
     { year: '2019–2020', name: 'Dr. Amlesh Seth', city: 'New Delhi' },
+    { year: '2020-2021', name: 'Dr. Sudhir Kumar Rawal', city: 'New Delhi' },
+    { year: '2021-2022', name: 'Dr. Shivam Priyadarshi', city: 'New Delhi' },
+    { year: '2022-2023', name: 'Dr. Vijay Bora', city: 'New Delhi' },
+    { year: '2023-2024', name: 'Dr. P. P. Singh', city: 'New Delhi' },
+    { year: '2024-2025', name: 'Dr A.K.Sanwal', city: 'New Delhi' },
+    { year: '2025-2026', name: 'Dr Kamaljeet Singh', city: 'New Delhi' },
 ]
 
 // Get initials from name

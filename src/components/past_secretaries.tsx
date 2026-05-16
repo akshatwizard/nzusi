@@ -15,6 +15,10 @@ const SECRETARIES = [
     { year: '2010–2013', name: 'Dr. Rajeev Kumar', city: 'Delhi', tenure: 3 },
     { year: '2013–2017', name: 'Dr. Uttam Mete', city: 'Chandigarh', tenure: 4 },
     { year: '2017–2019', name: 'Dr. Shivam Priyadarshi', city: 'Jaipur', tenure: 2 },
+    { year: '2019-2021', name: 'Dr. Anup Kumar', city: 'Jaipur', tenure: 2 },
+    { year: '2021-2023', name: 'Dr. Kamal Jeet Singh', city: 'Jaipur', tenure: 2 },
+    { year: '2023-2025', name: 'Dr. Rishi Nayyar', city: 'Jaipur', tenure: 2 },
+    { year: '2025-2027', name: 'Dr Sameer Trivedi', city: 'Jaipur', tenure: 2 },
 ]
 
 function getInitials(name: string) {

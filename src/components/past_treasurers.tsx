@@ -17,6 +17,9 @@ const TREASURERS = [
     { year: '2013–2015', name: 'Dr. Anil Goyal', city: 'New Delhi', tenure: 2 },
     { year: '2015–2019', name: 'Dr. Subhash Yadav', city: 'Meerut', tenure: 4 },
     { year: '2019–2021', name: 'Dr. Vijay Bora', city: 'Agra', tenure: 2 },
+    { year: '2021-2023', name: 'Dr. Nachiket Vyas', city: 'Agra', tenure: 2 },
+    { year: '2023-2025', name: 'Dr. Shailendra Goel', city: 'Agra', tenure: 2 },
+    { year: '2025-2027', name: 'Dr Umesh Sharma', city: 'Agra', tenure: 2 },
 ]
 
 function getInitials(name: string) {
