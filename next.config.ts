@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   // next.config.js
   images: {
     remotePatterns: [
-      { protocol: 'http', hostname: 'nzusi.wizards.co.in', pathname: '/public/storage/**' }
+      { protocol: 'https', hostname: 'nzusi.wizards.co.in', pathname: '/public/storage/**' }
     ]
   }
 };
