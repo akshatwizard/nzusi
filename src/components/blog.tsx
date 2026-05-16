@@ -26,12 +26,12 @@ export default function BlogSection() {
     }
 
     const { data, isLoading, isFetching } = useQuery<AllBlogsResponse>({
-        queryKey: ['blogs', 'all'],
+        queryKey: ['blogs', 'all', "homepage"],
         queryFn: () => blog.getDefaultBlogs({ pageParam: 1 })
     })
 
     const featured = data?.data[0] ?? null
-    const rest = data?.data.slice(1,5)
+    const rest = data?.data.slice(1, 5)
 
     return (
         <Section
@@ -100,7 +100,7 @@ export default function BlogSection() {
                     initial="hidden" animate={inView ? 'show' : 'hidden'} custom={0.18}
                     variants={fadeUp}
                 >
-                    {isLoading ? (
+                    {(isLoading || isFetching) ? (
                         <div className='mb-8 rounded-2xl overflow-hidden border border-fun-blue-100 bg-white shadow-sm'>
                             <div className='flex flex-col lg:flex-row'>
                                 {/* Image panel */}

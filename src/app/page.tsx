@@ -13,11 +13,11 @@ export default function HomePage() {
   return (
     <main >
       <Hero />
+      <NZUSICONBanner />
       <StatsSection />
       <AboutSection />
       <BlogSection />
       <EventsSection />
-      <NZUSICONBanner />
       <LegacyStrip />
       <MembershipSection />
       <CouncilSection />

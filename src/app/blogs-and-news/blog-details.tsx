@@ -1,9 +1,8 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { Section, Wrapper } from '@/components/ui/sections'
-import { POSTS } from '@/constant/blog'
 import { FeaturedPostCard } from '@/components/blog-feature-post-card'
 import { PostCard } from '@/components/blog-post-card'
 import { CategoryFilter } from '@/components/category-filter'
@@ -27,7 +26,7 @@ export default function BlogPageClient() {
     const [activeFilter, setActiveFilter] = useState<string>('all')
 
     const allQuery = useInfiniteQuery<AllBlogsResponse>({
-        queryKey: ['blogs', 'all'],
+        queryKey: ['blogs', 'all', "blog_page"],
         queryFn: ({ pageParam }) => blog.getDefaultBlogs({ pageParam: pageParam as number }),
         initialPageParam: 1,
         getNextPageParam: (lastPage) => lastPage.pagination.has_next_page
@@ -181,7 +180,7 @@ export default function BlogPageClient() {
                                 <span className='text-[11px] text-fun-blue-400/50 shrink-0'>
                                     {isLoading
                                         ? '…'
-                                        : `${posts.length} post${posts.length !== 1 ? 's' : ''}`
+                                        : `${posts?.length} post${posts?.length !== 1 ? 's' : ''}`
                                     }
                                 </span>
 
@@ -209,7 +208,7 @@ export default function BlogPageClient() {
                                     >
                                         Failed to load posts. Please try again.
                                     </motion.div>
-                                ) : rest.length > 0 ? (
+                                ) : rest?.length > 0 ? (
                                     <motion.div
                                         key={activeFilter}
                                         className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5'
