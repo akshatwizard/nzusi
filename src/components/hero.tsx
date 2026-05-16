@@ -3,6 +3,7 @@ import { Section, Wrapper } from './ui/sections'
 import { motion } from 'motion/react'
 import { HeroBackground } from './hero-background';
 import { ArrowRight, Calendar, ChevronRight, MapPin } from 'lucide-react';
+import { HeroCarousel } from './hero_slider';
 
 
 const EXPLORE_TAGS = ['Membership', 'Adyatan Journal', 'NZUSICON 2026', 'Education', 'Council']
@@ -123,7 +124,8 @@ export default function Hero() {
                         </motion.div>
                     </div>
 
-                    <HeroRightColumn />
+                    {/* <HeroRightColumn /> */}
+                    <HeroCarousel/>
                 </div>
 
                 {/* ── Explore strip ── */}
