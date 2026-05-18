@@ -1,29 +1,86 @@
 "use client";
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import {
     X, ChevronRight, User, Mail,
     Building2, Phone, GraduationCap,
-    CheckCircle2, ArrowRight, Upload
+    CheckCircle2, ArrowRight, Upload, FileText
 } from 'lucide-react'
+import { useMutation } from '@tanstack/react-query';
+import { api } from '@/services/api';
+import toast from 'react-hot-toast';
 
 
 export default function RegisterModal({ onClose }: { onClose: () => void }) {
     const [step, setStep] = useState(1)
     const [submitted, setSubmitted] = useState(false)
+    const [abstractId, setAbstractId] = useState('')
+    const [file, setFile] = useState<File | null>(null)
+    const fileInputRef = useRef<HTMLInputElement>(null)
+
     const [form, setForm] = useState({
-        firstName: '', lastName: '', email: '', phone: '',
-        institution: '', designation: '', city: '',
-        presentationType: '', topic: '', title: '', abstract: '',
-        authors: '', correspondingAuthor: '',
+        first_name: '',
+        last_name: '',
+        email: '',
+        phone: '',
+        institution: '',
+        designation: '',
+        city: '',
+        presentation_type: '',
+        topic_category: '',
+        abstract_title: '',
+        authors: '',
+        corresponding_author: '',
+        abstract_body: '',
     })
 
-    const update = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }))
+    const update = (k: keyof typeof form, v: string) =>
+        setForm(f => ({ ...f, [k]: v }))
+
+    const { mutate, isPending } = useMutation({
+        mutationFn: async () => {
+            const payload = new FormData()
+
+            // Append all text fields
+            Object.entries(form).forEach(([key, value]) => {
+                if (value) payload.append(key, value)
+            })
+
+            // Append file if present
+            if (file) payload.append('supporting_file', file)
+
+            return await api.post('/abstract-submission', payload, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            })
+        },
+        onSuccess: (res) => {
+            setAbstractId(res.data?.abstract_id ?? Math.random().toString(36).slice(2, 8).toUpperCase())
+            setSubmitted(true)
+        },
+        onError: (err: any) => {
+            const message =
+                err?.response?.data?.message ??
+                err?.response?.data?.error ??
+                'Something went wrong. Please try again.'
+            toast.error(message)
+        },
+    })
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const picked = e.target.files?.[0] ?? null
+        if (picked && picked.size > 100 * 1024 * 1024) {
+            toast.error('File must be under 100 MB.')
+            return
+        }
+        setFile(picked)
+    }
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        setSubmitted(true)
+        mutate()
     }
+
+    const wordCount = form.abstract_body.trim().split(/\s+/).filter(Boolean).length
 
     return (
         <motion.div
@@ -91,6 +148,8 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
                 {/* Body */}
                 <div className="overflow-y-auto flex-1">
                     <AnimatePresence mode="wait">
+
+                        {/* ── Success ── */}
                         {submitted ? (
                             <motion.div
                                 key="success"
@@ -103,10 +162,11 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
                                 </div>
                                 <h3 className="text-fun-blue-950 font-semibold text-lg">Submission Received!</h3>
                                 <p className="text-zinc-500 text-sm leading-relaxed max-w-xs">
-                                    Thank you, <strong>{form.firstName}</strong>. Your abstract has been submitted. You will receive a confirmation at <strong>{form.email}</strong> within 48 hours.
+                                    Thank you, <strong>{form.first_name}</strong>. Your abstract has been submitted.
+                                    You will receive a confirmation at <strong>{form.email}</strong> within 48 hours.
                                 </p>
                                 <div className="mt-2 px-4 py-3 rounded-xl bg-fun-blue-50 border border-fun-blue-100 text-xs text-fun-blue-600 font-medium">
-                                    Abstract ID: NZUSI-2026-{Math.random().toString(36).slice(2, 8).toUpperCase()}
+                                    Abstract ID: NZUSI-2026-{abstractId}
                                 </div>
                                 <button
                                     onClick={onClose}
@@ -115,7 +175,10 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
                                     Close
                                 </button>
                             </motion.div>
+
                         ) : step === 1 ? (
+
+                            /* ── Step 1: Personal Info ── */
                             <motion.form
                                 key="step1"
                                 initial={{ opacity: 0, x: -16 }}
@@ -127,42 +190,77 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
                             >
                                 <div className="grid grid-cols-2 gap-3">
                                     <Field label="First Name" required icon={User}>
-                                        <input required value={form.firstName} onChange={e => update('firstName', e.target.value)}
-                                            placeholder="Rajesh" className={inputCls} />
+                                        <input
+                                            required
+                                            value={form.first_name}
+                                            onChange={e => update('first_name', e.target.value)}
+                                            placeholder="Rajesh"
+                                            className={inputCls}
+                                        />
                                     </Field>
-                                    <Field label="Last Name" required>
-                                        <input required value={form.lastName} onChange={e => update('lastName', e.target.value)}
-                                            placeholder="Kumar" className={inputCls} />
+                                    <Field label="Last Name">
+                                        <input
+                                            value={form.last_name}
+                                            onChange={e => update('last_name', e.target.value)}
+                                            placeholder="Kumar"
+                                            className={inputCls}
+                                        />
                                     </Field>
                                 </div>
-                                <Field label="Email Address" required icon={Mail}>
-                                    <input required type="email" value={form.email} onChange={e => update('email', e.target.value)}
-                                        placeholder="doctor@hospital.in" className={inputCls} />
+                                <Field label="Email Address" icon={Mail}>
+                                    <input
+                                        type="email"
+                                        value={form.email}
+                                        onChange={e => update('email', e.target.value)}
+                                        placeholder="doctor@hospital.in"
+                                        className={inputCls}
+                                    />
                                 </Field>
                                 <Field label="Phone Number" icon={Phone}>
-                                    <input type="tel" value={form.phone} onChange={e => update('phone', e.target.value)}
-                                        placeholder="+91 98765 43210" className={inputCls} />
+                                    <input
+                                        type="tel"
+                                        value={form.phone}
+                                        onChange={e => update('phone', e.target.value)}
+                                        placeholder="+91 98765 43210"
+                                        className={inputCls}
+                                    />
                                 </Field>
-                                <Field label="Institution / Hospital" required icon={Building2}>
-                                    <input required value={form.institution} onChange={e => update('institution', e.target.value)}
-                                        placeholder="AIIMS, New Delhi" className={inputCls} />
+                                <Field label="Institution / Hospital" icon={Building2}>
+                                    <input
+                                        value={form.institution}
+                                        onChange={e => update('institution', e.target.value)}
+                                        placeholder="AIIMS, New Delhi"
+                                        className={inputCls}
+                                    />
                                 </Field>
                                 <div className="grid grid-cols-2 gap-3">
-                                    <Field label="Designation" required icon={GraduationCap}>
-                                        <input required value={form.designation} onChange={e => update('designation', e.target.value)}
-                                            placeholder="Senior Resident" className={inputCls} />
+                                    <Field label="Designation" icon={GraduationCap}>
+                                        <input
+                                            value={form.designation}
+                                            onChange={e => update('designation', e.target.value)}
+                                            placeholder="Senior Resident"
+                                            className={inputCls}
+                                        />
                                     </Field>
                                     <Field label="City">
-                                        <input value={form.city} onChange={e => update('city', e.target.value)}
-                                            placeholder="New Delhi" className={inputCls} />
+                                        <input
+                                            value={form.city}
+                                            onChange={e => update('city', e.target.value)}
+                                            placeholder="New Delhi"
+                                            className={inputCls}
+                                        />
                                     </Field>
                                 </div>
-                                <button type="submit"
-                                    className="mt-2 w-full py-3 bg-fun-blue-950 text-white rounded-xl font-semibold text-sm hover:bg-fun-blue-800 transition-colors flex items-center justify-center gap-2">
+                                <button
+                                    type="submit"
+                                    className="mt-2 w-full py-3 bg-fun-blue-950 text-white rounded-xl font-semibold text-sm hover:bg-fun-blue-800 transition-colors flex items-center justify-center gap-2"
+                                >
                                     Continue <ArrowRight size={14} />
                                 </button>
                             </motion.form>
+
                         ) : (
+
                             <motion.form
                                 key="step2"
                                 initial={{ opacity: 0, x: 16 }}
@@ -173,53 +271,129 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
                                 onSubmit={handleSubmit}
                             >
                                 <Field label="Presentation Type" required>
-                                    <select required value={form.presentationType} onChange={e => update('presentationType', e.target.value)} className={inputCls}>
+                                    <select
+                                        required
+                                        value={form.presentation_type}
+                                        onChange={e => update('presentation_type', e.target.value)}
+                                        className={inputCls}
+                                    >
                                         <option value="">Select type…</option>
-                                        {PRESENTATION_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
+                                        {PRESENTATION_TYPES.map(t => (
+                                            <option key={t.value} value={t.value}>{t.label}</option>
+                                        ))}
                                     </select>
                                 </Field>
                                 <Field label="Topic / Category" required>
-                                    <select required value={form.topic} onChange={e => update('topic', e.target.value)} className={inputCls}>
+                                    <select
+                                        required
+                                        value={form.topic_category}
+                                        onChange={e => update('topic_category', e.target.value)}
+                                        className={inputCls}
+                                    >
                                         <option value="">Select topic…</option>
-                                        {TOPICS.map(t => <option key={t} value={t}>{t}</option>)}
+                                        {TOPICS.map(t => (
+                                            <option key={t} value={t}>{t}</option>
+                                        ))}
                                     </select>
                                 </Field>
                                 <Field label="Abstract Title" required>
-                                    <input required value={form.title} onChange={e => update('title', e.target.value)}
-                                        placeholder="Enter the full title of your abstract" className={inputCls} />
+                                    <input
+                                        required
+                                        value={form.abstract_title}
+                                        onChange={e => update('abstract_title', e.target.value)}
+                                        placeholder="Enter the full title of your abstract"
+                                        className={inputCls}
+                                    />
                                 </Field>
                                 <Field label="Authors (comma separated)" required>
-                                    <input required value={form.authors} onChange={e => update('authors', e.target.value)}
-                                        placeholder="Dr A Kumar, Dr B Singh, Prof C Sharma" className={inputCls} />
+                                    <input
+                                        required
+                                        value={form.authors}
+                                        onChange={e => update('authors', e.target.value)}
+                                        placeholder="Dr A Kumar, Dr B Singh, Prof C Sharma"
+                                        className={inputCls}
+                                    />
                                 </Field>
                                 <Field label="Corresponding Author" required>
-                                    <input required value={form.correspondingAuthor} onChange={e => update('correspondingAuthor', e.target.value)}
-                                        placeholder="Dr A Kumar" className={inputCls} />
+                                    <input
+                                        required
+                                        value={form.corresponding_author}
+                                        onChange={e => update('corresponding_author', e.target.value)}
+                                        placeholder="Dr A Kumar"
+                                        className={inputCls}
+                                    />
                                 </Field>
                                 <Field label="Abstract Body" required>
-                                    <textarea required rows={5} value={form.abstract} onChange={e => update('abstract', e.target.value)}
+                                    <textarea
+                                        required
+                                        rows={5}
+                                        value={form.abstract_body}
+                                        onChange={e => update('abstract_body', e.target.value)}
                                         placeholder="Aims, Methods, Results, Conclusions (max 300 words)…"
-                                        className={`${inputCls} resize-none`} />
-                                    <p className="text-[11px] text-zinc-400 mt-1">
-                                        {form.abstract.trim().split(/\s+/).filter(Boolean).length} / 300 words
+                                        className={`${inputCls} resize-none`}
+                                    />
+                                    <p className={`text-[11px] mt-1 ${wordCount > 300 ? 'text-red-400 font-medium' : 'text-zinc-400'}`}>
+                                        {wordCount} / 300 words
                                     </p>
                                 </Field>
 
                                 {/* File upload */}
-                                <div className="border-2 border-dashed border-fun-blue-100 rounded-xl p-5 flex flex-col items-center gap-2 text-center hover:border-fun-blue-300 transition-colors cursor-pointer">
-                                    <Upload size={20} className="text-fun-blue-300" />
-                                    <p className="text-sm font-medium text-fun-blue-700">Upload supporting file</p>
-                                    <p className="text-[11px] text-zinc-400">PDF, DOCX, PPT — max 10 MB (optional)</p>
+                                <div>
+                                    <input
+                                        ref={fileInputRef}
+                                        type="file"
+                                        accept=".pdf,.doc,.docx,.ppt,.pptx"
+                                        className="hidden"
+                                        onChange={handleFileChange}
+                                    />
+                                    <div
+                                        onClick={() => fileInputRef.current?.click()}
+                                        className="border-2 border-dashed border-fun-blue-100 rounded-xl p-5 flex flex-col items-center gap-2 text-center hover:border-fun-blue-300 transition-colors cursor-pointer"
+                                    >
+                                        {file ? (
+                                            <>
+                                                <FileText size={20} className="text-fun-blue-500" />
+                                                <p className="text-sm font-medium text-fun-blue-700">{file.name}</p>
+                                                <p className="text-[11px] text-zinc-400">
+                                                    {(file.size / 1024 / 1024).toFixed(2)} MB · Click to change
+                                                </p>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Upload size={20} className="text-fun-blue-300" />
+                                                <p className="text-sm font-medium text-fun-blue-700">Upload supporting file</p>
+                                                <p className="text-[11px] text-zinc-400">PDF, DOCX, PPT — max 100 MB (optional)</p>
+                                            </>
+                                        )}
+                                    </div>
                                 </div>
 
                                 <div className="flex gap-3 mt-2">
-                                    <button type="button" onClick={() => setStep(1)}
-                                        className="flex-1 py-3 border border-fun-blue-200 text-fun-blue-700 rounded-xl font-semibold text-sm hover:bg-fun-blue-50 transition-colors">
+                                    <button
+                                        type="button"
+                                        onClick={() => setStep(1)}
+                                        disabled={isPending}
+                                        className="flex-1 py-3 border border-fun-blue-200 text-fun-blue-700 rounded-xl font-semibold text-sm hover:bg-fun-blue-50 transition-colors disabled:opacity-50"
+                                    >
                                         Back
                                     </button>
-                                    <button type="submit"
-                                        className="flex-1 py-3 bg-fun-blue-950 text-white rounded-xl font-semibold text-sm hover:bg-fun-blue-800 transition-colors flex items-center justify-center gap-2">
-                                        Submit Abstract <CheckCircle2 size={14} />
+                                    <button
+                                        type="submit"
+                                        disabled={isPending || wordCount > 300}
+                                        className="flex-1 py-3 bg-fun-blue-950 text-white rounded-xl font-semibold text-sm hover:bg-fun-blue-800 transition-colors flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                                    >
+                                        {isPending ? (
+                                            <>
+                                                <motion.span
+                                                    animate={{ rotate: 360 }}
+                                                    transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
+                                                    className="inline-block w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full"
+                                                />
+                                                Submitting…
+                                            </>
+                                        ) : (
+                                            <>Submit Abstract <CheckCircle2 size={14} /></>
+                                        )}
                                     </button>
                                 </div>
                             </motion.form>
@@ -236,8 +410,9 @@ const PRESENTATION_TYPES = [
     { value: 'video', label: 'Video Presentation (BV)' },
     { value: 'podium', label: 'Podium / Best Paper (BP)' },
     { value: 'poster', label: 'Moderated Poster (BPos)' },
-    { value: 'eposer', label: 'Unmoderated e-Poster (UPos)' },
+    { value: 'eposter', label: 'Unmoderated e-Poster (UPos)' },
 ]
+
 const TOPICS = [
     'Endourology & Stone Disease',
     'Uro-oncology',
