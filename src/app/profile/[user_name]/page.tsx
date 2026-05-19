@@ -11,6 +11,8 @@ import MembershipCard from '@/components/profile/membership_card';
 import ActivityCard from '@/components/profile/active_card';
 import { getProfileCompletion } from '@/lib/profile_completion';
 import ProfilePageSkeleton from '@/components/profile/skeleton';
+import { UpdateUserProfile } from '@/components/profile/update_profile';
+import { useProfileContext } from '@/context/profile_update_context';
 
 
 export type ActiveSection = 'overview' | 'personal' | 'professional' | 'membership' | 'activity'
@@ -24,6 +26,7 @@ const fadeUp: Variants = {
 
 
 export default function UserProfile() {
+    const { editProfile } = useProfileContext();
     const { user, loading, isMounted } = useAuth()
     const [activeSection, setActiveSection] = useState<ActiveSection>('overview')
 
@@ -33,75 +36,76 @@ export default function UserProfile() {
     if (!isMounted || loading) {
         return <ProfilePageSkeleton />
     }
-    
+
     return (
-        <Section className='px-0! min-h-screen'>
-            <div className='h-36 md:h-44 bg-fun-blue-950 relative overflow-hidden'>
-                <div
-                    className='absolute inset-0 opacity-[0.04]'
-                    style={{
-                        backgroundImage: `linear-gradient(rgba(255,255,255,.9) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.9) 1px,transparent 1px)`,
-                        backgroundSize: '36px 36px',
-                    }}
-                />
-                <div
-                    className='absolute -bottom-20 left-1/3 w-96 h-96 rounded-full pointer-events-none'
-                    style={{ background: 'radial-gradient(circle,rgba(24,95,165,.35) 0%,transparent 70%)' }}
-                />
-                <div
-                    className='absolute top-0 right-0 w-64 h-64 rounded-full pointer-events-none'
-                    style={{ background: 'radial-gradient(circle at top right,rgba(55,138,221,.1) 0%,transparent 70%)' }}
-                />
-            </div>
-
-            <div className='max-w-6xl mx-auto px-4 md:px-6 lg:px-8 -mt-10 md:-mt-14 pb-16 relative z-10'>
-
-                <ProfileHero completion={completion} user={user} />
-
-                <div className='mt-5 flex flex-col lg:flex-row gap-5 items-start'>
-
-                    {/* Left sidebar */}
-                    <ProfileSidebar
-                        user={user}
-                        completion={completion}
-                        active={activeSection}
-                        onSelect={setActiveSection}
+        <>
+            <Section className='px-0! min-h-screen'>
+                <div className='h-36 md:h-44 bg-fun-blue-950 relative overflow-hidden'>
+                    <div
+                        className='absolute inset-0 opacity-[0.04]'
+                        style={{
+                            backgroundImage: `linear-gradient(rgba(255,255,255,.9) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.9) 1px,transparent 1px)`,
+                            backgroundSize: '36px 36px',
+                        }}
                     />
+                    <div
+                        className='absolute -bottom-20 left-1/3 w-96 h-96 rounded-full pointer-events-none'
+                        style={{ background: 'radial-gradient(circle,rgba(24,95,165,.35) 0%,transparent 70%)' }}
+                    />
+                    <div
+                        className='absolute top-0 right-0 w-64 h-64 rounded-full pointer-events-none'
+                        style={{ background: 'radial-gradient(circle at top right,rgba(55,138,221,.1) 0%,transparent 70%)' }}
+                    />
+                </div>
 
-                    {/* Right content area */}
-                    <div className='flex-1 min-w-0 flex flex-col gap-4'>
+                <div className='max-w-6xl mx-auto px-4 md:px-6 lg:px-8 -mt-10 md:-mt-14 pb-16 relative z-10'>
 
-                        {(activeSection === 'overview' || activeSection === 'personal') && (
-                            <motion.div
-                                key='personal'
-                                initial='hidden' animate='show' custom={0}
-                                variants={fadeUp}
-                            >
-                                <PersonalInfoCard user={user} />
-                            </motion.div>
-                        )}
+                    <ProfileHero completion={completion} user={user} />
 
-                        {(activeSection === 'overview' || activeSection === 'professional') && (
-                            <motion.div
-                                key='professional'
-                                initial='hidden' animate='show' custom={0.06}
-                                variants={fadeUp}
-                            >
-                                <ProfessionalInfoCard user={user} />
-                            </motion.div>
-                        )}
+                    <div className='mt-5 flex flex-col lg:flex-row gap-5 items-start'>
 
-                        {(activeSection === 'overview' || activeSection === 'membership') && (
-                            <motion.div
-                                key='membership'
-                                initial='hidden' animate='show' custom={0.12}
-                                variants={fadeUp}
-                            >
-                                <MembershipCard user={user} />
-                            </motion.div>
-                        )}
+                        {/* Left sidebar */}
+                        <ProfileSidebar
+                            user={user}
+                            completion={completion}
+                            active={activeSection}
+                            onSelect={setActiveSection}
+                        />
 
-                        {/* {(activeSection === 'overview' || activeSection === 'activity') && (
+                        {/* Right content area */}
+                        <div className='flex-1 min-w-0 flex flex-col gap-4'>
+
+                            {(activeSection === 'overview' || activeSection === 'personal') && (
+                                <motion.div
+                                    key='personal'
+                                    initial='hidden' animate='show' custom={0}
+                                    variants={fadeUp}
+                                >
+                                    <PersonalInfoCard user={user} />
+                                </motion.div>
+                            )}
+
+                            {(activeSection === 'overview' || activeSection === 'professional') && (
+                                <motion.div
+                                    key='professional'
+                                    initial='hidden' animate='show' custom={0.06}
+                                    variants={fadeUp}
+                                >
+                                    <ProfessionalInfoCard user={user} />
+                                </motion.div>
+                            )}
+
+                            {(activeSection === 'overview' || activeSection === 'membership') && (
+                                <motion.div
+                                    key='membership'
+                                    initial='hidden' animate='show' custom={0.12}
+                                    variants={fadeUp}
+                                >
+                                    <MembershipCard user={user} />
+                                </motion.div>
+                            )}
+
+                            {/* {(activeSection === 'overview' || activeSection === 'activity') && (
                             <motion.div
                                 key='activity'
                                 initial='hidden' animate='show' custom={0.18}
@@ -111,9 +115,13 @@ export default function UserProfile() {
                             </motion.div>
                         )} */}
 
+                        </div>
                     </div>
                 </div>
-            </div>
-        </Section>
+            </Section>
+            {/* {editProfile && 
+            } */}
+            <UpdateUserProfile user={user} />
+        </>
     )
 }

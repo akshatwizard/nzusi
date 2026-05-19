@@ -5,17 +5,17 @@ import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useStat
 
 type ProfileContextType = {
     editProfile: boolean,
-    setEditProfile: Dispatch<SetStateAction<boolean>>
+    closeEditProfile: () => void;
 }
 
 const ProfileContext = createContext<ProfileContextType | null>(null);
 
 export default function ProfileContextProvider({ children }: { children: ReactNode }) {
-    const [editProfile, setEditProfile] = useState<boolean>(false);
+    const [editProfile, setEditProfile] = useState<boolean>(true);
 
     const value = {
         editProfile,
-        setEditProfile
+        closeEditProfile: () => setEditProfile(false),
     }
 
     return (
