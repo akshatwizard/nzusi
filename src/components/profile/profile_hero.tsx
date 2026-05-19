@@ -88,9 +88,9 @@ export default function ProfileHero({ user, completion }: Props) {
 
                         {/* Actions */}
                         <div className='flex items-center gap-2 shrink-0'>
-                            <button className='flex items-center gap-1.5 text-[12px] font-semibold text-slate-500 hover:text-slate-700 border border-slate-200 hover:border-slate-300 px-3 py-1.5 rounded-lg transition-all duration-200'>
+                            {/* <button className='flex items-center gap-1.5 text-[12px] font-semibold text-slate-500 hover:text-slate-700 border border-slate-200 hover:border-slate-300 px-3 py-1.5 rounded-lg transition-all duration-200'>
                                 <Share2 size={12} /> Share
-                            </button>
+                            </button> */}
                             <button className='flex items-center gap-1.5 text-[12px] font-semibold text-fun-blue-600 hover:text-fun-blue-700 border border-fun-blue-200 hover:border-fun-blue-300 bg-fun-blue-50 hover:bg-fun-blue-100 px-3 py-1.5 rounded-lg transition-all duration-200'>
                                 <Pencil size={12} /> Edit Profile
                             </button>
