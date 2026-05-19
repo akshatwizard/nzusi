@@ -12,8 +12,8 @@ function formatTrainingDate(raw: string) {
 function StatusDot({ status }: { status: 'done' | 'pending' }) {
     return (
         <span className={`inline-flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded-full border ${status === 'done'
-                ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
-                : 'bg-amber-50 text-amber-600 border-amber-200'
+            ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
+            : 'bg-amber-50 text-amber-600 border-amber-200'
             }`}>
             <span className={`w-1 h-1 rounded-full ${status === 'done' ? 'bg-emerald-500' : 'bg-amber-500'}`} />
             {status === 'done' ? 'Complete' : 'Pending'}
@@ -47,7 +47,7 @@ export default function ProfessionalInfoCard({ user }: { user: Member }) {
                         <StatusDot status={user.designation_status} />
                     </div>
 
-                    {user.present_designations.length > 0 ? (
+                    {user.present_designations.length > 0 && (
                         <div className='flex flex-col gap-3'>
                             {user.present_designations.map((d, i) => (
                                 <div key={d.id} className={`flex items-start gap-4 p-4 rounded-xl border ${i === 0 ? 'border-fun-blue-200 bg-fun-blue-50/40' : 'border-slate-100 bg-slate-50/30'}`}>
@@ -66,9 +66,8 @@ export default function ProfessionalInfoCard({ user }: { user: Member }) {
                                 </div>
                             ))}
                         </div>
-                    ) : (
-                        <EmptyState label='designation' onAdd={() => { }} />
                     )}
+                    <EmptyState label='designation' onAdd={() => { }} />
                 </div>
 
                 {/* ── Academic Qualifications ── */}

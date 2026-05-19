@@ -1,8 +1,9 @@
 'use client'
 
 import { Member, getPreferredAddress, hasAddress } from '@/types/user.types'
-import { User, MapPin } from 'lucide-react'
+import { User, MapPin, Pencil } from 'lucide-react'
 import { ProfileCard, ProfileField } from './profile_card'
+import { useProfileContext } from '@/context/profile_update_context'
 
 function formatDate(raw: string | null) {
     if (!raw) return null
@@ -22,6 +23,7 @@ function formatLastLogin(raw: string | null) {
 }
 
 export default function PersonalInfoCard({ user }: { user: Member }) {
+    const { setEditProfile } = useProfileContext()
     const addr = getPreferredAddress(user)
     const hasAddr = hasAddress(addr)
 
@@ -29,7 +31,7 @@ export default function PersonalInfoCard({ user }: { user: Member }) {
     const residenceHas = hasAddress(user.residence_address)
 
     return (
-        <ProfileCard title='Personal Information' icon={<User size={14} />} onEdit={() => { }}>
+        <ProfileCard title='Personal Information' icon={<User size={14} />} onEdit={() => setEditProfile(true)}>
             {/* Core fields */}
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5 mb-6'>
                 <ProfileField label='Full Name' value={user.name} />
@@ -50,7 +52,7 @@ export default function PersonalInfoCard({ user }: { user: Member }) {
                         </span>
                     </div>
                     <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-
+                        
                         {/* Office address */}
                         {officeHas && (
                             <div className={`rounded-xl border p-4 ${user.preferred_address === 'office' ? 'border-fun-blue-200 bg-fun-blue-50/40' : 'border-slate-100 bg-slate-50/50'}`}>

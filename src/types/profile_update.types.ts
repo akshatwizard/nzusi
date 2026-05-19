@@ -14,3 +14,9 @@ export type ProfileUpdateResponse = {
     success: boolean,
     message: string
 }
+
+export type ProfileDesignation = {
+    payload: {
+        
+    }
+}
