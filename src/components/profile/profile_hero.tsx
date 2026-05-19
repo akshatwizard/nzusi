@@ -1,5 +1,6 @@
 'use client'
 
+import { useProfileContext } from '@/context/profile_update_context'
 import { CompletionResult } from '@/lib/profile_completion'
 import { Member } from '@/types/user.types'
 import { Camera, CheckCircle2, Pencil, Share2 } from 'lucide-react'
@@ -18,6 +19,7 @@ const STATUS_LABEL: Record<string, { label: string; color: string }> = {
 }
 
 export default function ProfileHero({ user, completion }: Props) {
+    const { setEditProfile } = useProfileContext()
     const status = STATUS_LABEL[user.status] ?? STATUS_LABEL.pending
     const pct = completion.percent
     const barColor = pct >= 80 ? 'bg-emerald-500' : pct >= 50 ? 'bg-amber-500' : 'bg-fun-blue-500'
@@ -91,7 +93,9 @@ export default function ProfileHero({ user, completion }: Props) {
                             {/* <button className='flex items-center gap-1.5 text-[12px] font-semibold text-slate-500 hover:text-slate-700 border border-slate-200 hover:border-slate-300 px-3 py-1.5 rounded-lg transition-all duration-200'>
                                 <Share2 size={12} /> Share
                             </button> */}
-                            <button className='flex items-center gap-1.5 text-[12px] font-semibold text-fun-blue-600 hover:text-fun-blue-700 border border-fun-blue-200 hover:border-fun-blue-300 bg-fun-blue-50 hover:bg-fun-blue-100 px-3 py-1.5 rounded-lg transition-all duration-200'>
+                            <button
+                                onClick={() => setEditProfile(true)}
+                                className='flex items-center gap-1.5 text-[12px] font-semibold text-fun-blue-600 hover:text-fun-blue-700 border border-fun-blue-200 hover:border-fun-blue-300 bg-fun-blue-50 hover:bg-fun-blue-100 px-3 py-1.5 rounded-lg transition-all duration-200'>
                                 <Pencil size={12} /> Edit Profile
                             </button>
                         </div>

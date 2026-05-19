@@ -119,9 +119,9 @@ export default function UserProfile() {
                     </div>
                 </div>
             </Section>
-            {/* {editProfile && 
-            } */}
-            <UpdateUserProfile user={user} />
+            {editProfile &&
+                <UpdateUserProfile user={user} />
+            }
         </>
     )
 }

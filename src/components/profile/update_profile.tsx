@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/context/auth_context";
 import { useProfileContext } from "@/context/profile_update_context";
 import { profileUpdateService } from "@/services/profile_update";
 import { Member } from "@/types/user.types";
@@ -12,7 +13,8 @@ import toast from "react-hot-toast";
 
 
 export function UpdateUserProfile({ user }: { user: Member }) {
-    const { editProfile, closeEditProfile } = useProfileContext();
+    const { refreshUser } = useAuth()
+    const { editProfile, setEditProfile } = useProfileContext();
     const [submitted, setSubmitted] = useState(false);
     const [profile, setProfile] = useState({
         name: user.name,
@@ -30,6 +32,7 @@ export function UpdateUserProfile({ user }: { user: Member }) {
         onSuccess: (value) => {
             toast.success(value.message)
             setSubmitted(true)
+            refreshUser();
         },
         onError: (val: AxiosError<{ error?: string }>) => {
             toast.error(val.response?.data?.error ?? "Something went wrong")
@@ -52,14 +55,14 @@ export function UpdateUserProfile({ user }: { user: Member }) {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        onClick={closeEditProfile}
+                        onClick={() => setEditProfile(false)}
                         className="absolute inset-0 bg-fun-blue-950/70 backdrop-blur-sm"
                     />
 
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.98, y: -40 }}
+                        initial={{ opacity: 0, scale: 0.98, y: 40 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.98 }}
+                        exit={{ opacity: 0, scale: 0.98, y: 40 }}
                         className="relative z-10 w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
                     >
 
@@ -77,7 +80,7 @@ export function UpdateUserProfile({ user }: { user: Member }) {
                                     </h2>
                                 </div>
                                 <button
-                                    onClick={closeEditProfile}
+                                    onClick={() => setEditProfile(false)}
                                     className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors shrink-0 mt-0.5"
                                 >
                                     <X size={14} className="text-white" />
@@ -106,7 +109,7 @@ export function UpdateUserProfile({ user }: { user: Member }) {
                                             Thank you, <strong>{user.name}</strong>. Your profile has been submitted.
                                         </p>
                                         <button
-                                            onClick={closeEditProfile}
+                                            onClick={() => setEditProfile(false)}
                                             className="mt-4 px-6 py-2.5 bg-fun-blue-950 text-white rounded-xl text-sm font-semibold hover:bg-fun-blue-800 transition-colors"
                                         >
                                             Close

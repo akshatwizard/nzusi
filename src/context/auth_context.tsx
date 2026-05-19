@@ -40,6 +40,7 @@ type AuthContextType = {
     isLoggingOut: boolean;
     login: (email: string, otp: string) => Promise<{ message: string }>;
     logout: () => Promise<void>;
+    refreshUser: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -124,6 +125,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setIsLoggingOut(false);
     };
 
+
+    const refreshUser = async () => {
+        try {
+            const freshUser = await authService.getProfile();
+            setCachedUser(freshUser);
+            userStorage.set(freshUser);
+            queryClient.setQueryData(["user_profile"], freshUser);
+        } catch (error) {
+            console.error("Failed to refresh user", error);
+        }
+    };
+
     const resolvedUser = user ?? cachedUser ?? null;
     const isAuthLoading = isMounted && !!token && !cachedUser && isLoading;
 
@@ -138,6 +151,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 isLoggingOut,
                 login,
                 logout,
+                refreshUser,
             }}
         >
             {children}
