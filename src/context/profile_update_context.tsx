@@ -6,16 +6,21 @@ import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useStat
 type ProfileContextType = {
     editProfile: boolean,
     setEditProfile: Dispatch<SetStateAction<boolean>>;
+    updateDesignation: boolean,
+    setUpdateDesignation: Dispatch<SetStateAction<boolean>>;
 }
 
 const ProfileContext = createContext<ProfileContextType | null>(null);
 
 export default function ProfileContextProvider({ children }: { children: ReactNode }) {
     const [editProfile, setEditProfile] = useState<boolean>(false);
+    const [updateDesignation, setUpdateDesignation] = useState<boolean>(false);
 
     const value = {
         editProfile,
         setEditProfile,
+        updateDesignation,
+        setUpdateDesignation
     }
 
     return (

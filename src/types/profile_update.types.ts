@@ -17,6 +17,13 @@ export type ProfileUpdateResponse = {
 
 export type ProfileDesignation = {
     payload: {
-        
+        designation: string
+        institution: string
+        year_of_joining: string
     }
+}
+
+export type ProfileDesignationResponse = {
+    success: boolean,
+    message: string
 }

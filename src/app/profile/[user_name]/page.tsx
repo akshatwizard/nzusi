@@ -13,6 +13,7 @@ import { getProfileCompletion } from '@/lib/profile_completion';
 import ProfilePageSkeleton from '@/components/profile/skeleton';
 import { UpdateUserProfile } from '@/components/profile/update_profile';
 import { useProfileContext } from '@/context/profile_update_context';
+import UpdateDesignation from '@/components/profile/update_designation';
 
 
 export type ActiveSection = 'overview' | 'personal' | 'professional' | 'membership' | 'activity'
@@ -26,7 +27,7 @@ const fadeUp: Variants = {
 
 
 export default function UserProfile() {
-    const { editProfile } = useProfileContext();
+    const { editProfile, updateDesignation } = useProfileContext();
     const { user, loading, isMounted } = useAuth()
     const [activeSection, setActiveSection] = useState<ActiveSection>('overview')
 
@@ -121,6 +122,9 @@ export default function UserProfile() {
             </Section>
             {editProfile &&
                 <UpdateUserProfile user={user} />
+            }
+            {updateDesignation &&
+                <UpdateDesignation name={user.name} data={user.present_designations[0] ?? null} />
             }
         </>
     )

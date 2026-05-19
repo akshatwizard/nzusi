@@ -3,6 +3,7 @@
 import { Member } from '@/types/user.types'
 import { Stethoscope, GraduationCap, FlaskConical, Plus, CalendarDays } from 'lucide-react'
 import { ProfileCard } from './profile_card'
+import { useProfileContext } from '@/context/profile_update_context'
 
 function formatTrainingDate(raw: string) {
     try { return new Date(raw).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) }
@@ -33,8 +34,9 @@ function EmptyState({ label, onAdd }: { label: string; onAdd: () => void }) {
 }
 
 export default function ProfessionalInfoCard({ user }: { user: Member }) {
+    const { setUpdateDesignation } = useProfileContext()
     return (
-        <ProfileCard title='Professional Details' icon={<Stethoscope size={14} />} onEdit={() => { }}>
+        <ProfileCard title='Professional Details' icon={<Stethoscope size={14} />} >
             <div className='flex flex-col gap-8'>
 
                 {/* ── Present Designations ── */}
@@ -47,7 +49,7 @@ export default function ProfessionalInfoCard({ user }: { user: Member }) {
                         <StatusDot status={user.designation_status} />
                     </div>
 
-                    {user.present_designations.length > 0 && (
+                    {user.present_designations.length > 0 ? (
                         <div className='flex flex-col gap-3'>
                             {user.present_designations.map((d, i) => (
                                 <div key={d.id} className={`flex items-start gap-4 p-4 rounded-xl border ${i === 0 ? 'border-fun-blue-200 bg-fun-blue-50/40' : 'border-slate-100 bg-slate-50/30'}`}>
@@ -66,8 +68,9 @@ export default function ProfessionalInfoCard({ user }: { user: Member }) {
                                 </div>
                             ))}
                         </div>
+                    ) : (
+                        <EmptyState label='designation' onAdd={() => setUpdateDesignation(true)} />
                     )}
-                    <EmptyState label='designation' onAdd={() => { }} />
                 </div>
 
                 {/* ── Academic Qualifications ── */}
