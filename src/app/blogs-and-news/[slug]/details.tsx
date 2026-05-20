@@ -129,7 +129,7 @@ export default function BlogContent({ slug }: { slug: string }) {
                                             alt={post.title}
                                             fill
                                             priority
-                                            className="object-cover"
+                                            className="object-contain"
                                         />
                                     </div>
 
