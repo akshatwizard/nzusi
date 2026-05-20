@@ -51,3 +51,32 @@ export type ProfileUrologyTrainingsResponse = {
     success: boolean,
     message: string
 }
+
+// profile_update.types.ts
+
+export type ProfileAddressPayload =
+    | {
+        preferred_address: 'office' | 'residence';
+        office_state: string;
+        office_city: string;
+        office_pin: string;
+        office_address: string;
+        office_phone: string;
+        office_email: string;
+        office_website: string;
+    }
+    | {
+        preferred_address: 'office' | 'residence';
+        residence_state: string;
+        residence_city: string;
+        residence_pin: string;
+        residence_address: string;
+        residence_phone: string;
+        residence_email: string;
+        residence_website: string;
+    };
+
+export type ProfileAddressResponse = {
+    success: boolean;
+    message: string;
+};

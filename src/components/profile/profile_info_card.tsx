@@ -23,7 +23,7 @@ function formatLastLogin(raw: string | null) {
 }
 
 export default function PersonalInfoCard({ user }: { user: Member }) {
-    const { setEditProfile } = useProfileContext()
+    const { setEditProfile, setUpdateAddress } = useProfileContext()
     const addr = getPreferredAddress(user)
     const hasAddr = hasAddress(addr)
 
@@ -45,14 +45,25 @@ export default function PersonalInfoCard({ user }: { user: Member }) {
             {/* Address blocks */}
             {(officeHas || residenceHas) && (
                 <div className='pt-5 border-t border-slate-100'>
-                    <div className='flex items-center gap-2 mb-4'>
-                        <MapPin size={13} className='text-fun-blue-400' />
-                        <span className='text-[10px] font-semibold text-slate-400 uppercase tracking-widest'>
-                            Addresses
-                        </span>
+                    <div className='flex items-center justify-between'>
+                        <div className='flex items-center gap-2 mb-4'>
+                            <MapPin size={13} className='text-fun-blue-400' />
+                            <span className='text-[10px] font-semibold text-slate-400 uppercase tracking-widest'>
+                                Addresses
+                            </span>
+                        </div>
+
+                        <button
+                            onClick={() => setUpdateAddress(true)}
+                            className='flex items-center gap-1.5 text-[12px] font-medium text-fun-blue-600 hover:text-fun-blue-700 bg-fun-blue-50 hover:bg-fun-blue-100 border border-fun-blue-100 hover:border-fun-blue-200 px-3 py-1.5 rounded-lg transition-all duration-200'
+                        >
+                            <Pencil size={11} />
+                            Edit
+                        </button>
+
                     </div>
                     <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-                        
+
                         {/* Office address */}
                         {officeHas && (
                             <div className={`rounded-xl border p-4 ${user.preferred_address === 'office' ? 'border-fun-blue-200 bg-fun-blue-50/40' : 'border-slate-100 bg-slate-50/50'}`}>

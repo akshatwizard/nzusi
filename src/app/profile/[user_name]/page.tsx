@@ -16,6 +16,7 @@ import { useProfileContext } from '@/context/profile_update_context';
 import UpdateDesignation from '@/components/profile/update_designation';
 import UpdateAcademic from '@/components/profile/update_academic';
 import UpdateUrologyTrainings from '@/components/profile/update_urology_trainings';
+import UpdateAddress from '@/components/profile/update_address';
 
 
 export type ActiveSection = 'overview' | 'personal' | 'professional' | 'membership' | 'activity'
@@ -29,7 +30,7 @@ const fadeUp: Variants = {
 
 
 export default function UserProfile() {
-    const { editProfile, updateDesignation, updateAcademic, updateUrologyTrainings } = useProfileContext();
+    const { editProfile, updateDesignation, updateAcademic, updateUrologyTrainings, updateAddress } = useProfileContext();
     const { user, loading, isMounted } = useAuth()
     const [activeSection, setActiveSection] = useState<ActiveSection>('overview')
 
@@ -133,6 +134,9 @@ export default function UserProfile() {
             }
             {updateUrologyTrainings &&
                 <UpdateUrologyTrainings name={user.name} data={user.urology_trainings} />
+            }
+            {updateAddress &&
+                <UpdateAddress name={user.name} user={user} />
             }
         </>
     )

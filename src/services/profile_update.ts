@@ -1,4 +1,4 @@
-import { ProfileAcademic, ProfileAcademicResponse, ProfileDesignation, ProfileDesignationResponse, ProfileUpdate, ProfileUpdateResponse, ProfileUrologyTrainings, ProfileUrologyTrainingsResponse } from "@/types/profile_update.types"
+import { ProfileAcademic, ProfileAcademicResponse, ProfileAddressPayload, ProfileAddressResponse, ProfileDesignation, ProfileDesignationResponse, ProfileUpdate, ProfileUpdateResponse, ProfileUrologyTrainings, ProfileUrologyTrainingsResponse } from "@/types/profile_update.types"
 import { api } from "./api"
 
 
@@ -20,6 +20,11 @@ export const profileUpdateService = {
 
     updateUrologyTrainings: async ({ trainings }: ProfileUrologyTrainings): Promise<ProfileUrologyTrainingsResponse> => {
         const { data } = await api.put("/member/training-in-urology", { trainings })
+        return data
+    },
+
+    updateAddress: async ({ address }: { address: ProfileAddressPayload }): Promise<ProfileAddressResponse> => {
+        const { data } = await api.put("member/profile/address", address)
         return data
     },
 }
