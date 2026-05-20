@@ -14,6 +14,7 @@ import ProfilePageSkeleton from '@/components/profile/skeleton';
 import { UpdateUserProfile } from '@/components/profile/update_profile';
 import { useProfileContext } from '@/context/profile_update_context';
 import UpdateDesignation from '@/components/profile/update_designation';
+import UpdateAcademic from '@/components/profile/update_academic';
 
 
 export type ActiveSection = 'overview' | 'personal' | 'professional' | 'membership' | 'activity'
@@ -126,6 +127,7 @@ export default function UserProfile() {
             {updateDesignation &&
                 <UpdateDesignation name={user.name} data={user.present_designations[0] ?? null} />
             }
+            <UpdateAcademic name={user.name} data={user.academic_qualifications} />
         </>
     )
 }

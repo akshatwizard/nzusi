@@ -27,3 +27,15 @@ export type ProfileDesignationResponse = {
     success: boolean,
     message: string
 }
+
+export type ProfileAcademic = {
+    qualifications: {
+        degree: string,
+        institution: string,
+        year_of_passing: number
+    }[]
+}
+export type ProfileAcademicResponse = {
+    success: boolean,
+    message: string
+}

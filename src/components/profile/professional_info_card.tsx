@@ -34,7 +34,7 @@ function EmptyState({ label, onAdd }: { label: string; onAdd: () => void }) {
 }
 
 export default function ProfessionalInfoCard({ user }: { user: Member }) {
-    const { setUpdateDesignation } = useProfileContext()
+    const { setUpdateDesignation, setUpdateAcademic } = useProfileContext()
     return (
         <ProfileCard title='Professional Details' icon={<Stethoscope size={14} />} >
             <div className='flex flex-col gap-8'>
@@ -83,7 +83,7 @@ export default function ProfessionalInfoCard({ user }: { user: Member }) {
                         <StatusDot status={user.academic_status} />
                     </div>
 
-                    {user.academic_qualifications.length > 0 ? (
+                    {user.academic_qualifications.length > 0 && (
                         <div className='relative'>
                             {/* Timeline line */}
                             <div className='absolute left-4 top-5 bottom-5 w-px bg-slate-100' />
@@ -106,9 +106,8 @@ export default function ProfessionalInfoCard({ user }: { user: Member }) {
                                     ))}
                             </div>
                         </div>
-                    ) : (
-                        <EmptyState label='qualification' onAdd={() => { }} />
                     )}
+                    <EmptyState label='qualification' onAdd={() => { setUpdateAcademic(true) }} />
                 </div>
 
                 {/* ── Urology Trainings ── */}
