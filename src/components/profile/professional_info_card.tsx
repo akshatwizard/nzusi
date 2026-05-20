@@ -26,7 +26,7 @@ function EmptyState({ label, onAdd }: { label: string; onAdd: () => void }) {
     return (
         <button
             onClick={onAdd}
-            className='w-full flex items-center justify-center gap-2 py-5 border border-dashed border-slate-200 rounded-xl text-[12px] text-slate-400 hover:text-fun-blue-600 hover:border-fun-blue-200 hover:bg-fun-blue-50/40 transition-all duration-200 cursor-pointer'
+            className='mt-5 w-full flex items-center justify-center gap-2 py-5 border border-dashed border-slate-200 rounded-xl text-[12px] text-slate-400 hover:text-fun-blue-600 hover:border-fun-blue-200 hover:bg-fun-blue-50/40 transition-all duration-200 cursor-pointer'
         >
             <Plus size={13} /> Add {label}
         </button>
@@ -34,7 +34,7 @@ function EmptyState({ label, onAdd }: { label: string; onAdd: () => void }) {
 }
 
 export default function ProfessionalInfoCard({ user }: { user: Member }) {
-    const { setUpdateDesignation, setUpdateAcademic } = useProfileContext()
+    const { setUpdateDesignation, setUpdateAcademic, setUpdateUrologyTrainings } = useProfileContext()
     return (
         <ProfileCard title='Professional Details' icon={<Stethoscope size={14} />} >
             <div className='flex flex-col gap-8'>
@@ -107,7 +107,10 @@ export default function ProfessionalInfoCard({ user }: { user: Member }) {
                             </div>
                         </div>
                     )}
-                    <EmptyState label='qualification' onAdd={() => { setUpdateAcademic(true) }} />
+                    {
+                        user.academic_qualifications.length <= 3 &&
+                        <EmptyState label='qualification' onAdd={() => setUpdateAcademic(true)} />
+                    }
                 </div>
 
                 {/* ── Urology Trainings ── */}
@@ -120,7 +123,7 @@ export default function ProfessionalInfoCard({ user }: { user: Member }) {
                         <StatusDot status={user.training_status} />
                     </div>
 
-                    {user.urology_trainings.length > 0 ? (
+                    {user.urology_trainings.length > 0 && (
                         <div className='flex flex-col gap-3'>
                             {user.urology_trainings.map((t) => (
                                 <div key={t.id} className='flex items-start gap-4 p-4 rounded-xl border border-slate-100 bg-slate-50/30'>
@@ -139,9 +142,10 @@ export default function ProfessionalInfoCard({ user }: { user: Member }) {
                                 </div>
                             ))}
                         </div>
-                    ) : (
-                        <EmptyState label='urology training' onAdd={() => { }} />
                     )}
+                    {user.urology_trainings.length <= 5 &&
+                        <EmptyState label='urology training' onAdd={() =>setUpdateUrologyTrainings(true)} />
+                    }
                 </div>
 
             </div>

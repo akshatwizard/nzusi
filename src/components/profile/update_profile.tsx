@@ -47,7 +47,7 @@ export function UpdateUserProfile({ user }: { user: Member }) {
         <ModalWrapper
             key={"Profile Update"}
             isOpen={editProfile}
-            onClose={() => setEditProfile(false)}
+            onClose={() => (setEditProfile(false), setSubmitted(false))}
             header={{ title: "Update Your Profile", sub: "Member Profile Update" }}
         >
             {/* Form  */}
@@ -70,7 +70,7 @@ export function UpdateUserProfile({ user }: { user: Member }) {
                                 Thank you, <strong>{user.name}</strong>. Your profile has been submitted.
                             </p>
                             <button
-                                onClick={() => setEditProfile(false)}
+                                onClick={() => (setEditProfile(false), setSubmitted(false))}
                                 className="mt-4 px-6 py-2.5 bg-fun-blue-950 text-white rounded-xl text-sm font-semibold hover:bg-fun-blue-800 transition-colors"
                             >
                                 Close

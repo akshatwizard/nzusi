@@ -11,33 +11,33 @@ import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import ModalWrapper from '../ui/modal_wrapper';
 import { Field, inputCls } from './update_profile';
-import { AcademicQualification } from '@/types/user.types';
+import { UrologyTraining } from '@/types/user.types';
 
-const emptyQualification = (): Omit<AcademicQualification, "id"> => ({
-    degree: '',
-    institution: '',
-    year_of_passing: '' as unknown as string,
+const emptyUrologyTrainings = (): Omit<UrologyTraining, "id"> => ({
+    institution: "",
+    from_date: "",
+    to_date: ""
 });
 
 
-export default function UpdateAcademic({ data, name }: { data: AcademicQualification[]; name: string }) {
+export default function UpdateUrologyTrainings({ data, name }: { data: UrologyTraining[]; name: string }) {
     const [submitted, setSubmitted] = useState(false);
     const { refreshUser } = useAuth();
-    const { updateAcademic, setUpdateAcademic } = useProfileContext();
+    const { updateUrologyTrainings, setUpdateUrologyTrainings } = useProfileContext();
 
-    const [qualifications, setQualifications] = useState<Array<AcademicQualification | Omit<AcademicQualification, 'id'>>>(() =>
+    const [urologyTrainigs, setUrologyTrainigs] = useState<Array<UrologyTraining | Omit<UrologyTraining, 'id'>>>(() =>
         data.length > 0
             ? data.map((q) => ({
                 id: q.id,
-                degree: q.degree ?? '',
-                institution: q.institution ?? '',
-                year_of_passing: q.year_of_passing ?? '',
+                institution: q.institution,
+                from_date: q.from_date,
+                to_date: q.to_date
             }))
-            : [emptyQualification()]
+            : [emptyUrologyTrainings()]
     );
 
-    const updateField = (index: number, key: keyof AcademicQualification, value: string) => {
-        setQualifications((prev) =>
+    const updateField = (index: number, key: keyof UrologyTraining, value: string) => {
+        setUrologyTrainigs((prev) =>
             prev.map((q, i) =>
                 i === index
                     ? { ...q, [key]: value }
@@ -46,19 +46,18 @@ export default function UpdateAcademic({ data, name }: { data: AcademicQualifica
         );
     };
 
-    const addQualification = () => setQualifications((prev) => [...prev, emptyQualification()]);
+    const addUrology = () => setUrologyTrainigs((prev) => [...prev, emptyUrologyTrainings()]);
 
     const removeQualification = (index: number) => {
-        if (qualifications.length === 1) return;
-        setQualifications((prev) => prev.filter((_, i) => i !== index));
+        if (urologyTrainigs.length === 1) return;
+        setUrologyTrainigs((prev) => prev.filter((_, i) => i !== index));
     };
 
     const { mutate, isPending } = useMutation({
         mutationFn: () =>
-            profileUpdateService.updateAcademicDetails({
-                qualifications: qualifications.map((q) => ({
+            profileUpdateService.updateUrologyTrainings({
+                trainings: urologyTrainigs.map((q) => ({
                     ...q,
-                    year_of_passing: Number(q.year_of_passing),
                 })),
             }
             ),
@@ -80,9 +79,9 @@ export default function UpdateAcademic({ data, name }: { data: AcademicQualifica
     return (
         <ModalWrapper
             key="Update academic"
-            isOpen={updateAcademic}
-            onClose={() => (setUpdateAcademic(false), setSubmitted(false))}
-            header={{ title: 'Update Academic Details', sub: 'Member Academic Update' }}
+            isOpen={updateUrologyTrainings}
+            onClose={() => (setUpdateUrologyTrainings(false), setSubmitted(false))}
+            header={{ title: 'Update Urology Trainings Details', sub: 'Member Urology Trainings Update' }}
         >
             <div className="overflow-y-auto flex-1">
                 <AnimatePresence mode="wait">
@@ -102,7 +101,7 @@ export default function UpdateAcademic({ data, name }: { data: AcademicQualifica
                                 Thank you, <strong>{name}</strong>. Your academic details have been updated.
                             </p>
                             <button
-                                onClick={() => (setUpdateAcademic(false), setSubmitted(false))}
+                                onClick={() => (setUpdateUrologyTrainings(false), setSubmitted(false))}
                                 className="mt-4 px-6 py-2.5 bg-fun-blue-950 text-white rounded-xl text-sm font-semibold hover:bg-fun-blue-800 transition-colors"
                             >
                                 Close
@@ -120,7 +119,7 @@ export default function UpdateAcademic({ data, name }: { data: AcademicQualifica
                             className="p-7 flex flex-col gap-6"
                         >
                             <AnimatePresence>
-                                {qualifications.map((q, index) => (
+                                {urologyTrainigs.map((q, index) => (
                                     <motion.div
                                         key={index}
                                         initial={{ opacity: 0, y: -8 }}
@@ -134,7 +133,7 @@ export default function UpdateAcademic({ data, name }: { data: AcademicQualifica
                                             <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
                                                 Qualification {index + 1}
                                             </span>
-                                            {qualifications.length > 1 && (
+                                            {urologyTrainigs.length > 1 && (
                                                 <button
                                                     type="button"
                                                     onClick={() => removeQualification(index)}
@@ -146,16 +145,6 @@ export default function UpdateAcademic({ data, name }: { data: AcademicQualifica
                                             )}
                                         </div>
 
-                                        <Field label="Degree / Qualification" required icon={BookOpen}>
-                                            <input
-                                                required
-                                                value={q.degree}
-                                                onChange={(e) => updateField(index, 'degree', e.target.value)}
-                                                placeholder="MBBS"
-                                                className={inputCls}
-                                            />
-                                        </Field>
-
                                         <Field label="Institution / University" required icon={Building2}>
                                             <input
                                                 required
@@ -166,13 +155,24 @@ export default function UpdateAcademic({ data, name }: { data: AcademicQualifica
                                             />
                                         </Field>
 
-                                        <Field label="Year of Passing" required icon={CalendarDays}>
+                                        <Field label="From date" required icon={CalendarDays}>
                                             <input
                                                 required
-                                                type="number"
-                                                value={q.year_of_passing}
-                                                onChange={(e) => updateField(index, 'year_of_passing', e.target.value)}
-                                                placeholder="2018"
+                                                type="date"
+                                                value={q.from_date}
+                                                onChange={(e) => updateField(index, 'from_date', e.target.value)}
+                                                placeholder="2020-01-01"
+                                                className={inputCls}
+                                            />
+                                        </Field>
+
+                                        <Field label="To date" required icon={CalendarDays}>
+                                            <input
+                                                required
+                                                type="date"
+                                                value={q.to_date}
+                                                onChange={(e) => updateField(index, 'to_date', e.target.value)}
+                                                placeholder="2021-01-01"
                                                 className={inputCls}
                                             />
                                         </Field>
@@ -183,11 +183,11 @@ export default function UpdateAcademic({ data, name }: { data: AcademicQualifica
                             {/* Add another qualification */}
                             <button
                                 type="button"
-                                onClick={addQualification}
+                                onClick={addUrology}
                                 className="w-full py-2.5 border border-dashed border-zinc-300 rounded-xl text-sm text-zinc-500 hover:border-fun-blue-950 hover:text-fun-blue-950 transition-colors flex items-center justify-center gap-2"
                             >
                                 <Plus size={14} />
-                                Add Another Qualification
+                                Add Another Training
                             </button>
 
                             <button
@@ -206,7 +206,7 @@ export default function UpdateAcademic({ data, name }: { data: AcademicQualifica
                                     </>
                                 ) : (
                                     <>
-                                        Update Academic Details
+                                        Update Urology Trainings
                                         <ArrowRight size={14} />
                                     </>
                                 )}

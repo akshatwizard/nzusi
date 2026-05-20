@@ -39,3 +39,15 @@ export type ProfileAcademicResponse = {
     success: boolean,
     message: string
 }
+
+export type ProfileUrologyTrainings = {
+    trainings: {
+        institution: string,
+        from_date: string | Date,
+        to_date: string | Date
+    }[]
+}
+export type ProfileUrologyTrainingsResponse = {
+    success: boolean,
+    message: string
+}

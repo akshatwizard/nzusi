@@ -47,7 +47,7 @@ export default function UpdateDesignation({ data, name }: { data: Des, name: str
         <ModalWrapper
             key={"Update designation"}
             isOpen={updateDesignation}
-            onClose={() => setUpdateDesignation(false)}
+            onClose={() => (setUpdateDesignation(false), setSubmitted(false))}
             header={{ title: "Update Your Designation", sub: "Member Designation Update" }}
         >
             <div className="overflow-y-auto flex-1">
@@ -69,7 +69,7 @@ export default function UpdateDesignation({ data, name }: { data: Des, name: str
                                 Thank you, <strong>{name}</strong>. Your designation has been updated.
                             </p>
                             <button
-                                onClick={() => setUpdateDesignation(false)}
+                                onClick={() => (setUpdateDesignation(false), setSubmitted(false))}
                                 className="mt-4 px-6 py-2.5 bg-fun-blue-950 text-white rounded-xl text-sm font-semibold hover:bg-fun-blue-800 transition-colors"
                             >
                                 Close

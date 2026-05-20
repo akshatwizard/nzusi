@@ -15,6 +15,7 @@ import { UpdateUserProfile } from '@/components/profile/update_profile';
 import { useProfileContext } from '@/context/profile_update_context';
 import UpdateDesignation from '@/components/profile/update_designation';
 import UpdateAcademic from '@/components/profile/update_academic';
+import UpdateUrologyTrainings from '@/components/profile/update_urology_trainings';
 
 
 export type ActiveSection = 'overview' | 'personal' | 'professional' | 'membership' | 'activity'
@@ -28,7 +29,7 @@ const fadeUp: Variants = {
 
 
 export default function UserProfile() {
-    const { editProfile, updateDesignation } = useProfileContext();
+    const { editProfile, updateDesignation, updateAcademic, updateUrologyTrainings } = useProfileContext();
     const { user, loading, isMounted } = useAuth()
     const [activeSection, setActiveSection] = useState<ActiveSection>('overview')
 
@@ -107,15 +108,15 @@ export default function UserProfile() {
                                 </motion.div>
                             )}
 
-                            {/* {(activeSection === 'overview' || activeSection === 'activity') && (
-                            <motion.div
-                                key='activity'
-                                initial='hidden' animate='show' custom={0.18}
-                                variants={fadeUp}
-                            >
-                                <ActivityCard />
-                            </motion.div>
-                        )} */}
+                            {(activeSection === 'overview' || activeSection === 'activity') && (
+                                <motion.div
+                                    key='activity'
+                                    initial='hidden' animate='show' custom={0.18}
+                                    variants={fadeUp}
+                                >
+                                    <ActivityCard />
+                                </motion.div>
+                            )}
 
                         </div>
                     </div>
@@ -127,7 +128,12 @@ export default function UserProfile() {
             {updateDesignation &&
                 <UpdateDesignation name={user.name} data={user.present_designations[0] ?? null} />
             }
-            <UpdateAcademic name={user.name} data={user.academic_qualifications} />
+            {updateAcademic &&
+                <UpdateAcademic name={user.name} data={user.academic_qualifications} />
+            }
+            {updateUrologyTrainings &&
+                <UpdateUrologyTrainings name={user.name} data={user.urology_trainings} />
+            }
         </>
     )
 }
