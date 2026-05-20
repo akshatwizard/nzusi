@@ -28,7 +28,7 @@ function EmptyState({ label, onAdd }: { label: string; onAdd: () => void }) {
             onClick={onAdd}
             className='mt-5 w-full flex items-center justify-center gap-2 py-5 border border-dashed border-slate-200 rounded-xl text-[12px] text-slate-400 hover:text-fun-blue-600 hover:border-fun-blue-200 hover:bg-fun-blue-50/40 transition-all duration-200 cursor-pointer'
         >
-            <Plus size={13} /> Add {label}
+            <Plus size={13} /> Add/Update {label}
         </button>
     )
 }
@@ -49,7 +49,7 @@ export default function ProfessionalInfoCard({ user }: { user: Member }) {
                         <StatusDot status={user.designation_status} />
                     </div>
 
-                    {user.present_designations.length > 0 ? (
+                    {user.present_designations.length > 0 && (
                         <div className='flex flex-col gap-3'>
                             {user.present_designations.map((d, i) => (
                                 <div key={d.id} className={`flex items-start gap-4 p-4 rounded-xl border ${i === 0 ? 'border-fun-blue-200 bg-fun-blue-50/40' : 'border-slate-100 bg-slate-50/30'}`}>
@@ -68,9 +68,10 @@ export default function ProfessionalInfoCard({ user }: { user: Member }) {
                                 </div>
                             ))}
                         </div>
-                    ) : (
-                        <EmptyState label='designation' onAdd={() => setUpdateDesignation(true)} />
                     )}
+                    {user.present_designations.length <= 5 &&
+                        <EmptyState label='designation' onAdd={() => setUpdateDesignation(true)} />
+                    }
                 </div>
 
                 {/* ── Academic Qualifications ── */}
@@ -144,7 +145,7 @@ export default function ProfessionalInfoCard({ user }: { user: Member }) {
                         </div>
                     )}
                     {user.urology_trainings.length <= 5 &&
-                        <EmptyState label='urology training' onAdd={() =>setUpdateUrologyTrainings(true)} />
+                        <EmptyState label='urology training' onAdd={() => setUpdateUrologyTrainings(true)} />
                     }
                 </div>
 
