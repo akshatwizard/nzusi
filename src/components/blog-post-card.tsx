@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { motion } from 'motion/react'
-import { ArrowUpRight, Clock } from 'lucide-react'
+import { ArrowUpRight, Clock, Eye } from 'lucide-react'
 import { BlogPost, CategoryBlogPost } from '@/types/blogs.types'
 import Image from 'next/image'
 
@@ -88,7 +88,7 @@ export function PostCard({ post, index }: Props) {
 
                 <div className='flex flex-col flex-1 p-5'>
                     {categoryName && (
-                        <div className='mb-3'>
+                        <div className='mb-3 flex items-center justify-between'>
                             <span
                                 className='inline-block text-[10px] font-semibold px-2.5 py-1 rounded-full border'
                                 style={{
@@ -99,6 +99,10 @@ export function PostCard({ post, index }: Props) {
                             >
                                 {categoryName}
                             </span>
+                            {post.reading_title && <span className='flex items-center gap-1 text-[10px] text-fun-blue-400'>
+                                <Clock size={9} />
+                                {post.reading_title}
+                            </span>}
                         </div>
                     )}
 
@@ -113,14 +117,14 @@ export function PostCard({ post, index }: Props) {
                     )}
 
                     <div className='flex items-center justify-between mt-auto pt-4 border-t border-fun-blue-50'>
-                        <div className='flex items-center gap-2.5 text-[10px] text-fun-blue-400/50'>
+                        <div className='flex items-center gap-2.5 text-[10px] text-fun-blue-400'>
                             <span>{post.published_at}</span>
                             {post.reading_title && (
                                 <>
                                     <span className='w-0.5 h-0.5 rounded-full bg-fun-blue-300/40' />
                                     <span className='flex items-center gap-1'>
-                                        <Clock size={9} />
-                                        {post.reading_title}
+                                        <Eye size={9} />
+                                        {post.view_count}
                                     </span>
                                 </>
                             )}

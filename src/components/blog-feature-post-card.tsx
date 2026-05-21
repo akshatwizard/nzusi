@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'motion/react'
-import { ArrowUpRight, Clock, User } from 'lucide-react'
+import { ArrowUpRight, Clock, Eye, User } from 'lucide-react'
 import { BlogPost, CategoryBlogPost } from '@/types/blogs.types'
 
 const ACCENT_PALETTE = [
@@ -121,10 +121,10 @@ export function FeaturedPostCard({ post }: { post: BlogPost | CategoryBlogPost }
 
                         <div className='flex items-center justify-between mt-8 pt-5 border-t border-fun-blue-100'>
                             <div className='flex items-center gap-4 text-[11px] text-fun-blue-400/60 flex-wrap'>
-                                {post.user?.name && (
+                                {post.view_count && (
                                     <span className='flex items-center gap-1.5'>
-                                        <User size={11} />
-                                        {post.user.name}
+                                        <Eye size={11} />
+                                        {post.view_count}
                                     </span>
                                 )}
                                 {post.published_at && (
