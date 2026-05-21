@@ -1,13 +1,15 @@
 "use client"
 
 import { blog } from "@/services/blog"
-import { BlogDetailResponse } from "@/types/blogs.types"
+import { BlogDetailResponse, ExtraImages } from "@/types/blogs.types"
 import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { Calendar, Clock, Eye, Tag, ChevronRight, ArrowLeft, User } from "lucide-react"
+import { Calendar, Clock, Eye, Tag, ChevronRight, ArrowLeft, User, ZoomIn, ChevronLeft, X } from "lucide-react"
 import { Section, Wrapper } from "@/components/ui/sections"
+import { AnimatePresence, motion } from "motion/react"
+import { useState } from "react"
 
 
 export default function BlogContent({ slug }: { slug: string }) {
@@ -22,6 +24,7 @@ export default function BlogContent({ slug }: { slug: string }) {
 
     const post = res.data
     const recentPosts = res.recent_post ?? []
+    const galleryImages: [] | ExtraImages[] = Array.isArray(post.images) ? post.images.filter(Boolean) : []
 
     return (
         <>
@@ -34,17 +37,12 @@ export default function BlogContent({ slug }: { slug: string }) {
                         backgroundSize: '36px 36px',
                     }}
                 />
-
                 <div
                     className="absolute -right-20 top-10 w-96 h-96 rounded-full pointer-events-none"
-                    style={{
-                        background:
-                            'radial-gradient(circle, rgba(24,95,165,0.20) 0%, transparent 70%)',
-                    }}
+                    style={{ background: 'radial-gradient(circle, rgba(24,95,165,0.20) 0%, transparent 70%)' }}
                 />
 
                 <Wrapper className="relative z-10 lg:pt-40 md:pt-36 pt-30 pb-18 px-4 md:px-8 lg:px-12">
-
                     <Link
                         href="/blogs-and-news"
                         className="inline-flex items-center gap-2 text-fun-blue-300/70 hover:text-white transition-colors text-xs font-medium mb-8"
@@ -54,65 +52,61 @@ export default function BlogContent({ slug }: { slug: string }) {
                     </Link>
 
                     <div className="max-w-4xl">
-
-                        {/* Category */}
                         <Link
-                            href={"#"}
-                            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full
-                    border border-fun-blue-500/20 bg-fun-blue-500/10
-                    text-fun-blue-300 text-[11px] font-semibold tracking-[0.2em]
-                uppercase hover:bg-fun-blue-500/20 transition-all duration-300"
+                            href="#"
+                            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-fun-blue-500/20 bg-fun-blue-500/10 text-fun-blue-300 text-[11px] font-semibold tracking-[0.2em] uppercase hover:bg-fun-blue-500/20 transition-all duration-300"
                         >
                             <Tag size={10} />
                             {post.category.name}
                         </Link>
 
-                        {/* Title */}
                         <h1 className="mt-6 font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.05] tracking-tight text-white">
                             {post.title}
                         </h1>
 
-                        {/* Subtitle */}
                         {post.short_content && (
                             <p className="mt-6 text-fun-blue-200/50 text-[15px] leading-relaxed max-w-2xl">
                                 {post.short_content}
                             </p>
                         )}
 
-                        {/* Meta */}
                         <div className="flex flex-wrap items-center gap-x-5 gap-y-3 mt-8">
                             <div className="flex items-center gap-2 text-fun-blue-300 text-xs">
                                 <User size={13} />
                                 <span>{post.user.name}</span>
                             </div>
-
                             <div className="w-px h-3 bg-fun-blue-700 hidden md:block" />
-
                             <div className="flex items-center gap-2 text-fun-blue-400 text-xs">
                                 <Calendar size={13} />
                                 <span>{post.published_at}</span>
                             </div>
-
                             <div className="w-px h-3 bg-fun-blue-700 hidden md:block" />
-
                             <div className="flex items-center gap-2 text-fun-blue-400 text-xs">
                                 <Clock size={13} />
                                 <span>{post.reading_title}</span>
                             </div>
-
                             <div className="w-px h-3 bg-fun-blue-700 hidden md:block" />
-
                             <div className="flex items-center gap-2 text-fun-blue-400 text-xs">
                                 <Eye size={13} />
                                 <span>{post.view_count} views</span>
                             </div>
+                            {/* Gallery badge — shows only when images exist */}
+                            {galleryImages.length > 0 && (
+                                <>
+                                    <div className="w-px h-3 bg-fun-blue-700 hidden md:block" />
+                                    <div className="flex items-center gap-2 text-fun-blue-400 text-xs">
+                                        <ZoomIn size={13} />
+                                        <span>{galleryImages.length} photos</span>
+                                    </div>
+                                </>
+                            )}
                         </div>
                     </div>
                 </Wrapper>
 
-                {/* Bottom fade */}
                 <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-fun-blue-700/40 to-transparent" />
             </Section>
+
 
             <Section>
                 <Wrapper>
@@ -158,6 +152,7 @@ export default function BlogContent({ slug }: { slug: string }) {
                             "
                                 dangerouslySetInnerHTML={{ __html: post.long_content }}
                             />
+                            <ImageGallery images={galleryImages} />
 
                             <div className="mt-10 pt-8 border-t border-fun-blue-100 flex items-center justify-between flex-wrap gap-4">
                                 <div className="flex items-center gap-2">
@@ -276,20 +271,18 @@ export default function BlogContent({ slug }: { slug: string }) {
     )
 }
 
+
+
 function BlogDetailSkeleton() {
     return (
         <div className="animate-pulse">
-            {/* Hero skeleton */}
-            <div className="relative w-full h-[52vh]  bg-fun-blue-900">
+            <div className="relative w-full h-[52vh] bg-fun-blue-900">
                 <div className="absolute bottom-0 left-0 right-0 px-4 md:px-8 lg:px-12 pb-8 max-w-7xl mx-auto w-full">
-                    {/* Category badge */}
                     <div className="h-6 w-24 rounded-full bg-fun-blue-800 mb-4" />
-                    {/* Title */}
                     <div className="space-y-3 mb-4">
                         <div className="h-8 w-2/3 rounded-xl bg-fun-blue-800" />
                         <div className="h-8 w-1/2 rounded-xl bg-fun-blue-800" />
                     </div>
-                    {/* Meta row */}
                     <div className="flex gap-4">
                         <div className="h-4 w-32 rounded-lg bg-fun-blue-800" />
                         <div className="h-4 w-20 rounded-lg bg-fun-blue-800" />
@@ -297,72 +290,225 @@ function BlogDetailSkeleton() {
                     </div>
                 </div>
             </div>
-
-            {/* Body skeleton */}
             <div className="w-full max-w-7xl mx-auto px-4 md:px-8 lg:px-12 py-12">
                 <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-10">
-                    {/* Article */}
                     <div className="space-y-4">
-                        <div className="h-5 w-full rounded-lg bg-fun-blue-100" />
-                        <div className="h-5 w-11/12 rounded-lg bg-fun-blue-100" />
+                        {[1, 2, 3].map(i => <div key={i} className="h-5 w-full rounded-lg bg-fun-blue-100" />)}
                         <div className="h-5 w-4/5 rounded-lg bg-fun-blue-100" />
                         <div className="h-48 w-full rounded-2xl bg-fun-blue-100 mt-6" />
-                        <div className="h-5 w-full rounded-lg bg-fun-blue-100 mt-4" />
-                        <div className="h-5 w-10/12 rounded-lg bg-fun-blue-100" />
-                        <div className="h-5 w-3/4 rounded-lg bg-fun-blue-100" />
+                        {[1, 2, 3].map(i => <div key={i} className="h-5 w-full rounded-lg bg-fun-blue-100" />)}
                         <div className="h-7 w-1/3 rounded-lg bg-fun-blue-200 mt-8" />
-                        <div className="h-5 w-full rounded-lg bg-fun-blue-100" />
-                        <div className="h-5 w-11/12 rounded-lg bg-fun-blue-100" />
-                        <div className="h-5 w-9/12 rounded-lg bg-fun-blue-100" />
+                        {[1, 2].map(i => <div key={i} className="h-5 w-full rounded-lg bg-fun-blue-100" />)}
                     </div>
-
-                    {/* Sidebar */}
                     <div className="flex flex-col gap-5">
-                        {/* Author card */}
-                        <div className="rounded-2xl border border-fun-blue-100 bg-white p-5">
-                            <div className="h-3 w-20 rounded bg-fun-blue-100 mb-4" />
-                            <div className="flex gap-3">
-                                <div className="w-10 h-10 rounded-full bg-fun-blue-100 shrink-0" />
-                                <div className="flex-1 space-y-2">
-                                    <div className="h-4 w-3/4 rounded bg-fun-blue-100" />
-                                    <div className="h-3 w-full rounded bg-fun-blue-100" />
-                                    <div className="h-3 w-2/3 rounded bg-fun-blue-100" />
+                        {[1, 2, 3].map(i => (
+                            <div key={i} className="rounded-2xl border border-fun-blue-100 bg-white p-5">
+                                <div className="h-3 w-20 rounded bg-fun-blue-100 mb-4" />
+                                <div className="space-y-2">
+                                    {[1, 2, 3].map(j => <div key={j} className="h-3 w-full rounded bg-fun-blue-100" />)}
                                 </div>
                             </div>
-                        </div>
-
-                        {/* Info card */}
-                        <div className="rounded-2xl border border-fun-blue-100 bg-white p-5">
-                            <div className="h-3 w-20 rounded bg-fun-blue-100 mb-4" />
-                            <div className="space-y-3">
-                                {[1, 2, 3, 4].map(i => (
-                                    <div key={i} className="flex justify-between">
-                                        <div className="h-3 w-20 rounded bg-fun-blue-100" />
-                                        <div className="h-3 w-16 rounded bg-fun-blue-100" />
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Recent posts card */}
-                        <div className="rounded-2xl border border-fun-blue-100 bg-white p-5">
-                            <div className="h-3 w-24 rounded bg-fun-blue-100 mb-4" />
-                            <div className="space-y-3">
-                                {[1, 2, 3, 4].map(i => (
-                                    <div key={i} className="flex gap-3 items-start">
-                                        <div className="w-14 h-14 rounded-lg bg-fun-blue-100 shrink-0" />
-                                        <div className="flex-1 space-y-1.5">
-                                            <div className="h-3 w-full rounded bg-fun-blue-100" />
-                                            <div className="h-3 w-4/5 rounded bg-fun-blue-100" />
-                                            <div className="h-3 w-20 rounded bg-fun-blue-100" />
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </div>
         </div>
+    )
+}
+
+
+function Lightbox({ images, startIndex, onClose }: { images: string[], startIndex: number, onClose: () => void }) {
+    const [current, setCurrent] = useState(startIndex)
+
+    const prev = () => setCurrent(i => (i - 1 + images.length) % images.length)
+    const next = () => setCurrent(i => (i + 1) % images.length)
+
+    return (
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
+            onClick={onClose}
+        >
+            {/* Close */}
+            <button
+                onClick={onClose}
+                className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors z-10"
+            >
+                <X size={18} className="text-white" />
+            </button>
+
+            {/* Counter */}
+            <div className="absolute top-5 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-full bg-white/10 text-white text-xs font-medium">
+                {current + 1} / {images.length}
+            </div>
+
+            {/* Prev */}
+            {images.length > 1 && (
+                <button
+                    onClick={e => { e.stopPropagation(); prev() }}
+                    className="absolute left-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors z-10"
+                >
+                    <ChevronLeft size={20} className="text-white" />
+                </button>
+            )}
+
+            {/* Image */}
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={current}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                    onClick={e => e.stopPropagation()}
+                    className="relative max-w-5xl max-h-[80vh] w-full h-full flex items-center justify-center"
+                >
+                    <img
+                        src={images[current]}
+                        alt={`Image ${current + 1}`}
+                        className="max-w-full max-h-[80vh] object-contain rounded-xl"
+                    />
+                </motion.div>
+            </AnimatePresence>
+
+            {/* Next */}
+            {images.length > 1 && (
+                <button
+                    onClick={e => { e.stopPropagation(); next() }}
+                    className="absolute right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors z-10"
+                >
+                    <ChevronRight size={20} className="text-white" />
+                </button>
+            )}
+
+            {/* Thumbnail strip */}
+            {images.length > 1 && (
+                <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2 px-4 overflow-x-auto max-w-lg">
+                    {images.map((img, i) => (
+                        <button
+                            key={i}
+                            onClick={e => { e.stopPropagation(); setCurrent(i) }}
+                            className={`relative w-14 h-10 rounded-lg overflow-hidden shrink-0 border-2 transition-all ${i === current ? 'border-white' : 'border-white/20 opacity-50'}`}
+                        >
+                            <img src={img} alt="" className="w-full h-full object-cover" />
+                        </button>
+                    ))}
+                </div>
+            )}
+        </motion.div>
+    )
+}
+
+function ImageGallery({ images }: { images: [] | ExtraImages[] }) {
+    const [lightboxIdx, setLightboxIdx] = useState<number | null>(null)
+
+    if (!images || images.length === 0) return null
+
+    const imageUrls = images.map((img) => img.image)
+    const isSingle = images.length === 1
+    const isTwo = images.length === 2
+    const isThree = images.length === 3
+
+    return (
+        <>
+            <div className="mt-8 mb-2">
+                <div className="flex items-center gap-3 mb-4">
+                    <div className="h-px w-5 bg-fun-blue-200" />
+                    <span className="text-[11px] font-bold uppercase tracking-widest text-fun-blue-400">
+                        Photo Gallery · {images.length} {images.length === 1 ? 'image' : 'images'}
+                    </span>
+                </div>
+
+                {/* Layout changes based on image count */}
+                {isSingle && (
+                    <button
+                        onClick={() => setLightboxIdx(0)}
+                        className="group relative w-full rounded-2xl overflow-hidden aspect-video border border-fun-blue-100"
+                    >
+                        <Image src={images[0].image} alt="Gallery image" fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                            <ZoomIn size={24} className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </div>
+                    </button>
+                )}
+
+                {isTwo && (
+                    <div className="grid grid-cols-2 gap-2">
+                        {images.map((img, i) => (
+                            <button key={i} onClick={() => setLightboxIdx(i)}
+                                className="group relative rounded-2xl overflow-hidden aspect-video border border-fun-blue-100">
+                                <Image src={img.image} alt={`Gallery ${i + 1}`} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors flex items-center justify-center">
+                                    <ZoomIn size={20} className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </div>
+                            </button>
+                        ))}
+                    </div>
+                )}
+
+                {isThree && (
+                    <div className="grid grid-cols-2 gap-2">
+                        <button onClick={() => setLightboxIdx(0)}
+                            className="group relative rounded-2xl overflow-hidden row-span-2 aspect-square border border-fun-blue-100">
+                            <Image src={images[0].image} alt="Gallery 1" fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors flex items-center justify-center">
+                                <ZoomIn size={22} className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                            </div>
+                        </button>
+                        {images.slice(1).map((img, i) => (
+                            <button key={i + 1} onClick={() => setLightboxIdx(i + 1)}
+                                className="group relative rounded-2xl overflow-hidden aspect-video border border-fun-blue-100">
+                                <Image src={img.image} alt={`Gallery ${i + 2}`} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors flex items-center justify-center">
+                                    <ZoomIn size={18} className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </div>
+                            </button>
+                        ))}
+                    </div>
+                )}
+
+                {images.length >= 4 && (
+                    <div className="grid grid-cols-2 gap-2">
+                        {/* Large first image */}
+                        <button onClick={() => setLightboxIdx(0)}
+                            className="group relative rounded-2xl overflow-hidden col-span-2 aspect-video border border-fun-blue-100">
+                            <Image src={images[0].image} alt="Gallery 1" fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                                <ZoomIn size={24} className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                            </div>
+                        </button>
+
+                        {/* Remaining as 2-col grid, last one shows "+N more" overlay */}
+                        {images.slice(1, 4).map((img, i) => {
+                            const actualIdx = i + 1
+                            const isLast = i === 2 && images.length > 4
+                            return (
+                                <button key={actualIdx} onClick={() => setLightboxIdx(actualIdx)}
+                                    className="group relative rounded-2xl overflow-hidden aspect-video border border-fun-blue-100">
+                                    <Image src={img.image} alt={`Gallery ${actualIdx + 1}`} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                                    {isLast ? (
+                                        <div className="absolute inset-0 bg-fun-blue-950/60 flex items-center justify-center">
+                                            <span className="text-white font-bold text-xl">+{images.length - 4}</span>
+                                        </div>
+                                    ) : (
+                                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors flex items-center justify-center">
+                                            <ZoomIn size={18} className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        </div>
+                                    )}
+                                </button>
+                            )
+                        })}
+                    </div>
+                )}
+            </div>
+
+            <AnimatePresence>
+                {lightboxIdx !== null && (
+                    <Lightbox images={imageUrls} startIndex={lightboxIdx} onClose={() => setLightboxIdx(null)} />
+                )}
+            </AnimatePresence>
+        </>
     )
 }

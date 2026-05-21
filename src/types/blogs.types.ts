@@ -73,7 +73,13 @@ export type BlogDetails = {
     category: { id: number; name: string; slug: string }
     user: { id: number; name: string }
     label: string | null
-    images: string[]
+    images: ExtraImages[] | []
+}
+
+export type ExtraImages = {
+    id: number,
+    title: string | null,
+    image: string
 }
 
 export type RecentPost = {
