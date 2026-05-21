@@ -15,7 +15,7 @@ export default function DesktopMenu() {
 
 
     return (
-        <div className="flex-1 hidden md:flex items-center gap-1 h-full justify-end">
+        <div className="flex-1 hidden md:flex items-center gap-1 h-10 justify-end">
             {
                 Menu.map((item, idx) => {
                     const isActive = activePath(item.path);
