@@ -52,13 +52,13 @@ export default function BlogContent({ slug }: { slug: string }) {
                     </Link>
 
                     <div className="max-w-4xl">
-                        <Link
+                        {post.category && <Link
                             href="#"
                             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-fun-blue-500/20 bg-fun-blue-500/10 text-fun-blue-300 text-[11px] font-semibold tracking-[0.2em] uppercase hover:bg-fun-blue-500/20 transition-all duration-300"
                         >
                             <Tag size={10} />
                             {post.category.name}
-                        </Link>
+                        </Link>}
 
                         <h1 className="mt-6 font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.05] tracking-tight text-white">
                             {post.title}
@@ -155,17 +155,17 @@ export default function BlogContent({ slug }: { slug: string }) {
                             <ImageGallery images={galleryImages} />
 
                             <div className="mt-10 pt-8 border-t border-fun-blue-100 flex items-center justify-between flex-wrap gap-4">
-                                <div className="flex items-center gap-2">
+                                {post.category && <div className="flex items-center gap-2">
                                     <span className="text-[11px] text-fun-blue-400 uppercase tracking-widest font-semibold">Category</span>
                                     <Link
-                                        href={`/blogs/category/${post.category.slug}`}
+                                        href={`/blogs-and-news/category/${post.category.slug}`}
                                         className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-fun-blue-100 text-fun-blue-700 text-xs font-semibold hover:bg-fun-blue-200 transition-colors"
                                     >
                                         {post.category.name}
                                     </Link>
-                                </div>
+                                </div>}
                                 <Link
-                                    href="/blogs"
+                                    href="/blogs-and-news"
                                     className="inline-flex items-center gap-2 text-xs font-semibold text-fun-blue-600 hover:text-fun-blue-800 transition-colors"
                                 >
                                     <ArrowLeft size={12} />
@@ -207,7 +207,7 @@ export default function BlogContent({ slug }: { slug: string }) {
                                         { icon: Calendar, label: "Published", value: post.published_at },
                                         { icon: Clock, label: "Read time", value: post.reading_title },
                                         { icon: Eye, label: "Views", value: `${post.view_count}` },
-                                        { icon: Tag, label: "Category", value: post.category.name },
+                                        { icon: Tag, label: "Category", value: post.category?.name },
                                     ].map(({ icon: Icon, label, value }) => (
                                         <div key={label} className="flex items-center justify-between">
                                             <div className="flex items-center gap-2 text-fun-blue-400">
@@ -228,7 +228,7 @@ export default function BlogContent({ slug }: { slug: string }) {
                                         {recentPosts.slice(0, 5).map((recent) => (
                                             <Link
                                                 key={recent.id}
-                                                href={`/blogs/${recent.slug}`}
+                                                href={`/blogs-and-news/${recent.slug}`}
                                                 className="group flex items-start gap-3 p-2 -mx-2 rounded-xl hover:bg-fun-blue-50 transition-colors"
                                             >
                                                 {recent.image && (

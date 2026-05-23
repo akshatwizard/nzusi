@@ -70,7 +70,7 @@ export type BlogDetails = {
     meta_title: string
     meta_description: string
     main_image: string
-    category: { id: number; name: string; slug: string }
+    category: { id: number; name: string; slug: string } | null
     user: { id: number; name: string }
     label: string | null
     images: ExtraImages[] | []
