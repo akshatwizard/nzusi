@@ -53,9 +53,9 @@ export default function Hero() {
                             variants={fadeUp}
                             className="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.08] text-fun-blue-50 mb-2"
                         >
-                            Advancing{' '}
+                            North Zone Chapter of
                             <em className="text-fun-blue-400">
-                                Urological
+                                Urological Society
                             </em>
                         </motion.h1>
                         <motion.h2
@@ -65,7 +65,7 @@ export default function Hero() {
                             variants={fadeUp}
                             className="text-4xl md:text-5xl lg:text-6xl leading-[1.08] text-fun-blue-200/70 mb-6"
                         >
-                            Science Across India
+                            of India
                         </motion.h2>
 
                         <motion.p
