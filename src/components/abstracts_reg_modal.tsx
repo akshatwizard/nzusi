@@ -4,7 +4,8 @@ import { motion, AnimatePresence } from 'motion/react'
 import {
     X, ChevronRight, User, Mail,
     Building2, Phone, GraduationCap,
-    CheckCircle2, ArrowRight, Upload, FileText
+    CheckCircle2, ArrowRight, Upload, FileText,
+    IdCard
 } from 'lucide-react'
 import { useMutation } from '@tanstack/react-query';
 import { api } from '@/services/api';
@@ -23,6 +24,7 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
         last_name: '',
         email: '',
         phone: '',
+        membership_no:'',
         institution: '',
         designation: '',
         city: '',
@@ -222,6 +224,15 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
                                         value={form.phone}
                                         onChange={e => update('phone', e.target.value)}
                                         placeholder="+91 98765 43210"
+                                        className={inputCls}
+                                    />
+                                </Field>
+                                <Field label="Membership No." icon={IdCard}>
+                                    <input
+                                        type="text"
+                                        value={form.membership_no}
+                                        onChange={e => update('membership_no', e.target.value)}
+                                        placeholder="RM000012"
                                         className={inputCls}
                                     />
                                 </Field>
