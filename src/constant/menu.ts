@@ -53,4 +53,9 @@ export const Menu: MenuType[] = [
     path: "/blogs-and-news",
     subMenu: null,
   },
+  {
+    name: "YouTube",
+    path: "https://www.youtube.com/@nzusioffice7256b",
+    subMenu: null,
+  },
 ];
