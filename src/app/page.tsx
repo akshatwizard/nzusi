@@ -20,7 +20,7 @@ export default function HomePage() {
       <BlogSection />
       <AbstractsSection />
       <EventsSection />
-      <LegacyStrip />
+      {/* <LegacyStrip /> */}
       <MembershipSection />
       <CouncilSection />
       <ResourcesSection />

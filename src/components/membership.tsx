@@ -4,6 +4,7 @@ import { Section, Wrapper } from "@/components/ui/sections"
 import { motion, useInView } from "motion/react"
 import { useRef } from "react"
 import { CheckCircle2, ArrowRight, Users } from "lucide-react"
+import Link from "next/link"
 
 const benefits = [
     "Access to all NZUSI conferences & CMEs at member rates",
@@ -93,19 +94,20 @@ export default function MembershipSection() {
                             transition={{ duration: 0.5, delay: 0.4 }}
                             className="flex flex-col sm:flex-row gap-3"
                         >
-                            <a
-                                href="/membership/apply"
+                            <Link
+                                href="https://1c4098e6-0cb3-438e-8c36-f2acc1587c38.filesusr.com/ugd/02b867_fd810af167bf4228a16d526ef68be544.pdf"
+                                target="_blank"
                                 className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-fun-blue-100 text-fun-blue-900 rounded-lg font-semibold text-sm hover:bg-white transition-colors duration-200"
                             >
                                 Apply for Membership
                                 <ArrowRight size={14} />
-                            </a>
-                            <a
-                                href="/about/constitution"
+                            </Link>
+                            <Link
+                                href="/about"
                                 className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-fun-blue-700 text-fun-blue-200 rounded-lg font-semibold text-sm hover:border-fun-blue-500 transition-colors duration-200"
                             >
                                 View Constitution
-                            </a>
+                            </Link>
                         </motion.div>
                     </div>
 
