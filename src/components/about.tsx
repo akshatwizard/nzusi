@@ -102,24 +102,6 @@ function AboutLeft({ inView }: { inView: boolean }) {
                     </motion.div>
                 ))}
             </div>
-
-            {/* CTA */}
-            <motion.div
-                initial="hidden" animate={inView ? 'show' : 'hidden'} custom={0.52}
-                variants={fadeUp}
-                className="mt-8"
-            >
-                <Link
-                    href="/membership"
-                    className="group inline-flex items-center gap-2 text-sm font-semibold text-fun-blue-600 hover:text-fun-blue-700 transition-colors duration-200"
-                >
-                    Learn about membership
-                    <ArrowRight
-                        size={15}
-                        className="transition-transform duration-200 group-hover:translate-x-1"
-                    />
-                </Link>
-            </motion.div>
         </div>
     )
 }
@@ -198,7 +180,7 @@ function AscentCard({ inView }: { inView: boolean }) {
 
                     {/* CTAs */}
                     <div className="flex flex-col gap-2.5">
-                        <a
+                        <Link
                             href="https://youtu.be/q4o8F8pDtVg"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -209,15 +191,15 @@ function AscentCard({ inView }: { inView: boolean }) {
                                 size={13}
                                 className="opacity-70 group-hover:opacity-100 transition-opacity"
                             />
-                        </a>
-                        <a
+                        </Link>
+                        <Link
                             href="https://us02web.zoom.us/j/85025121941"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center justify-center gap-2 text-fun-blue-300/70 hover:text-fun-blue-200 text-[12px] font-medium py-2.5 px-5 rounded-xl border border-white/[0.07] hover:border-white/[0.14] transition-all duration-200"
                         >
                             Join on Zoom
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -239,7 +221,7 @@ function AscentCard({ inView }: { inView: boolean }) {
                         Nov 27–29 · Amritsar, Punjab
                     </div>
                 </div>
-                <a
+                <Link
                     href="/events"
                     className="group shrink-0 flex items-center gap-1.5 text-[12px] font-semibold text-fun-blue-600 hover:text-fun-blue-700 whitespace-nowrap"
                 >
@@ -248,7 +230,7 @@ function AscentCard({ inView }: { inView: boolean }) {
                         size={13}
                         className="transition-transform duration-200 group-hover:translate-x-0.5"
                     />
-                </a>
+                </Link>
             </motion.div>
         </motion.div>
     )
