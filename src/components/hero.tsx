@@ -2,8 +2,9 @@
 import { Section, Wrapper } from './ui/sections'
 import { motion } from 'motion/react'
 import { HeroBackground } from './hero-background';
-import { ArrowRight, Calendar, ChevronRight, MapPin } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import { HeroCarousel } from './hero_slider';
+import Link from 'next/link';
 
 
 const EXPLORE_TAGS = ['Membership', 'Adyatan Journal', 'NZUSICON 2026', 'Education', 'Council']
@@ -86,17 +87,10 @@ export default function Hero() {
                             variants={fadeUp}
                             className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-10"
                         >
-                            <button className="group flex items-center gap-2 bg-fun-blue-600 hover:bg-fun-blue-500 text-fun-blue-50 font-semibold text-sm px-5 py-3 rounded-lg border border-fun-blue-400/40 transition-all duration-200 cursor-pointer">
-                                Become a Member
-                                <ArrowRight
-                                    size={15}
-                                    className="transition-transform duration-200 group-hover:translate-x-1"
-                                />
-                            </button>
-                            <button className="flex items-center gap-2 text-fun-blue-200/70 hover:text-fun-blue-100 font-medium text-sm px-4 py-3 rounded-lg border border-white/10 hover:border-white/20 transition-all duration-200 cursor-pointer">
+                            <Link href={"/events"}  className="group flex items-center gap-2 bg-fun-blue-600 hover:bg-fun-blue-500 text-fun-blue-50 font-semibold text-sm px-5 py-3 rounded-lg border border-fun-blue-400/40 transition-all duration-200 cursor-pointer">
                                 <Calendar size={14} />
                                 View Events
-                            </button>
+                            </Link>
                         </motion.div>
 
                         <motion.div
@@ -125,7 +119,7 @@ export default function Hero() {
                     </div>
 
                     {/* <HeroRightColumn /> */}
-                    <HeroCarousel/>
+                    <HeroCarousel />
                 </div>
 
                 {/* ── Explore strip ── */}
