@@ -86,7 +86,7 @@ export default function BlogSection() {
                         variants={fadeUp}
                     >
                         <Link
-                            href="/blog"
+                            href="/blogs-and-news"
                             className="group inline-flex items-center gap-2 text-[12px] font-semibold text-fun-blue-400/70 hover:text-fun-blue-300 border border-white/8 hover:border-white/18 rounded-lg px-4 py-2.5 transition-all duration-200"
                         >
                             View all posts
