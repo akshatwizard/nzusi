@@ -48,7 +48,7 @@ export default function DesktopMenu({ openModal }: { openModal: () => void }) {
             {hasSubmenu ? (
               <button
                 type="button"
-                className={`relative px-2.5 h-full w-max font-medium text-sm flex items-center gap-1 transition-colors ${
+                className={`relative px-1.5 h-full w-max font-medium text-sm flex items-center gap-1 transition-colors cursor-pointer ${
                   isActive ? "text-fun-blue-400" : "text-white"
                 }`}
               >
@@ -64,7 +64,7 @@ export default function DesktopMenu({ openModal }: { openModal: () => void }) {
             ) : (
               <Link
                 href={item.path}
-                className={`relative px-2.5 h-full w-max font-medium text-sm flex items-center transition-colors ${
+                className={`relative px-1.5 h-full w-max font-medium text-sm flex items-center transition-colors ${
                   isActive ? "text-fun-blue-400" : "text-white"
                 }`}
               >
@@ -106,7 +106,7 @@ export default function DesktopMenu({ openModal }: { openModal: () => void }) {
                   transition={{
                     duration: 0.2,
                   }}
-                  className="absolute top-full left-0 mt-3 min-w-55 rounded-2xl border border-white/20 bg-fun-blue-900/95 backdrop-blur-xl shadow-2xl overflow-hidden z-50"
+                  className="absolute top-full left-0 mt-3 min-w-55 rounded-xl border border-white/20 bg-fun-blue-900/95 backdrop-blur-xl shadow-2xl overflow-hidden z-50"
                 >
                   <div className="p-2">
                     {item.subMenu?.map((subItem) => {

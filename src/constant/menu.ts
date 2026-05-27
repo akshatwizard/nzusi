@@ -30,12 +30,12 @@ export const Menu: MenuType[] = [
   //     path: "/membershop"
   // },
   {
-    name: "Education",
+    name: "Public Awareness",
     path: "/education",
     subMenu: null,
   },
   {
-    name: "Abstracts",
+    name: "NZUSICON '26'",
     path: "#",
     subMenu: [
       {
@@ -54,7 +54,7 @@ export const Menu: MenuType[] = [
     subMenu: null,
   },
   {
-    name: "YouTube",
+    name: "NZI YouTube Channel",
     path: "https://www.youtube.com/@nzusioffice7256b",
     subMenu: null,
   },
