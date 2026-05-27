@@ -24,7 +24,9 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
         last_name: '',
         email: '',
         phone: '',
-        membership_no:'',
+        nzusi_membership_no: '',
+        usi_membership_no: '',
+        conf_reg_no: '',
         institution: '',
         designation: '',
         city: '',
@@ -34,6 +36,7 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
         authors: '',
         corresponding_author: '',
         abstract_body: '',
+        video_link: ''
     })
 
     const update = (k: keyof typeof form, v: string) =>
@@ -227,14 +230,35 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
                                         className={inputCls}
                                     />
                                 </Field>
-                                <Field label="Membership No." icon={IdCard}>
+                                <Field label="NZUSI Membership No." icon={IdCard}>
                                     <input
                                         type="text"
-                                        value={form.membership_no}
-                                        onChange={e => update('membership_no', e.target.value)}
+                                        value={form.nzusi_membership_no}
+                                        onChange={e => update('nzusi_membership_no', e.target.value)}
                                         placeholder="RM000012"
                                         className={inputCls}
                                     />
+                                </Field>
+                                <Field label="USI Membership No." icon={IdCard}>
+                                    <input
+                                        type="text"
+                                        value={form.usi_membership_no}
+                                        onChange={e => update('usi_membership_no', e.target.value)}
+                                        placeholder="USI000132"
+                                        className={inputCls}
+                                    />
+                                </Field>
+                                <Field label="Conference Registration No." icon={IdCard}>
+                                    <input
+                                        type="text"
+                                        value={form.conf_reg_no}
+                                        onChange={e => update('conf_reg_no', e.target.value)}
+                                        placeholder="NZUSI1211"
+                                        className={inputCls}
+                                    />
+                                    <span className='text-[11px] italic text-red-500 font-light'>
+                                        "Last date for conference registration is 31st August."
+                                    </span>
                                 </Field>
                                 <Field label="Institution / Hospital" icon={Building2}>
                                     <input
@@ -331,6 +355,14 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
                                         value={form.corresponding_author}
                                         onChange={e => update('corresponding_author', e.target.value)}
                                         placeholder="Dr A Kumar"
+                                        className={inputCls}
+                                    />
+                                </Field>
+                                <Field label="Video Link">
+                                    <input
+                                        value={form.video_link}
+                                        onChange={e => update('video_link', e.target.value)}
+                                        placeholder="https://youtube.com/dfkjasd_wed"
                                         className={inputCls}
                                     />
                                 </Field>
