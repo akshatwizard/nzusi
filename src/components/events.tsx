@@ -5,6 +5,7 @@ import { motion, useInView, AnimatePresence } from "motion/react"
 import { useRef, useState } from "react"
 import { Calendar, MapPin, ArrowUpRight, Users, Tag, ChevronRight } from "lucide-react"
 import { ALL_EVENTS } from "@/constant/events"
+import Link from "next/link"
 
 const FILTERS = ["All", "NZUSI", "USI"]
 const CATEGORIES = ["All Categories", "Conference", "CME", "Academic", "Conclave"]
@@ -308,7 +309,7 @@ export default function EventsSection() {
                         initial={{ opacity: 0 }}
                         animate={isInView ? { opacity: 1 } : {}}
                         transition={{ duration: 0.5, delay: 0.15 }}
-                        className="flex items-center gap-0 overflow-x-auto pb-1 scrollbar-hide"
+                        className="flex items-center gap-0 overflow-x-auto pb-1 scrollbar-none"
                     >
                         {ALL_EVENTS.map((e, i) => {
                             const ts = tagStyle[e.tag]
@@ -427,12 +428,12 @@ export default function EventsSection() {
                                 Full members can bid to organise conferences and CMEs under the NZUSI aegis.
                             </p>
                         </div>
-                        <a
-                            href="/about/bids"
+                        <Link
+                            href="/about"
                             className="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 bg-fun-blue-100 text-fun-blue-900 rounded-xl font-semibold text-xs hover:bg-white transition-colors"
                         >
                             View Bid Guidelines <ArrowUpRight size={12} />
-                        </a>
+                        </Link>
                     </motion.div>
 
                 </div>
