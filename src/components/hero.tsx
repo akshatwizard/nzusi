@@ -87,7 +87,7 @@ export default function Hero() {
                             variants={fadeUp}
                             className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-10"
                         >
-                            <Link href={"/events"}  className="group flex items-center gap-2 bg-fun-blue-600 hover:bg-fun-blue-500 text-fun-blue-50 font-semibold text-sm px-5 py-3 rounded-lg border border-fun-blue-400/40 transition-all duration-200 cursor-pointer">
+                            <Link href={"/events"} className="group flex items-center gap-2 bg-fun-blue-600 hover:bg-fun-blue-500 text-fun-blue-50 font-semibold text-sm px-5 py-3 rounded-lg border border-fun-blue-400/40 transition-all duration-200 cursor-pointer">
                                 <Calendar size={14} />
                                 View Events
                             </Link>
@@ -135,7 +135,7 @@ export default function Hero() {
                         {EXPLORE_TAGS.map((tag) => (
                             <span
                                 key={tag}
-                                className="text-[11px] text-fun-blue-400/80 border border-fun-blue-400/20 rounded-full px-2.5 py-1 cursor-pointer hover:text-fun-blue-300/60 hover:border-fun-blue-400/20 transition-colors duration-200"
+                                className="text-[11px] text-fun-blue-400/80 border border-fun-blue-400/20 rounded-full px-2.5 py-1 select-none hover:text-fun-blue-300/60 hover:border-fun-blue-400/20 transition-colors duration-200"
                             >
                                 {tag}
                             </span>
