@@ -169,12 +169,11 @@ export default function BlogContent({ slug }: { slug: string }) {
                             <div className="mt-10 pt-8 border-t border-fun-blue-100 flex items-center justify-between flex-wrap gap-4">
                                 {post.category && <div className="flex items-center gap-2">
                                     <span className="text-[11px] text-fun-blue-400 uppercase tracking-widest font-semibold">Category</span>
-                                    <Link
-                                        href={`/blogs-and-news/category/${post.category.slug}`}
-                                        className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-fun-blue-100 text-fun-blue-700 text-xs font-semibold hover:bg-fun-blue-200 transition-colors"
+                                    <span
+                                        className="select-none inline-flex items-center gap-1 px-3 py-1 rounded-full bg-fun-blue-100 text-fun-blue-700 text-xs font-semibold hover:bg-fun-blue-200 transition-colors"
                                     >
                                         {post.category.name}
-                                    </Link>
+                                    </span>
                                 </div>}
                                 <Link
                                     href="/blogs-and-news"
