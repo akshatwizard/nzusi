@@ -109,7 +109,7 @@ export default function UserProfile() {
                                 </motion.div>
                             )}
 
-                            {(activeSection === 'overview' || activeSection === 'activity') && (
+                            {/* {(activeSection === 'overview' || activeSection === 'activity') && (
                                 <motion.div
                                     key='activity'
                                     initial='hidden' animate='show' custom={0.18}
@@ -117,7 +117,7 @@ export default function UserProfile() {
                                 >
                                     <ActivityCard />
                                 </motion.div>
-                            )}
+                            )} */}
 
                         </div>
                     </div>
