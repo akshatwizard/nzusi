@@ -48,25 +48,23 @@ export default function DesktopMenu({ openModal }: { openModal: () => void }) {
             {hasSubmenu ? (
               <button
                 type="button"
-                className={`relative px-1.5 h-full w-max font-medium text-sm flex items-center gap-1 transition-colors cursor-pointer ${
-                  isActive ? "text-fun-blue-400" : "text-white"
-                }`}
+                className={`relative px-1.5 h-full w-max font-medium text-sm flex items-center gap-1 transition-colors cursor-pointer ${isActive ? "text-fun-blue-400" : "text-white"
+                  }`}
               >
                 <span>{item.name}</span>
 
                 <ChevronDown
                   size={16}
-                  className={`transition-transform duration-300 ${
-                    openSubmenu === idx ? "rotate-180" : ""
-                  }`}
+                  className={`transition-transform duration-300 ${openSubmenu === idx ? "rotate-180" : ""
+                    }`}
                 />
               </button>
             ) : (
               <Link
                 href={item.path}
-                className={`relative px-1.5 h-full w-max font-medium text-sm flex items-center transition-colors ${
-                  isActive ? "text-fun-blue-400" : "text-white"
-                }`}
+                target={item.path.startsWith("https") ? "_blank" : "_self"}
+                className={`relative px-1.5 h-full w-max font-medium text-sm flex items-center transition-colors ${isActive ? "text-fun-blue-400" : "text-white"
+                  }`}
               >
                 <span>{item.name}</span>
               </Link>
@@ -117,11 +115,10 @@ export default function DesktopMenu({ openModal }: { openModal: () => void }) {
                         <Link
                           key={subItem.name}
                           href={subItem.path}
-                          className={`flex items-center px-4 py-3 rounded-xl text-sm transition-all ${
-                            subActive
+                          className={`flex items-center px-4 py-3 rounded-xl text-sm transition-all ${subActive
                               ? "bg-fun-blue-500/15 text-fun-blue-400"
                               : "text-white hover:bg-white/5"
-                          }`}
+                            }`}
                         >
                           {subItem.name}
                         </Link>

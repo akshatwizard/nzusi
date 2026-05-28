@@ -55,7 +55,7 @@ export const Menu: MenuType[] = [
   },
   {
     name: "NZI YouTube Channel",
-    path: "https://www.youtube.com/@nzusioffice7256b",
+    path: "https://www.youtube.com/@nzusioffice7256",
     subMenu: null,
   },
 ];
