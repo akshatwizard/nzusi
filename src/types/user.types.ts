@@ -81,3 +81,32 @@ export function hasAddress(addr: Address | null): boolean {
     if (!addr) return false
     return Object.values(addr).some(v => v !== null && v !== '')
 }
+
+
+export type MemberListResponse = {
+    success: string,
+    message: string,
+    data: MembersList[]
+    pagination: {
+        current_page: number,
+        last_page: number,
+        per_page: number,
+        total: number,
+        from: number,
+        to: number,
+        next_page_url: null | string,
+        prev_page_url: null | string
+    }
+}
+
+export type MembersList = {
+    membership_no: string | null
+    name: string
+    email: string
+    mobile_no: string | null
+    city_name: string | null
+    membership_type: {
+        id: number,
+        title: string
+    } | null,
+}
