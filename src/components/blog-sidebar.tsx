@@ -48,7 +48,7 @@ export function BlogSidebar() {
                         return (
                             <div
                                 key={cat}
-                                className='flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-fun-blue-50 transition-colors duration-150 cursor-pointer group'
+                                className='flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-fun-blue-50 transition-colors duration-150 group'
                             >
                                 <div className='w-7 h-7 rounded-lg bg-fun-blue-50 border border-fun-blue-100 flex items-center justify-center text-fun-blue-500 group-hover:bg-fun-blue-600 group-hover:text-white group-hover:border-fun-blue-600 transition-all duration-150'>
                                     {icon}
@@ -75,7 +75,7 @@ export function BlogSidebar() {
                     {RECENT.map((post) => (
                         <Link
                             key={post.slug}
-                            href={`/blog/${post.slug}`}
+                            href={`/blogs-and-news/${post.slug}`}
                             className='flex flex-col gap-1 px-3 py-3 rounded-lg hover:bg-fun-blue-50 transition-colors duration-150 group'
                         >
                             <span className='text-[11px] font-semibold text-fun-blue-600/70 group-hover:text-fun-blue-600'>
@@ -116,13 +116,14 @@ export function BlogSidebar() {
                     <div className='text-fun-blue-300/55 text-[12px] mb-4'>
                         Nov 27–29 · Amritsar, Punjab
                     </div>
-                    <a
-                        href='#'
+                    <Link
+                        href='https://1c4098e6-0cb3-438e-8c36-f2acc1587c38.filesusr.com/ugd/02b867_fd810af167bf4228a16d526ef68be544.pdf'
+                        target='_blank'
                         className='inline-flex items-center gap-1.5 text-[11px] font-semibold text-fun-blue-50 bg-fun-blue-600 hover:bg-fun-blue-500 px-3 py-1.5 rounded-lg transition-colors duration-200'
                     >
                         Register Now
                         <ExternalLink size={10} />
-                    </a>
+                    </Link>
                 </div>
             </div>
 
