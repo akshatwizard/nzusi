@@ -44,11 +44,11 @@ export default function Header() {
       y: 30,
       scale: 0.98,
       pointerEvents: "none",
-      transition: {
-        when: "afterChildren",
-        staggerChildren: 0.1,
-        staggerDirection: -1,
-      },
+      // transition: {
+      //   when: "afterChildren",
+      //   staggerChildren: 0.1,
+      //   staggerDirection: -1,
+      // },
     },
     show: {
       opacity: 1,
@@ -129,7 +129,7 @@ export default function Header() {
                     : setIsLoginOpen(true)
                 }
                 disabled={!isMounted}
-                className="flex items-center gap-1 bg-fun-blue-600 hover:bg-fun-blue-500 text-fun-blue-50 font-semibold text-sm px-3.5 py-2 rounded-lg border border-fun-blue-400/40 transition-all duration-200 cursor-pointer"
+                className="flex items-center gap-1 bg-fun-blue-600 hover:bg-fun-blue-500 text-fun-blue-50 font-semibold text-sm px-3 h-10 leading-0 rounded-lg border border-fun-blue-400/40 transition-all duration-200 cursor-pointer"
               >
                 <User size={14} />
                 {!isMounted || loading ? (
@@ -180,6 +180,21 @@ export default function Header() {
                         className="cursor-pointer group flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors duration-150"
                       >
                         <span>Profile</span>
+                        <ChevronRight
+                          size={14}
+                          className="text-gray-400 group-hover:translate-x-0.5 transition-transform"
+                        />
+                      </motion.button>
+
+                      <motion.button
+                        variants={itemVariants}
+                        onClick={() => (
+                          router.push("/members-list"),
+                          setShowOptions(false)
+                        )}
+                        className="cursor-pointer group flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors duration-150"
+                      >
+                        <span>Others Members</span>
                         <ChevronRight
                           size={14}
                           className="text-gray-400 group-hover:translate-x-0.5 transition-transform"
