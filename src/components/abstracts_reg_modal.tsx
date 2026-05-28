@@ -201,6 +201,7 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
                                             onChange={e => update('first_name', e.target.value)}
                                             placeholder="Rajesh"
                                             className={inputCls}
+                                            autoFocus
                                         />
                                     </Field>
                                     <Field label="Last Name">
@@ -288,6 +289,7 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
                                 </div>
                                 <button
                                     type="submit"
+                                    
                                     className="mt-2 w-full py-3 bg-fun-blue-950 text-white rounded-xl font-semibold text-sm hover:bg-fun-blue-800 transition-colors flex items-center justify-center gap-2"
                                 >
                                     Continue <ArrowRight size={14} />
@@ -295,7 +297,6 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
                             </motion.form>
 
                         ) : (
-
                             <motion.form
                                 key="step2"
                                 initial={{ opacity: 0, x: 16 }}
@@ -311,6 +312,7 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
                                         value={form.presentation_type}
                                         onChange={e => update('presentation_type', e.target.value)}
                                         className={inputCls}
+                                        autoFocus
                                     >
                                         <option value="">Select type…</option>
                                         {PRESENTATION_TYPES.map(t => (
