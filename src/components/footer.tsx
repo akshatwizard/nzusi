@@ -2,24 +2,37 @@ import Link from "next/link"
 import Image from "next/image"
 import { Mail, Phone, MapPin, ExternalLink } from "lucide-react"
 
-const links = {
+interface FooterLinks {
+    About: Links[];
+    Resources: Links[];
+    NZUSI: Links[];
+}
+
+type Links = {
+    label: string;
+    href: string;
+    open_in_next_tab: boolean;
+}
+
+const links: FooterLinks = {
     About: [
-        { label: "Council", href: "/about/council" },
-        { label: "Constitution", href: "/about/constitution" },
-        { label: "Past Presidents", href: "/about/executives" },
-        { label: "Bids", href: "/about/bids" },
+        { label: "Council", href: "/about", open_in_next_tab: false },
+        { label: "Constitution", href: "/about", open_in_next_tab: false },
+        { label: "Past Presidents", href: "/about", open_in_next_tab: false },
+        { label: "Bids", href: "/about", open_in_next_tab: false },
     ],
     Resources: [
-        { label: "Blog & Adyatan", href: "/blog" },
-        { label: "Newsletters", href: "/resources/newsletters" },
-        { label: "Job Listings", href: "/resources/jobs" },
-        { label: "Patient Education", href: "/education/patient" },
+        { label: "Blog & Adyatan", href: "/blogs-and-news", open_in_next_tab: false },
+        { label: "Newsletters", href: "https://drive.google.com/drive/folders/1OHK9ENLpk5_O43cCS-DwRYpKOjRvzreD?usp=sharing", open_in_next_tab: true },
+        { label: "Job Listings", href: "https://docs.google.com/spreadsheets/d/1PYYbXaKfgDS5oJYKMijuBBDCu5X162kYx13wJ5-9Ebc/edit?usp=sharing", open_in_next_tab: true },
+        { label: "Public Awareness", href: "/public-health-awareness", open_in_next_tab: false },
     ],
-    Membership: [
-        { label: "Apply Online", href: "/membership/apply" },
-        { label: "Member Benefits", href: "/membership" },
-        { label: "Events & CME", href: "/events" },
-        { label: "Contact Council", href: "/contact" },
+    NZUSI: [
+        { label: "Apply Online", href: "https://1c4098e6-0cb3-438e-8c36-f2acc1587c38.filesusr.com/ugd/02b867_fd810af167bf4228a16d526ef68be544.pdf", open_in_next_tab: true },
+        { label: "About", href: "/about", open_in_next_tab: false },
+        { label: "Events & CME", href: "/events", open_in_next_tab: false },
+        { label: "Abstract Submission Guidelines", href: "/abstracts-2026/guidelines", open_in_next_tab: false },
+        { label: "NZI YouTube", href: "https://www.youtube.com/@nzusioffice7256", open_in_next_tab: true },
     ],
 }
 
@@ -33,11 +46,11 @@ export default function Footer() {
                     <div className="lg:col-span-2">
                         <Link href="/" className="inline-block mb-4">
                             <Image
-                                src="/images/logo/nzusi_logo.avif"
+                                src="/images/logo/nzusi_logo.png"
                                 alt="NZUSI Logo"
-                                width={56}
-                                height={56}
-                                className="w-14 h-auto"
+                                width={80}
+                                height={80}
+                                className="w-20 h-auto"
                             />
                         </Link>
                         <p className="text-fun-blue-300 text-sm leading-relaxed max-w-xs mb-6">
@@ -81,10 +94,11 @@ export default function Footer() {
                                 {group}
                             </p>
                             <ul className="space-y-2.5">
-                                {items.map((item) => (
+                                {items.map((item: Links) => (
                                     <li key={item.label}>
                                         <Link
                                             href={item.href}
+                                            target={item.open_in_next_tab ? "_blank" : "_self"}
                                             className="text-sm text-fun-blue-300 hover:text-white transition-colors duration-200"
                                         >
                                             {item.label}
