@@ -1,4 +1,4 @@
-// ─── Symptoms that need attention ────────────────────────────
+
 export const URGENT_SYMPTOMS = [
     'Burning or pain while passing urine',
     'Blood in urine',

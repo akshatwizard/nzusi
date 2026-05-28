@@ -1,12 +1,18 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useRef, useState } from 'react'
 import { motion, useInView, AnimatePresence } from 'motion/react'
 import { Section, Wrapper } from '@/components/ui/sections'
+import { ChevronDown, ArrowRight, AlertCircle, BookOpen, ShieldCheck, Phone } from 'lucide-react'
 import {
-    ChevronDown, ExternalLink, BookOpen, AlertCircle, Users, ArrowRight, Info
-} from 'lucide-react'
-import { ANATOMY_PARTS, DISORDERS, DIAGNOSTICS, HOW_IT_WORKS, SPECIALISTS } from '@/constant/education'
+    URGENT_SYMPTOMS, EMERGENCY_SIGNS,
+    LIFESTYLE_HABITS,
+    KIDNEY_STONE, PROSTATE_HEALTH, UTI_INFO,
+    BLADDER_HEALTH, MENS_HEALTH, WOMENS_HEALTH,
+    CHILDRENS_HEALTH, CANCER_INFO, PREVENTIVE_CHECKS,
+    FAQS, FAQ_CATEGORIES, type FAQCategory,
+    PUBLIC_HEALTH_SECTIONS,
+} from '@/constant/public-health'
 
 const fadeUp = {
     hidden: { opacity: 0, y: 20 },
@@ -16,78 +22,136 @@ const fadeUp = {
     }),
 }
 
-function SectionHeader({ eyebrow, title, accent, body }: {
-    eyebrow: string; title: string; accent: string; body?: string
+function SectionHeader({
+    eyebrow, title, accent, body, id
+}: {
+    eyebrow: string; title: string; accent: string; body?: string; id?: string
 }) {
     const ref = useRef(null)
-    const isInView = useInView(ref, { once: true, margin: '-60px' })
+    const inView = useInView(ref, { once: true, margin: '-60px' })
     return (
-        <motion.div ref={ref} initial='hidden' animate={isInView ? 'show' : 'hidden'} variants={fadeUp} className='mb-10'>
+        <motion.div
+            id={id}
+            ref={ref}
+            initial='hidden'
+            animate={inView ? 'show' : 'hidden'}
+            custom={0}
+            variants={fadeUp}
+            className='mb-10 scroll-mt-24'
+        >
             <div className='flex items-center gap-3 mb-3'>
                 <div className='h-px w-6 bg-fun-blue-400' />
-                <span className='text-[11px] font-semibold tracking-[0.2em] uppercase text-fun-blue-500'>{eyebrow}</span>
+                <span className='text-[11px] font-semibold tracking-[0.2em] uppercase text-fun-blue-500'>
+                    {eyebrow}
+                </span>
             </div>
-            <h2 className='text-3xl md:text-4xl text-fun-blue-950 leading-tight mb-3'>
-                {title} <em className='not-italic text-fun-blue-400'>{accent}</em>
+            <h2 className='font-serif text-3xl md:text-4xl text-fun-blue-950 leading-tight mb-3'>
+                {title}{' '}
+                <em className='not-italic text-fun-blue-500'>{accent}</em>
             </h2>
-            {body && <p className='text-fun-blue-800/60 text-sm leading-relaxed max-w-2xl'>{body}</p>}
+            {body && (
+                <p className='text-fun-blue-800/60 text-sm leading-relaxed max-w-2xl'>{body}</p>
+            )}
         </motion.div>
     )
 }
 
-function DisorderCard({ disorder, index }: { disorder: typeof DISORDERS[number]; index: number }) {
+function PillList({
+    items, variant = 'blue'
+}: {
+    items: string[];
+    variant?: 'blue' | 'red' | 'amber' | 'emerald'
+}) {
+    const colors = {
+        blue: 'bg-fun-blue-50 text-fun-blue-700 border-fun-blue-200',
+        red: 'bg-red-50 text-red-700 border-red-200',
+        amber: 'bg-amber-50 text-amber-700 border-amber-200',
+        emerald: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+    }
+    return (
+        <div className='flex flex-wrap gap-2'>
+            {items.map(item => (
+                <span key={item} className={`text-[12px] font-medium px-3 py-1 rounded-full border ${colors[variant]}`}>
+                    {item}
+                </span>
+            ))}
+        </div>
+    )
+}
+
+function TipList({ items, color = 'fun-blue' }: { items: string[]; color?: string }) {
+    return (
+        <ul className='space-y-2.5'>
+            {items.map(item => (
+                <li key={item} className='flex items-start gap-2.5 text-[13px] text-fun-blue-800/70 leading-snug'>
+                    <span className='mt-1.5 w-1.5 h-1.5 rounded-full bg-fun-blue-400 shrink-0' />
+                    {item}
+                </li>
+            ))}
+        </ul>
+    )
+}
+
+function TwoColCard({
+    left, right, accentLeft, accentRight
+}: {
+    left: { title: string; items: string[] }
+    right: { title: string; items: string[] }
+    accentLeft?: string
+    accentRight?: string
+}) {
+    return (
+        <div className='grid grid-cols-1 sm:grid-cols-2 gap-5'>
+            <div className={`rounded-xl border p-5 ${accentLeft ?? 'border-fun-blue-100 bg-fun-blue-50/40'}`}>
+                <div className='text-[11px] font-semibold text-fun-blue-500 uppercase tracking-widest mb-3'>{left.title}</div>
+                <TipList items={left.items} />
+            </div>
+            <div className={`rounded-xl border p-5 ${accentRight ?? 'border-fun-blue-100 bg-white'}`}>
+                <div className='text-[11px] font-semibold text-fun-blue-500 uppercase tracking-widest mb-3'>{right.title}</div>
+                <TipList items={right.items} />
+            </div>
+        </div>
+    )
+}
+
+/* ─── FAQ accordion item ────────────────────────────────────── */
+function FAQItem({ faq, index }: { faq: typeof FAQS[0]; index: number }) {
     const [open, setOpen] = useState(false)
     const ref = useRef(null)
-    const isInView = useInView(ref, { once: true, margin: '-40px' })
+    const inView = useInView(ref, { once: true, margin: '-30px' })
 
     return (
         <motion.div
             ref={ref}
             initial='hidden'
-            animate={isInView ? 'show' : 'hidden'}
-            custom={index * 0.05}
+            animate={inView ? 'show' : 'hidden'}
+            custom={index * 0.03}
             variants={fadeUp}
-            className={`rounded-2xl border overflow-hidden transition-colors duration-200 ${open
-                ? 'border-fun-blue-200 bg-white shadow-md shadow-fun-blue-100/50'
-                : 'border-fun-blue-100 bg-white/70 hover:bg-white hover:border-fun-blue-200'
+            className={`rounded-xl border overflow-hidden transition-all duration-200 ${open ? 'border-fun-blue-300 bg-white shadow-sm' : 'border-fun-blue-100 bg-white/70 hover:bg-white hover:border-fun-blue-200'
                 }`}
         >
-            <button onClick={() => setOpen(v => !v)} className='w-full text-left'>
-                <div className='flex items-start gap-4 p-5'>
-                    {/* Index */}
-                    <span className='text-[11px] font-bold text-fun-blue-200 tabular-nums mt-0.5 w-5 shrink-0'>
-                        {String(index + 1).padStart(2, '0')}
-                    </span>
-
-                    <div className='flex-1 min-w-0'>
-                        <div className='flex flex-wrap items-center gap-2 mb-2'>
-                            <h3 className={`font-semibold text-sm leading-snug transition-colors ${open ? 'text-fun-blue-700' : 'text-fun-blue-950'}`}>
-                                {disorder.name}
-                            </h3>
-                        </div>
-                        <div className='flex flex-wrap gap-2'>
-                            <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${disorder.severityColor}`}>
-                                {disorder.severity}
-                            </span>
-                            <span className='text-[10px] text-zinc-500 bg-zinc-50 border border-zinc-100 px-2 py-0.5 rounded-full'>
-                                {disorder.affectsIcon} {disorder.affects}
-                            </span>
-                        </div>
-                        {!open && (
-                            <p className='text-[13px] text-zinc-500 leading-snug mt-2 line-clamp-1'>
-                                {disorder.summary}
-                            </p>
-                        )}
-                    </div>
-
-                    <motion.div
-                        animate={{ rotate: open ? 180 : 0 }}
-                        transition={{ duration: 0.25 }}
-                        className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center mt-0.5 ${open ? 'bg-fun-blue-100' : 'bg-fun-blue-50'}`}
-                    >
-                        <ChevronDown size={14} className={open ? 'text-fun-blue-600' : 'text-fun-blue-400'} />
-                    </motion.div>
+            <button
+                onClick={() => setOpen(v => !v)}
+                className='w-full text-left flex items-start gap-4 p-5 cursor-pointer'
+            >
+                <span className='text-[10px] font-bold text-fun-blue-200 tabular-nums mt-0.5 w-6 shrink-0'>
+                    {String(faq.id).padStart(2, '0')}
+                </span>
+                <div className='flex-1 min-w-0'>
+                    <p className={`font-medium text-sm leading-snug transition-colors ${open ? 'text-fun-blue-700' : 'text-fun-blue-950'}`}>
+                        {faq.q}
+                    </p>
+                    {!open && (
+                        <p className='text-[12px] text-zinc-400 mt-1 line-clamp-1'>{faq.a.slice(0, 80)}…</p>
+                    )}
                 </div>
+                <motion.div
+                    animate={{ rotate: open ? 180 : 0 }}
+                    transition={{ duration: 0.22 }}
+                    className={`shrink-0 w-6 h-6 rounded-full flex items-center justify-center mt-0.5 ${open ? 'bg-fun-blue-100' : 'bg-fun-blue-50'}`}
+                >
+                    <ChevronDown size={13} className={open ? 'text-fun-blue-600' : 'text-fun-blue-400'} />
+                </motion.div>
             </button>
 
             <AnimatePresence initial={false}>
@@ -96,13 +160,11 @@ function DisorderCard({ disorder, index }: { disorder: typeof DISORDERS[number];
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                         className='overflow-hidden'
                     >
-                        <div className='px-5 pb-5 border-t border-fun-blue-100 ml-9'>
-                            <p className='text-[13px] text-fun-blue-800/65 leading-relaxed mt-4'>
-                                {disorder.detail}
-                            </p>
+                        <div className='px-5 pb-5 border-t border-fun-blue-100 ml-10'>
+                            <p className='text-[13px] text-fun-blue-800/70 leading-relaxed mt-4'>{faq.a}</p>
                         </div>
                     </motion.div>
                 )}
@@ -111,44 +173,153 @@ function DisorderCard({ disorder, index }: { disorder: typeof DISORDERS[number];
     )
 }
 
-export default function EducationPatientPage() {
-    const [activeOrgan, setActiveOrgan] = useState<string | null>(null)
+/* ─── Warning banner ────────────────────────────────────────── */
+function WarningBanner({ message }: { message: string }) {
+    return (
+        <div className='flex items-start gap-3 px-5 py-4 rounded-xl bg-amber-50 border border-amber-200 mt-5'>
+            <AlertCircle size={14} className='text-amber-600 mt-0.5 shrink-0' />
+            <p className='text-amber-800 text-[13px] leading-relaxed font-medium'>{message}</p>
+        </div>
+    )
+}
+
+/* ─── Lifestyle habit card ──────────────────────────────────── */
+function LifestyleCard({ habit, index }: { habit: typeof LIFESTYLE_HABITS[0]; index: number }) {
+    const [open, setOpen] = useState(false)
+    const ref = useRef(null)
+    const inView = useInView(ref, { once: true, margin: '-40px' })
+
+    return (
+        <motion.div
+            ref={ref}
+            initial='hidden'
+            animate={inView ? 'show' : 'hidden'}
+            custom={index * 0.06}
+            variants={fadeUp}
+            className={`rounded-2xl border overflow-hidden transition-all duration-200 ${open ? 'border-fun-blue-300 bg-white shadow-md' : 'border-fun-blue-100 bg-white hover:border-fun-blue-200'
+                }`}
+        >
+            <button
+                onClick={() => setOpen(v => !v)}
+                className='w-full text-left flex items-center gap-4 p-5 cursor-pointer'
+            >
+                <div className={`w-11 h-11 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-colors ${open ? 'bg-fun-blue-600' : 'bg-fun-blue-50'}`}>
+                    {habit.emoji}
+                </div>
+                <div className='flex-1 min-w-0'>
+                    <div className={`font-semibold text-sm transition-colors ${open ? 'text-fun-blue-700' : 'text-fun-blue-950'}`}>
+                        {habit.title}
+                    </div>
+                    <div className='text-[12px] text-fun-blue-400/70 mt-0.5'>{habit.subtitle}</div>
+                </div>
+                <motion.div animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.22 }}>
+                    <ChevronDown size={15} className={open ? 'text-fun-blue-600' : 'text-fun-blue-300'} />
+                </motion.div>
+            </button>
+
+            <AnimatePresence initial={false}>
+                {open && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className='overflow-hidden'
+                    >
+                        <div className='px-5 pb-5 border-t border-fun-blue-100'>
+                            <div className='grid grid-cols-1 sm:grid-cols-2 gap-5 mt-4'>
+                                {habit.why.length > 0 && (
+                                    <div>
+                                        <div className='text-[10px] font-semibold text-fun-blue-500 uppercase tracking-widest mb-3'>Why it matters</div>
+                                        <TipList items={habit.why} />
+                                    </div>
+                                )}
+                                {habit.tips.length > 0 && (
+                                    <div>
+                                        <div className='text-[10px] font-semibold text-fun-blue-500 uppercase tracking-widest mb-3'>Practical tips</div>
+                                        <TipList items={habit.tips} />
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </motion.div>
+    )
+}
+
+/* ─── Myths & facts table ───────────────────────────────────── */
+function MythsTable({ myths }: { myths: { myth: string; fact: string }[] }) {
+    return (
+        <div className='rounded-xl border border-fun-blue-100 overflow-hidden'>
+            <div className='grid grid-cols-2 bg-fun-blue-950 text-white text-[11px] font-semibold uppercase tracking-widest px-5 py-3'>
+                <span>Myth</span>
+                <span>Fact</span>
+            </div>
+            {myths.map((row, i) => (
+                <div key={i} className={`grid grid-cols-2 px-5 py-4 gap-4 ${i % 2 === 0 ? 'bg-white' : 'bg-fun-blue-50/40'} border-b border-fun-blue-100 last:border-none`}>
+                    <div className='flex items-start gap-2 text-[13px] text-red-600/80'>
+                        <span className='mt-1 shrink-0 text-red-300'>✕</span>
+                        {row.myth}
+                    </div>
+                    <div className='flex items-start gap-2 text-[13px] text-emerald-700'>
+                        <span className='mt-1 shrink-0 text-emerald-500'>✓</span>
+                        {row.fact}
+                    </div>
+                </div>
+            ))}
+        </div>
+    )
+}
+
+/* ─── Table of contents floating strip ─────────────────────── */
+function TableOfContents() {
+    return (
+        <div className='flex flex-wrap gap-2 mt-10'>
+            {PUBLIC_HEALTH_SECTIONS.map(s => (
+                <a
+                    key={s.id}
+                    href={`#${s.id}`}
+                    className='inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 border border-white/15 text-fun-blue-200 text-[11px] font-medium hover:bg-white/20 hover:text-white transition-all'
+                >
+                    <span>{s.emoji}</span>
+                    {s.label}
+                </a>
+            ))}
+        </div>
+    )
+}
+
+/* ─── Section card wrapper ──────────────────────────────────── */
+function ContentCard({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+    return (
+        <div className={`rounded-2xl border border-fun-blue-100 bg-white p-6 md:p-8 ${className}`}>
+            {children}
+        </div>
+    )
+}
+
+/* ─── Main page ─────────────────────────────────────────────── */
+export default function PublicHealthPage() {
+    const [faqFilter, setFaqFilter] = useState<FAQCategory>('All')
     const heroRef = useRef(null)
     const heroInView = useInView(heroRef, { once: true })
 
-    const selectedOrgan = ANATOMY_PARTS.find(p => p.id === activeOrgan)
+    const filteredFAQs = faqFilter === 'All' ? FAQS : FAQS.filter(f => f.category === faqFilter)
 
     return (
         <main className='w-full bg-fun-blue-50'>
 
-            {/* ═══ HERO ═══════════════════════════════════════════════ */}
             <Section className='relative overflow-hidden bg-fun-blue-950'>
-                {/* Background image */}
                 <div
-                    className='pointer-events-none absolute inset-0 bg-cover bg-center'
-                    style={{
-                        backgroundImage: `url('/images/hero/hero-bg.jpg')`,
-                        backgroundPosition: 'center 30%',
-                    }}
+                    className='pointer-events-none absolute inset-0 bg-cover bg-center opacity-15'
+                    style={{ backgroundImage: `url('/images/hero/hero-bg.jpg')` }}
                 />
-
-                <div
-                    className='pointer-events-none absolute inset-0'
-                    style={{
-                        background:
-                            'linear-gradient(105deg, rgba(16,38,65,0.97) 0%, rgba(16,38,65,0.88) 45%, rgba(16,38,65,0.60) 100%)',
-                    }}
-                />
-
-                <div
-                    className='pointer-events-none absolute inset-0'
-                    style={{
-                        background:
-                            'radial-gradient(ellipse at 60% 0%, rgba(40,129,207,0.12) 0%, transparent 60%)',
-                    }}
-                />
-
-                {/* Bottom separator */}
+                <div className='pointer-events-none absolute inset-0'
+                    style={{ background: 'linear-gradient(105deg,rgba(16,38,65,0.97) 0%,rgba(16,38,65,0.88) 45%,rgba(16,38,65,0.60) 100%)' }} />
+                <div className='pointer-events-none absolute inset-0'
+                    style={{ background: 'radial-gradient(ellipse at 60% 0%,rgba(40,129,207,0.12) 0%,transparent 60%)' }} />
                 <div className='pointer-events-none absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-fun-blue-700/50 to-transparent' />
 
                 <Wrapper ref={heroRef} className='relative z-10 lg:pt-44 md:pt-40 pt-38'>
@@ -160,9 +331,9 @@ export default function EducationPatientPage() {
                                 transition={{ duration: 0.5 }}
                                 className='inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 mb-6'
                             >
-                                <BookOpen size={11} className='text-fun-blue-300' />
+                                <ShieldCheck size={11} className='text-fun-blue-300' />
                                 <span className='text-fun-blue-200 text-[11px] font-semibold tracking-widest uppercase'>
-                                    Patient Education · NZUSI
+                                    Public Health & Urology Awareness · NZUSI
                                 </span>
                             </motion.div>
 
@@ -170,23 +341,31 @@ export default function EducationPatientPage() {
                                 initial={{ opacity: 0, y: 28 }}
                                 animate={heroInView ? { opacity: 1, y: 0 } : {}}
                                 transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-                                className='text-4xl md:text-5xl lg:text-6xl text-white leading-[1.05] mb-5'
+                                className='font-serif text-4xl md:text-5xl lg:text-6xl text-white leading-[1.05] mb-5'
                             >
-                                Understanding Your<br />
-                                <em className='not-italic text-fun-blue-300'>Urinary System</em>
+                                Welcome to<br />
+                                <em className='not-italic text-fun-blue-300'>Urology Awareness</em>
                             </motion.h1>
 
                             <motion.p
                                 initial={{ opacity: 0, y: 16 }}
                                 animate={heroInView ? { opacity: 1, y: 0 } : {}}
                                 transition={{ duration: 0.55, delay: 0.2 }}
-                                className='text-fun-blue-300/80 text-sm leading-relaxed max-w-lg'
+                                className='text-fun-blue-300/80 text-sm leading-relaxed max-w-lg mb-4'
                             >
-                                A comprehensive guide to how the urinary system works, common disorders, diagnostic tests, and when to see a specialist. Written for patients and their families by NZUSI urologists.
+                                Urology focuses on diseases of the urinary tract in both men and women, and disorders of the male reproductive system. Many urological disorders are preventable or treatable if detected early.
+                            </motion.p>
+
+                            <motion.p
+                                initial={{ opacity: 0, y: 12 }}
+                                animate={heroInView ? { opacity: 1, y: 0 } : {}}
+                                transition={{ duration: 0.5, delay: 0.28 }}
+                                className='text-fun-blue-200/55 text-[13px] leading-relaxed max-w-lg'
+                            >
+                                Good urological health is essential for overall well-being, quality of life, healthy ageing, and prevention of chronic disease.
                             </motion.p>
                         </div>
 
-                        {/* Quick-stat cards */}
                         <motion.div
                             initial={{ opacity: 0, x: 24 }}
                             animate={heroInView ? { opacity: 1, x: 0 } : {}}
@@ -194,351 +373,265 @@ export default function EducationPatientPage() {
                             className='flex flex-row lg:flex-col gap-3 flex-wrap'
                         >
                             {[
-                                { val: '5', label: 'Key Organs' },
-                                { val: '9', label: 'Common Disorders' },
-                                { val: '3', label: 'Diagnostic Tests' },
-                                { val: '6', label: 'Specialist Types' },
+                                { val: '11', label: 'Health sections' },
+                                { val: '44', label: 'FAQs answered' },
+                                { val: '6+', label: 'Lifestyle factors' },
+                                { val: '4', label: 'Cancer types covered' },
                             ].map(s => (
                                 <div key={s.label} className='flex items-center gap-3 px-4 py-3 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-sm'>
-                                    <span className='text-2xl font-bold text-white tabular-nums'>{s.val}</span>
+                                    <span className='font-serif text-2xl text-white tabular-nums'>{s.val}</span>
                                     <span className='text-fun-blue-400 text-xs leading-tight'>{s.label}</span>
                                 </div>
                             ))}
                         </motion.div>
                     </div>
 
-                    {/* Table of contents strip */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={heroInView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.5, delay: 0.4 }}
-                        className='flex flex-wrap gap-2 mt-12'
-                    >
-                        {[
-                            ['#anatomy', 'Anatomy'],
-                            ['#how-it-works', 'How It Works'],
-                            ['#causes', 'Causes of Problems'],
-                            ['#diagnosis', 'Diagnosis'],
-                            ['#disorders', 'Disorders'],
-                            ['#specialists', 'Specialists'],
-                        ].map(([href, label]) => (
-                            <a
-                                key={href}
-                                href={href}
-                                className='inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/8 border border-white/10 text-fun-blue-300 text-[11px] font-medium hover:bg-white/15 hover:text-white transition-all'
-                            >
-                                {label} <ArrowRight size={10} />
-                            </a>
-                        ))}
-                    </motion.div>
+                    <TableOfContents />
                 </Wrapper>
             </Section>
 
-            {/* ═══ ANATOMY ════════════════════════════════════════════ */}
-            <Section id='anatomy' className='bg-white'>
+            <Section id='intro' className='bg-white scroll-mt-24'>
                 <Wrapper>
                     <SectionHeader
-                        eyebrow='Anatomy'
-                        title='The Five'
-                        accent='Key Organs'
-                        body='The urinary system consists of two kidneys, two ureters, the bladder, two sphincter muscles, and the urethra — all working together to create, store, and eliminate urine.'
+                        eyebrow='Understanding Urology'
+                        title='Common Symptoms That Need'
+                        accent='Medical Attention'
+                        body='Do not ignore persistent urinary symptoms. Early consultation can prevent complications.'
                     />
 
-                    <div className='grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8 items-start'>
-                        {/* Organ selector */}
-                        <div className='flex flex-col gap-3'>
-                            {ANATOMY_PARTS.map((part, i) => {
-                                const isActive = activeOrgan === part.id
-                                return (
-                                    <motion.button
-                                        key={part.id}
-                                        initial={{ opacity: 0, x: -20 }}
+                    <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+                        <div>
+                            <div className='text-[11px] font-semibold text-fun-blue-500 uppercase tracking-widest mb-4'>Symptoms to watch for</div>
+                            <div className='flex flex-col gap-2'>
+                                {URGENT_SYMPTOMS.map((s, i) => (
+                                    <motion.div
+                                        key={s}
+                                        initial={{ opacity: 0, x: -16 }}
                                         whileInView={{ opacity: 1, x: 0 }}
                                         viewport={{ once: true }}
-                                        transition={{ duration: 0.4, delay: i * 0.07 }}
-                                        onClick={() => setActiveOrgan(isActive ? null : part.id)}
-                                        className={`group w-full text-left flex items-start gap-4 p-5 rounded-2xl border transition-all duration-300 cursor-pointer ${isActive
-                                            ? 'bg-fun-blue-600 border-fun-blue-600 shadow-lg shadow-fun-blue-200'
-                                            : 'bg-fun-blue-50 border-fun-blue-100 hover:border-fun-blue-300 hover:bg-fun-blue-100/60'
-                                            }`}
+                                        transition={{ duration: 0.35, delay: i * 0.05 }}
+                                        className='flex items-center gap-3 px-4 py-3 rounded-xl border border-fun-blue-100 bg-fun-blue-50/50'
                                     >
-                                        <div className={`text-2xl shrink-0 w-10 h-10 flex items-center justify-center rounded-xl transition-colors ${isActive ? 'bg-white/15' : 'bg-white'}`}>
-                                            {part.icon}
-                                        </div>
-                                        <div className='flex-1 min-w-0'>
-                                            <div className='flex items-center justify-between gap-2'>
-                                                <span className={`font-semibold text-sm ${isActive ? 'text-white' : 'text-fun-blue-950'}`}>
-                                                    {part.label}
-                                                </span>
-                                                <motion.div
-                                                    animate={{ rotate: isActive ? 180 : 0 }}
-                                                    transition={{ duration: 0.25 }}
-                                                >
-                                                    <ChevronDown size={14} className={isActive ? 'text-white/60' : 'text-fun-blue-300'} />
-                                                </motion.div>
-                                            </div>
-                                            <AnimatePresence initial={false}>
-                                                {isActive && (
-                                                    <motion.div
-                                                        initial={{ height: 0, opacity: 0 }}
-                                                        animate={{ height: 'auto', opacity: 1 }}
-                                                        exit={{ height: 0, opacity: 0 }}
-                                                        transition={{ duration: 0.3 }}
-                                                        className='overflow-hidden'
-                                                    >
-                                                        <p className='text-white/80 text-xs leading-relaxed mt-2'>
-                                                            {part.desc}
-                                                        </p>
-                                                        <div className='mt-3 flex items-start gap-2 px-3 py-2 bg-white/10 rounded-lg'>
-                                                            <Info size={11} className='text-white/60 mt-0.5 shrink-0' />
-                                                            <span className='text-white/70 text-[11px] leading-snug'>{part.fact}</span>
-                                                        </div>
-                                                    </motion.div>
-                                                )}
-                                            </AnimatePresence>
-                                            {!isActive && (
-                                                <p className='text-fun-blue-500 text-[12px] mt-0.5 line-clamp-1'>{part.desc.slice(0, 60)}…</p>
-                                            )}
-                                        </div>
-                                    </motion.button>
-                                )
-                            })}
+                                        <div className='w-1.5 h-1.5 rounded-full bg-fun-blue-400 shrink-0' />
+                                        <span className='text-[13px] text-fun-blue-900'>{s}</span>
+                                    </motion.div>
+                                ))}
+                            </div>
                         </div>
 
-                        {/* Side info panel */}
-                        <div className='lg:sticky lg:top-28'>
-                            <AnimatePresence mode='wait'>
-                                {selectedOrgan ? (
-                                    <motion.div
-                                        key={selectedOrgan.id}
-                                        initial={{ opacity: 0, y: 12 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -8 }}
-                                        transition={{ duration: 0.3 }}
-                                        className='rounded-2xl bg-fun-blue-950 p-7 text-white'
-                                    >
-                                        <div className='text-4xl mb-4'>{selectedOrgan.icon}</div>
-                                        <h3 className='text-xl mb-3 text-white'>{selectedOrgan.label}</h3>
-                                        <p className='text-fun-blue-200/80 text-sm leading-relaxed mb-5'>{selectedOrgan.desc}</p>
-                                        <div className='border-t border-fun-blue-800 pt-4 flex items-start gap-2'>
-                                            <Info size={12} className='text-fun-blue-400 mt-0.5 shrink-0' />
-                                            <p className='text-fun-blue-300 text-xs leading-snug'>{selectedOrgan.fact}</p>
+                        <div className='flex flex-col gap-5'>
+                            <div className='rounded-2xl bg-red-50 border border-red-200 p-6'>
+                                <div className='flex items-center gap-2 mb-4'>
+                                    <AlertCircle size={16} className='text-red-500' />
+                                    <span className='text-[11px] font-bold text-red-600 uppercase tracking-widest'>Emergency warning signs</span>
+                                </div>
+                                <p className='text-[12px] text-red-700/70 mb-4'>Seek immediate medical attention if you have:</p>
+                                <div className='flex flex-col gap-2'>
+                                    {EMERGENCY_SIGNS.map(s => (
+                                        <div key={s} className='flex items-center gap-2.5 text-[13px] text-red-700 font-medium'>
+                                            <span className='text-red-400'>!</span> {s}
                                         </div>
-                                    </motion.div>
-                                ) : (
-                                    <motion.div
-                                        key='empty'
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        exit={{ opacity: 0 }}
-                                        className='rounded-2xl border-2 border-dashed border-fun-blue-100 p-10 flex flex-col items-center text-center gap-3'
-                                    >
-                                        <div className='w-14 h-14 rounded-2xl bg-fun-blue-50 flex items-center justify-center text-2xl'>🫘</div>
-                                        <p className='text-fun-blue-400 text-sm font-medium'>Select an organ</p>
-                                        <p className='text-fun-blue-300 text-xs leading-relaxed'>Click any organ above to see detailed information about its role in the urinary system.</p>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className='rounded-2xl bg-fun-blue-950 p-6'>
+                                <BookOpen size={20} className='text-fun-blue-400 mb-4' />
+                                <h3 className='font-serif text-xl text-white mb-2'>About the Urinary System</h3>
+                                <p className='text-fun-blue-300/70 text-[13px] leading-relaxed'>
+                                    Urologists diagnose and treat conditions involving the kidneys, ureters, bladder, prostate, urethra, and male reproductive organs.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </Wrapper>
             </Section>
 
-            {/* ═══ HOW IT WORKS ═══════════════════════════════════════ */}
-            <Section id='how-it-works' className='bg-fun-blue-50'>
+            <Section id='lifestyle' className='bg-fun-blue-50 scroll-mt-24'>
                 <Wrapper>
                     <SectionHeader
-                        eyebrow='Function'
-                        title='How the Urinary'
-                        accent='System Works'
-                        body='Your body eliminates about 1–2 litres of urine each day. The amount depends on fluid and food intake, sweat, medications, and activity level. Here is the 5-step process.'
+                        eyebrow='Section 1'
+                        title='Healthy Lifestyle &'
+                        accent='Urological Wellness'
+                        body='Healthy daily habits play a major role in preventing kidney disease, urinary infections, stones, prostate problems, bladder dysfunction, and sexual health disorders.'
                     />
-
-                    <div className='flex flex-col gap-0'>
-                        {HOW_IT_WORKS.map((step, i) => {
-                            const ref = useRef(null)
-                            const isInView = useInView(ref, { once: true, margin: '-40px' })
-                            return (
-                                <motion.div
-                                    key={step.num}
-                                    ref={ref}
-                                    initial={{ opacity: 0, x: -24 }}
-                                    animate={isInView ? { opacity: 1, x: 0 } : {}}
-                                    transition={{ duration: 0.5, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                                    className='flex gap-6 items-start relative'
-                                >
-                                    {/* Timeline spine */}
-                                    <div className='flex flex-col items-center shrink-0'>
-                                        <div className='w-10 h-10 rounded-full bg-fun-blue-600 text-white flex items-center justify-center text-xs font-bold shrink-0 z-10'>
-                                            {step.num}
-                                        </div>
-                                        {i < HOW_IT_WORKS.length - 1 && (
-                                            <div className='w-px flex-1 bg-fun-blue-200 my-1 min-h-10' />
-                                        )}
-                                    </div>
-                                    <div className='pb-10 flex-1 pt-1.5'>
-                                        <h3 className='font-semibold text-fun-blue-950 text-base mb-2'>{step.title}</h3>
-                                        <p className='text-fun-blue-800/65 text-sm leading-relaxed'>{step.body}</p>
-                                    </div>
-                                </motion.div>
-                            )
-                        })}
-                    </div>
-                </Wrapper>
-            </Section>
-
-            {/* ═══ CAUSES ═════════════════════════════════════════════ */}
-            <Section id='causes' className='bg-white'>
-                <Wrapper>
-                    <SectionHeader
-                        eyebrow='Causes'
-                        title='What Causes'
-                        accent='Problems?'
-                    />
-
-                    <div className='grid grid-cols-1 md:grid-cols-3 gap-5'>
-                        {[
-                            {
-                                icon: '⏳',
-                                title: 'Ageing',
-                                body: 'As you get older, changes in kidney structure reduce their ability to remove wastes. Muscles in your ureters, bladder, and urethra lose strength, leading to incomplete emptying and incontinence.',
-                            },
-                            {
-                                icon: '🦠',
-                                title: 'Illness',
-                                body: 'Diseases including diabetes, hypertension, and autoimmune conditions can damage the kidneys. Bacterial infections can affect the bladder (cystitis) or spread to the kidneys (pyelonephritis).',
-                            },
-                            {
-                                icon: '🩹',
-                                title: 'Injury',
-                                body: 'Trauma to the kidneys, bladder, or urethra — from accidents or surgery — can disrupt normal function. Nerve damage from spinal injury can also impair bladder control.',
-                            },
-                        ].map((card, i) => {
-                            const ref = useRef(null)
-                            const isInView = useInView(ref, { once: true, margin: '-40px' })
-                            return (
-                                <motion.div
-                                    key={card.title}
-                                    ref={ref}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={isInView ? { opacity: 1, y: 0 } : {}}
-                                    transition={{ duration: 0.5, delay: i * 0.1 }}
-                                    className='rounded-2xl border border-fun-blue-100 bg-fun-blue-50 p-6'
-                                >
-                                    <div className='text-3xl mb-4'>{card.icon}</div>
-                                    <h3 className='font-semibold text-fun-blue-950 text-base mb-2'>{card.title}</h3>
-                                    <p className='text-fun-blue-800/65 text-sm leading-relaxed'>{card.body}</p>
-                                </motion.div>
-                            )
-                        })}
-                    </div>
-                </Wrapper>
-            </Section>
-
-            {/* ═══ DIAGNOSIS ══════════════════════════════════════════ */}
-            <Section id='diagnosis' className='bg-fun-blue-50'>
-                <Wrapper>
-                    <SectionHeader
-                        eyebrow='Diagnostics'
-                        title='How Problems Are'
-                        accent='Detected'
-                        body='Urinary problems are diagnosed using a combination of simple urine tests and specialised bladder function studies.'
-                    />
-
-                    <div className='grid grid-cols-1 md:grid-cols-3 gap-5'>
-                        {DIAGNOSTICS.map((d, i) => {
-                            const Icon = d.icon
-                            const ref = useRef(null)
-                            const isInView = useInView(ref, { once: true, margin: '-40px' })
-                            return (
-                                <motion.div
-                                    key={d.name}
-                                    ref={ref}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={isInView ? { opacity: 1, y: 0 } : {}}
-                                    transition={{ duration: 0.5, delay: i * 0.1 }}
-                                    className='rounded-2xl border border-fun-blue-100 bg-white p-6 shadow-sm'
-                                >
-                                    <div className='w-10 h-10 rounded-xl bg-fun-blue-50 border border-fun-blue-100 flex items-center justify-center mb-4'>
-                                        <Icon size={18} className='text-fun-blue-600' />
-                                    </div>
-                                    <h3 className='font-semibold text-fun-blue-950 text-sm mb-2'>{d.name}</h3>
-                                    <p className='text-fun-blue-800/60 text-[13px] leading-relaxed'>{d.desc}</p>
-                                </motion.div>
-                            )
-                        })}
-                    </div>
-                </Wrapper>
-            </Section>
-
-            {/* ═══ DISORDERS ══════════════════════════════════════════ */}
-            <Section id='disorders' className='bg-white'>
-                <Wrapper>
-                    <SectionHeader
-                        eyebrow='Conditions'
-                        title='Common'
-                        accent='Disorders'
-                        body='Urological disorders range from easily treatable conditions to serious, life-threatening diseases. Click any condition to learn more.'
-                    />
-
-                    {/* Severity legend */}
-                    <div className='flex flex-wrap gap-2 mb-8'>
-                        {[
-                            { label: 'Serious', color: 'bg-red-50 text-red-700 border border-red-200' },
-                            { label: 'Chronic', color: 'bg-red-50 text-red-700 border border-red-200' },
-                            { label: 'Moderate', color: 'bg-amber-50 text-amber-700 border border-amber-200' },
-                            { label: 'Variable', color: 'bg-orange-50 text-orange-700 border border-orange-200' },
-                            { label: 'Common', color: 'bg-sky-50 text-sky-700 border border-sky-200' },
-                            { label: 'Indicator', color: 'bg-purple-50 text-purple-700 border border-purple-200' },
-                        ].map(s => (
-                            <span key={s.label} className={`text-[10px] font-semibold px-2.5 py-1 rounded-full ${s.color}`}>
-                                {s.label}
-                            </span>
-                        ))}
-                        <span className='text-[11px] text-fun-blue-400 self-center ml-1'>— severity classification</span>
-                    </div>
-
-                    <div className='flex flex-col gap-2.5'>
-                        {DISORDERS.map((disorder, i) => (
-                            <DisorderCard key={disorder.id} disorder={disorder} index={i} />
+                    <div className='flex flex-col gap-3'>
+                        {LIFESTYLE_HABITS.map((habit, i) => (
+                            <LifestyleCard key={habit.id} habit={habit} index={i} />
                         ))}
                     </div>
                 </Wrapper>
             </Section>
 
-            {/* ═══ SPECIALISTS ════════════════════════════════════════ */}
-            <Section id='specialists' className='bg-fun-blue-50'>
+            <Section id='kidney' className='bg-white scroll-mt-24'>
+                <Wrapper>
+                    <SectionHeader eyebrow='Section 2' title='Kidney Stone' accent='Awareness' body={KIDNEY_STONE.description} />
+                    <div className='flex flex-col gap-6'>
+                        <TwoColCard
+                            left={{ title: 'Common Symptoms', items: KIDNEY_STONE.symptoms }}
+                            right={{ title: 'Prevention Tips', items: KIDNEY_STONE.prevention }}
+                        />
+                        <div>
+                            <div className='text-[11px] font-semibold text-fun-blue-500 uppercase tracking-widest mb-4'>Myths & Facts</div>
+                            <MythsTable myths={KIDNEY_STONE.myths} />
+                        </div>
+                    </div>
+                </Wrapper>
+            </Section>
+
+            <Section id='prostate' className='bg-fun-blue-50 scroll-mt-24'>
+                <Wrapper>
+                    <SectionHeader eyebrow='Section 3' title='Prostate Health' accent='Awareness' body={PROSTATE_HEALTH.description} />
+                    <div className='flex flex-col gap-6'>
+                        <div className='grid grid-cols-1 md:grid-cols-3 gap-5'>
+                            <ContentCard>
+                                <div className='text-[11px] font-semibold text-fun-blue-500 uppercase tracking-widest mb-4'>Common Conditions</div>
+                                <TipList items={PROSTATE_HEALTH.conditions} />
+                            </ContentCard>
+                            <ContentCard>
+                                <div className='text-[11px] font-semibold text-fun-blue-500 uppercase tracking-widest mb-4'>Symptoms Needing Evaluation</div>
+                                <TipList items={PROSTATE_HEALTH.symptoms} />
+                            </ContentCard>
+                            <ContentCard>
+                                <div className='text-[11px] font-semibold text-fun-blue-500 uppercase tracking-widest mb-4'>Healthy Prostate Tips</div>
+                                <TipList items={PROSTATE_HEALTH.tips} />
+                            </ContentCard>
+                        </div>
+                        <div className='rounded-2xl bg-fun-blue-950 px-6 py-5 flex items-center gap-4'>
+                            <ShieldCheck size={20} className='text-fun-blue-400 shrink-0' />
+                            <p className='text-fun-blue-100 text-[13px] font-medium'>{PROSTATE_HEALTH.keyMessage}</p>
+                        </div>
+                    </div>
+                </Wrapper>
+            </Section>
+
+            <Section id='uti' className='bg-white scroll-mt-24'>
+                <Wrapper>
+                    <SectionHeader eyebrow='Section 4' title='Urinary Tract Infection' accent='(UTI) Awareness' body={UTI_INFO.description} />
+                    <div className='flex flex-col gap-5'>
+                        <TwoColCard
+                            left={{ title: 'Common Symptoms', items: UTI_INFO.symptoms }}
+                            right={{ title: 'Prevention Tips', items: UTI_INFO.prevention }}
+                        />
+                        <WarningBanner message={UTI_INFO.warning} />
+                    </div>
+                </Wrapper>
+            </Section>
+
+            <Section id='bladder' className='bg-fun-blue-50 scroll-mt-24'>
+                <Wrapper>
+                    <SectionHeader eyebrow='Section 5' title='Bladder Health &' accent='Urinary Incontinence' body={BLADDER_HEALTH.description} />
+                    <TwoColCard
+                        left={{ title: 'Common Causes', items: BLADDER_HEALTH.causes }}
+                        right={{ title: 'Lifestyle Measures', items: BLADDER_HEALTH.lifestyle }}
+                    />
+                </Wrapper>
+            </Section>
+
+            <Section id='mens' className='bg-white scroll-mt-24'>
+                <Wrapper>
+                    <SectionHeader eyebrow='Sections 6 & 7' title="Men's & Women's" accent='Urological Health' />
+                    <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+                        {/* Men's */}
+                        <div id='mens-content'>
+                            <div className='flex items-center gap-2 mb-5'>
+                                <span className='text-xl'>♂️</span>
+                                <h3 className='font-serif text-xl text-fun-blue-950'>Men's Health</h3>
+                            </div>
+                            <p className='text-fun-blue-800/60 text-[13px] leading-relaxed mb-5'>{MENS_HEALTH.description}</p>
+                            <div className='flex flex-col gap-4'>
+                                <ContentCard>
+                                    <div className='text-[11px] font-semibold text-fun-blue-500 uppercase tracking-widest mb-3'>Common Concerns</div>
+                                    <TipList items={MENS_HEALTH.concerns} />
+                                </ContentCard>
+                                <ContentCard>
+                                    <div className='text-[11px] font-semibold text-fun-blue-500 uppercase tracking-widest mb-3'>Lifestyle Factors Affecting Sexual Health</div>
+                                    <TipList items={MENS_HEALTH.lifestyleFactors} />
+                                </ContentCard>
+                            </div>
+                        </div>
+                        {/* Women's */}
+                        <div id='womens'>
+                            <div className='flex items-center gap-2 mb-5'>
+                                <span className='text-xl'>♀️</span>
+                                <h3 className='font-serif text-xl text-fun-blue-950'>Women's Health</h3>
+                            </div>
+                            <p className='text-fun-blue-800/60 text-[13px] leading-relaxed mb-5'>{WOMENS_HEALTH.description}</p>
+                            <div className='flex flex-col gap-4'>
+                                <ContentCard>
+                                    <div className='text-[11px] font-semibold text-fun-blue-500 uppercase tracking-widest mb-3'>Common Conditions</div>
+                                    <PillList items={WOMENS_HEALTH.conditions} />
+                                </ContentCard>
+                                <ContentCard>
+                                    <div className='text-[11px] font-semibold text-fun-blue-500 uppercase tracking-widest mb-3'>Important Advice</div>
+                                    <TipList items={WOMENS_HEALTH.advice} />
+                                </ContentCard>
+                            </div>
+                        </div>
+                    </div>
+                </Wrapper>
+            </Section>
+
+            <Section id='children' className='bg-fun-blue-50 scroll-mt-24'>
+                <Wrapper>
+                    <SectionHeader eyebrow='Section 8' title="Children's" accent='Urological Health' />
+                    <TwoColCard
+                        left={{ title: 'Common Conditions', items: CHILDRENS_HEALTH.conditions }}
+                        right={{ title: 'Advice for Parents', items: CHILDRENS_HEALTH.advice }}
+                    />
+                </Wrapper>
+            </Section>
+
+            <Section id='cancer' className='bg-white scroll-mt-24'>
+                <Wrapper>
+                    <SectionHeader eyebrow='Section 9' title='Urological Cancer' accent='Awareness' />
+                    <div className='flex flex-col gap-6'>
+                        <div className='grid grid-cols-1 md:grid-cols-3 gap-5'>
+                            <ContentCard>
+                                <div className='text-[11px] font-semibold text-fun-blue-500 uppercase tracking-widest mb-4'>Common Cancers</div>
+                                <PillList items={CANCER_INFO.cancers} />
+                            </ContentCard>
+                            <ContentCard>
+                                <div className='text-[11px] font-semibold text-red-500 uppercase tracking-widest mb-4'>Warning Signs</div>
+                                <TipList items={CANCER_INFO.warningSigns} />
+                            </ContentCard>
+                            <ContentCard>
+                                <div className='text-[11px] font-semibold text-emerald-600 uppercase tracking-widest mb-4'>Prevention Strategies</div>
+                                <TipList items={CANCER_INFO.prevention} />
+                            </ContentCard>
+                        </div>
+                        <div className='rounded-2xl bg-fun-blue-950 px-6 py-5 flex items-center gap-4'>
+                            <ShieldCheck size={20} className='text-emerald-400 shrink-0' />
+                            <p className='text-fun-blue-100 text-[13px] font-medium'>{CANCER_INFO.keyMessage}</p>
+                        </div>
+                    </div>
+                </Wrapper>
+            </Section>
+
+            <Section id='screening' className='bg-fun-blue-50 scroll-mt-24'>
                 <Wrapper>
                     <SectionHeader
-                        eyebrow='Who Can Help'
-                        title='Finding the Right'
-                        accent='Specialist'
-                        body='Different urinary problems require different specialists. Here is who to see and when.'
+                        eyebrow='Section 10'
+                        title='Preventive'
+                        accent='Health Check-ups'
+                        body='Regular health check-ups can detect disease early. These are the recommended areas of monitoring.'
                     />
-
-                    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
-                        {SPECIALISTS.map((s, i) => {
-                            const ref = useRef(null)
-                            const isInView = useInView(ref, { once: true, margin: '-40px' })
-                            return (
-                                <motion.div
-                                    key={s.role}
-                                    ref={ref}
-                                    initial={{ opacity: 0, y: 16 }}
-                                    animate={isInView ? { opacity: 1, y: 0 } : {}}
-                                    transition={{ duration: 0.4, delay: i * 0.07 }}
-                                    className='group rounded-2xl border border-fun-blue-100 bg-white p-5 hover:border-fun-blue-200 hover:shadow-sm transition-all duration-200'
-                                >
-                                    <div className='flex items-center gap-3 mb-3'>
-                                        <div className='w-9 h-9 rounded-xl bg-fun-blue-50 border border-fun-blue-100 flex items-center justify-center'>
-                                            <Users size={15} className='text-fun-blue-600' />
-                                        </div>
-                                        <h3 className='font-semibold text-fun-blue-950 text-sm'>{s.role}</h3>
-                                    </div>
-                                    <p className='text-fun-blue-800/60 text-[13px] leading-relaxed'>{s.desc}</p>
-                                </motion.div>
-                            )
-                        })}
+                    <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4'>
+                        {PREVENTIVE_CHECKS.map((check, i) => (
+                            <motion.div
+                                key={check}
+                                initial={{ opacity: 0, y: 16 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.4, delay: i * 0.07 }}
+                                className='flex flex-col items-center text-center gap-3 p-5 rounded-2xl border border-fun-blue-100 bg-white'
+                            >
+                                <div className='w-10 h-10 rounded-xl bg-fun-blue-50 border border-fun-blue-100 flex items-center justify-center'>
+                                    <ShieldCheck size={16} className='text-fun-blue-500' />
+                                </div>
+                                <span className='text-[12px] font-medium text-fun-blue-900 leading-snug'>{check}</span>
+                            </motion.div>
+                        ))}
                     </div>
 
                     {/* NZUSI CTA */}
@@ -546,12 +639,12 @@ export default function EducationPatientPage() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
+                        transition={{ duration: 0.5 }}
                         className='mt-10 rounded-2xl bg-fun-blue-950 p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6'
                     >
                         <div>
-                            <p className='text-white font-semibold text-base mb-1'>Find a Urologist in North Zone</p>
-                            <p className='text-fun-blue-400 text-sm leading-relaxed max-w-md'>
+                            <p className='font-serif text-xl text-white mb-2'>Find a Urologist in North Zone</p>
+                            <p className='text-fun-blue-400 text-[13px] leading-relaxed max-w-md'>
                                 NZUSI connects you with qualified urologists across Haryana, Punjab, Himachal Pradesh, J&K, Uttarakhand, and Delhi.
                             </p>
                         </div>
@@ -565,95 +658,66 @@ export default function EducationPatientPage() {
                 </Wrapper>
             </Section>
 
-            {/* ═══ KEY POINTS + RESOURCES ═════════════════════════════ */}
-            <Section className='bg-white'>
+            <Section id='faqs' className='bg-white scroll-mt-24'>
                 <Wrapper>
-                    <div className='grid grid-cols-1 lg:grid-cols-2 gap-10'>
+                    <SectionHeader
+                        eyebrow='Section 11'
+                        title='Frequently Asked'
+                        accent='Questions'
+                        body='44 questions answered by NZUSI urologists covering all common urological concerns.'
+                    />
 
-                        {/* Key points */}
-                        <div>
-                            <div className='flex items-center gap-3 mb-6'>
-                                <div className='h-px w-6 bg-fun-blue-400' />
-                                <span className='text-[11px] font-semibold tracking-[0.2em] uppercase text-fun-blue-500'>Summary</span>
-                            </div>
-                            <h3 className='text-2xl text-fun-blue-950 mb-5'>
-                                Key Points to <em className='not-italic text-fun-blue-400'>Remember</em>
-                            </h3>
-                            <ul className='space-y-3'>
-                                {[
-                                    'Your urinary system filters waste and extra fluid from your blood.',
-                                    'Problems include kidney failure, urinary tract infections, kidney stones, prostate enlargement, and bladder control issues.',
-                                    'Adults normally eliminate about 1–2 litres of urine per day.',
-                                    'Many urinary disorders are treatable — early detection is key.',
-                                    'Health professionals include GPs, urologists, nephrologists, gynecologists, urogynecologists, and pediatricians.',
-                                    'Staying well-hydrated helps prevent UTIs and kidney stones.',
-                                ].map((point, i) => (
-                                    <motion.li
-                                        key={i}
-                                        initial={{ opacity: 0, x: -12 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ duration: 0.4, delay: i * 0.06 }}
-                                        className='flex gap-3 text-sm text-fun-blue-800/70 leading-relaxed'
-                                    >
-                                        <span className='mt-1.5 w-1.5 h-1.5 rounded-full bg-fun-blue-400 shrink-0' />
-                                        {point}
-                                    </motion.li>
-                                ))}
-                            </ul>
-                        </div>
-
-                        {/* Resources */}
-                        <div>
-                            <div className='flex items-center gap-3 mb-6'>
-                                <div className='h-px w-6 bg-fun-blue-400' />
-                                <span className='text-[11px] font-semibold tracking-[0.2em] uppercase text-fun-blue-500'>Further Reading</span>
-                            </div>
-                            <h3 className='text-2xl text-fun-blue-950 mb-5'>
-                                Trusted <em className='not-italic text-fun-blue-400'>Resources</em>
-                            </h3>
-                            <div className='flex flex-col gap-2.5'>
-                                {[
-                                    { name: 'National Kidney Foundation', url: 'https://www.kidney.org/', desc: 'Comprehensive kidney disease information and support.' },
-                                    { name: 'American Foundation for Urologic Disease', url: 'https://www.urologyhealth.org/', desc: 'Patient education on urological conditions.' },
-                                    { name: 'Interstitial Cystitis Association', url: 'https://www.ichelp.org/', desc: 'Support and research for IC/painful bladder syndrome.' },
-                                    { name: 'National Association for Continence (NAFC)', url: 'https://www.nafc.org/', desc: 'Resources for bladder and bowel health.' },
-                                    { name: 'NKUDIC / NIDDK', url: 'https://www.niddk.nih.gov/', desc: 'NIH clearinghouse for kidney and urologic diseases.' },
-                                ].map((r, i) => (
-                                    <motion.a
-                                        key={r.name}
-                                        href={r.url}
-                                        target='_blank'
-                                        rel='noopener noreferrer'
-                                        initial={{ opacity: 0, y: 10 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ duration: 0.4, delay: i * 0.07 }}
-                                        className='group flex items-start gap-3 p-4 rounded-xl border border-fun-blue-100 bg-fun-blue-50 hover:border-fun-blue-300 hover:bg-white transition-all duration-200'
-                                    >
-                                        <ExternalLink size={13} className='text-fun-blue-400 mt-0.5 shrink-0 group-hover:text-fun-blue-600 transition-colors' />
-                                        <div>
-                                            <p className='font-medium text-fun-blue-900 text-sm group-hover:text-fun-blue-700 transition-colors'>{r.name}</p>
-                                            <p className='text-fun-blue-500 text-[12px] mt-0.5'>{r.desc}</p>
-                                        </div>
-                                    </motion.a>
-                                ))}
-                            </div>
-                        </div>
+                    {/* Category filter */}
+                    <div className='flex flex-wrap gap-2 mb-8'>
+                        {FAQ_CATEGORIES.map(cat => (
+                            <button
+                                key={cat}
+                                onClick={() => setFaqFilter(cat)}
+                                className={`text-[11px] font-semibold px-3 py-1.5 rounded-full border transition-all duration-200 cursor-pointer ${faqFilter === cat
+                                        ? 'bg-fun-blue-950 text-white border-fun-blue-950'
+                                        : 'text-fun-blue-600/60 border-fun-blue-200 hover:border-fun-blue-300 hover:text-fun-blue-700'
+                                    }`}
+                            >
+                                {cat}
+                            </button>
+                        ))}
                     </div>
 
-                    {/* Source note */}
+                    <AnimatePresence mode='popLayout'>
+                        <motion.div
+                            key={faqFilter}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className='flex flex-col gap-2'
+                        >
+                            {filteredFAQs.map((faq, i) => (
+                                <FAQItem key={faq.id} faq={faq} index={i} />
+                            ))}
+                        </motion.div>
+                    </AnimatePresence>
+
+                    <div className='text-center mt-6 text-[12px] text-fun-blue-400/50'>
+                        Showing {filteredFAQs.length} of {FAQS.length} questions
+                    </div>
+                </Wrapper>
+            </Section>
+
+            <Section className='bg-fun-blue-50'>
+                <Wrapper>
                     <motion.div
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.5 }}
-                        className='mt-10 flex items-start gap-3 px-5 py-4 rounded-xl bg-zinc-50 border border-zinc-100'
+                        className='flex items-start gap-3 px-5 py-4 rounded-xl bg-zinc-50 border border-zinc-100'
                     >
                         <AlertCircle size={13} className='text-zinc-400 mt-0.5 shrink-0' />
-                        <p className='text-zinc-500 text-[12px] leading-relaxed'>
-                            Content sourced from NIH Publication No. 98-3195 (National Kidney and Urologic Diseases Information Clearinghouse) and updated for patient readability by NZUSI. This page is for educational purposes only and does not constitute medical advice. Always consult a qualified urologist for diagnosis and treatment.
-                        </p>
+                        <div>
+                            <p className='text-zinc-600 text-[12px] font-semibold mb-1'>Medical Disclaimer</p>
+                            <p className='text-zinc-500 text-[12px] leading-relaxed'>
+                                The information provided on this page is intended for public education and awareness only. It should not replace professional medical consultation, diagnosis, or treatment. Please consult a qualified healthcare professional for personalised medical advice.
+                            </p>
+                        </div>
                     </motion.div>
                 </Wrapper>
             </Section>

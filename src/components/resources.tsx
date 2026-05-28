@@ -11,7 +11,7 @@ const resources = [
         title: "URO-Vista",
         subtitle: "NZUSI Scientific Magazine",
         description: "NZUSI's peer-reviewed scientific publication covering latest advances in urology, case reports, and clinical reviews.",
-        href: "/resources/uro-vista",
+        href: "#",
         tag: "Publication",
         tagColor: "bg-purple-50 text-purple-700",
         accentColor: "group-hover:bg-purple-600",
