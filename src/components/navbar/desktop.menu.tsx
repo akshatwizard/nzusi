@@ -116,8 +116,8 @@ export default function DesktopMenu({ openModal }: { openModal: () => void }) {
                           key={subItem.name}
                           href={subItem.path}
                           className={`flex items-center px-4 py-3 rounded-xl text-sm transition-all ${subActive
-                              ? "bg-fun-blue-500/15 text-fun-blue-400"
-                              : "text-white hover:bg-white/5"
+                            ? "bg-fun-blue-500/15 text-fun-blue-400"
+                            : "text-white hover:bg-white/5"
                             }`}
                         >
                           {subItem.name}

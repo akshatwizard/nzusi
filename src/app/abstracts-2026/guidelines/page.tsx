@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { motion, useInView } from 'motion/react'
+import { AnimatePresence, motion, useInView } from 'motion/react'
 import { Section, Wrapper } from '@/components/ui/sections'
 import {
     Calendar, AlertCircle, FileText, Video,
@@ -10,6 +10,7 @@ import {
     Info, Clock, Award
 } from 'lucide-react'
 import Link from 'next/link'
+import RegisterModal from '@/components/abstracts_reg_modal'
 
 /* ─── Nav categories ─────────────────────────────────────────── */
 const NAV_ITEMS = [
@@ -110,6 +111,7 @@ function GuidelineSection({ id, title, eyebrow, children }: {
 /* ─── Main page ───────────────────────────────────────────────── */
 export default function AbstractGuidelinesPage() {
     const [activeSection, setActiveSection] = useState('dates')
+    const [modalOpen, setModalOpen] = useState(false);
 
     /* Track which section is in viewport for nav highlight */
     useEffect(() => {
@@ -231,12 +233,12 @@ export default function AbstractGuidelinesPage() {
 
                             {/* Submit CTA */}
                             <div className="mt-4 pt-4 border-t border-fun-blue-100">
-                                <Link
-                                    href="/abstracts/submit"
+                                <button
+                                    onClick={() => setModalOpen(true)}
                                     className="flex items-center justify-center gap-2 w-full py-2.5 bg-fun-blue-950 text-white rounded-xl text-xs font-semibold hover:bg-fun-blue-800 transition-colors"
                                 >
                                     Submit Abstract <ArrowRight size={11} />
-                                </Link>
+                                </button>
                             </div>
                         </div>
                     </aside>
@@ -491,20 +493,24 @@ export default function AbstractGuidelinesPage() {
                                 </p>
                             </div>
                             <div className="flex flex-wrap gap-3 shrink-0">
-                                <a href="mailto:nzusioffice@gmail.com"
+                                <Link href="mailto:nzusioffice@gmail.com"
                                     className="inline-flex items-center gap-2 px-5 py-2.5 border border-fun-blue-700 text-fun-blue-300 rounded-xl font-semibold text-xs hover:border-fun-blue-500 transition-colors">
                                     <Mail size={12} />
                                     Contact Secretariat
-                                </a>
-                                <Link href="/abstracts/submit"
+                                </Link>
+                                <button onClick={()=>setModalOpen(true)}
                                     className="inline-flex items-center gap-2 px-5 py-2.5 bg-fun-blue-100 text-fun-blue-900 rounded-xl font-bold text-xs hover:bg-white transition-colors">
                                     Submit Abstract <ArrowRight size={12} />
-                                </Link>
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <AnimatePresence>
+                {modalOpen && <RegisterModal onClose={() => setModalOpen(false)} />}
+            </AnimatePresence>
         </main>
     )
 }
