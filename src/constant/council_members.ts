@@ -1,4 +1,13 @@
-export const OFFICERS = [
+type OFFICERSDATA = {
+    initials: string,
+    name: string,
+    role: string,
+    city: string,
+    highlight: boolean,
+    image?: string
+}
+
+export const OFFICERS: OFFICERSDATA[] = [
     {
         initials: 'KS',
         name: 'Dr Kamaljeet Singh',
@@ -12,6 +21,7 @@ export const OFFICERS = [
         role: 'President Elect',
         city: 'Meerut',
         highlight: false,
+        image: "/images/council/dr-subhash-yadav.jpeg"
     },
     {
         initials: 'PP',
@@ -26,6 +36,7 @@ export const OFFICERS = [
         role: 'Hon Secretary',
         city: 'Varanasi',
         highlight: false,
+        image: "/images/council/dr-sameer-trivedi.jpeg"
     },
     {
         initials: 'US',
@@ -33,6 +44,7 @@ export const OFFICERS = [
         role: 'Hon Treasurer',
         city: 'New Delhi',
         highlight: false,
+        image: "/images/council/dr-umesh-sharma.jpeg"
     },
     {
         initials: 'AM',
@@ -40,6 +52,7 @@ export const OFFICERS = [
         role: 'Treasurer Elect',
         city: 'Rishikesh',
         highlight: false,
+        image: "/images/council/dr-ankur-mittal.jpeg"
     },
 ]
 

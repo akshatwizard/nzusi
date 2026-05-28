@@ -6,6 +6,7 @@ import { useRef } from 'react'
 import { ArrowRight, MapPin } from 'lucide-react'
 import Link from 'next/link'
 import { OFFICERS, COUNCIL_MEMBERS } from '@/constant/council_members'
+import Image from 'next/image'
 
 const fadeUp = {
     hidden: { opacity: 0, y: 22 },
@@ -85,10 +86,22 @@ function OfficerCard({ officer, index, inView, }: {
 
             {/* Avatar + name row */}
             <div className='flex items-center gap-3'>
-                <div className='w-10 h-10 rounded-lg bg-fun-blue-50 border border-fun-blue-100 flex items-center justify-center shrink-0 group-hover:bg-fun-blue-600 group-hover:border-fun-blue-600 transition-all duration-200'>
-                    <span className='font-serif text-[14px] text-fun-blue-700 group-hover:text-white transition-colors duration-200'>
-                        {officer.initials}
-                    </span>
+                <div className='w-14 h-14 rounded-lg bg-fun-blue-50 border border-fun-blue-100 flex items-center justify-center shrink-0 group-hover:bg-fun-blue-600 group-hover:border-fun-blue-600 transition-all duration-200 overflow-hidden'>
+                    {
+                        officer.image ? (
+                            <Image
+                                src={officer.image}
+                                alt={officer.name}
+                                width={50}
+                                height={50}
+                                className='object-cover w-full h-full object-top'
+                            />
+                        ) : (
+                            <span className='font-serif text-xl text-fun-blue-700 group-hover:text-white transition-colors duration-200'>
+                                {officer.initials}
+                            </span>
+                        )
+                    }
                 </div>
                 <div className='min-w-0'>
                     <div className='font-serif text-[15px] text-fun-blue-950 leading-snug truncate'>
