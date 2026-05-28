@@ -31,7 +31,7 @@ export const Menu: MenuType[] = [
   // },
   {
     name: "Public Awareness",
-    path: "/education",
+    path: "/public-health-awareness",
     subMenu: null,
   },
   {

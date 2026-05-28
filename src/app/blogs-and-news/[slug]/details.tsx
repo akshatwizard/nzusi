@@ -10,6 +10,7 @@ import { Calendar, Clock, Eye, Tag, ChevronRight, ArrowLeft, User, ZoomIn, Chevr
 import { Section, Wrapper } from "@/components/ui/sections"
 import { AnimatePresence, motion } from "motion/react"
 import { useState } from "react"
+import YoutubeVideo from "@/components/youtube_video_loader"
 
 
 export default function BlogContent({ slug }: { slug: string }) {
@@ -153,6 +154,17 @@ export default function BlogContent({ slug }: { slug: string }) {
                                 dangerouslySetInnerHTML={{ __html: post.long_content }}
                             />
                             <ImageGallery images={galleryImages} />
+
+                            {post.youtube_id_or_link &&
+                                <div className="w-full overflow-hidden mt-10 pt-8 border-t border-fun-blue-100">
+                                    <div className="w-full h-full overflow-hidden rounded-2xl">
+                                        <YoutubeVideo
+                                            title={post.title}
+                                            video_id={post.youtube_id_or_link}
+                                        />
+                                    </div>
+                                </div>
+                            }
 
                             <div className="mt-10 pt-8 border-t border-fun-blue-100 flex items-center justify-between flex-wrap gap-4">
                                 {post.category && <div className="flex items-center gap-2">
