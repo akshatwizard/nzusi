@@ -58,14 +58,14 @@ export default function Footer() {
                         </p>
 
                         <div className="space-y-2.5">
-                            <a
-                                href="mailto:nzusi@example.com"
+                            <Link
+                                href="mailto:nzusioffice@gmail.com"
                                 className="flex items-center gap-2.5 text-sm text-fun-blue-400 hover:text-fun-blue-200 transition-colors"
                             >
                                 <Mail size={13} />
                                 {/* TODO: Replace with actual NZUSI email */}
-                                nzusi@usi.org
-                            </a>
+                                nzusioffice@gmail.com
+                            </Link>
                             <div className="flex items-start gap-2.5 text-sm text-fun-blue-400">
                                 <MapPin size={13} className="mt-0.5 shrink-0" />
                                 <span>North Zone, India</span>
@@ -73,7 +73,7 @@ export default function Footer() {
                         </div>
 
                         {/* Social — TODO: Update with actual NZUSI handles */}
-                        <div className="flex gap-3 mt-6">
+                        {/* <div className="flex gap-3 mt-6">
                             {["In", "Tw", "Yt"].map((s) => (
                                 <a
                                     key={s}
@@ -84,7 +84,7 @@ export default function Footer() {
                                     {s}
                                 </a>
                             ))}
-                        </div>
+                        </div> */}
                     </div>
 
                     {/* Links */}
