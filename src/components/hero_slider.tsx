@@ -36,7 +36,7 @@ const SLIDES = [
 
 export function HeroCarousel() {
     const autoplay = useRef(
-        Autoplay({ delay: 4000, stopOnInteraction: true, stopOnMouseEnter: true })
+        Autoplay({ delay: 3000, })
     )
 
     const [emblaRef, emblaApi] = useEmblaCarousel(
