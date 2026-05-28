@@ -14,7 +14,7 @@ export const CATEGORIES = [
         dotColor: 'bg-violet-500',
         accent: '#7c3aed',
         description: 'Surgical technique videos demonstrating innovative urological procedures, live surgery recordings, and step-by-step operative demonstrations.',
-        downloadUrl: 'https://1d2b4dea-e0f6-42cc-87ed-25777b45da4f.usrfiles.com/ugd/1d2b4d_ab61dcb331984fc3a7e757ec4b0dd3c0.pdf',
+        downloadUrl: '/files/NZUSICON-2025-ABSTRACT-BOOK-VIDEO.docx',
         highlights: ['Robotic surgery', 'Laparoscopic techniques', 'Endourology', 'Reconstructive procedures'],
     },
     {
@@ -30,7 +30,7 @@ export const CATEGORIES = [
         dotColor: 'bg-fun-blue-500',
         accent: '#185fa5',
         description: 'Oral presentations of original research, randomised controlled trials, and clinical studies selected for podium presentation at NZUSICON 2025.',
-        downloadUrl: '#',
+        downloadUrl: '/files/NZUSICON-2025-ABSTRACT-BOOK-PODIUM.docx',
         highlights: ['RCTs', 'Clinical outcomes', 'Epidemiology', 'New techniques'],
     },
     {
@@ -46,7 +46,7 @@ export const CATEGORIES = [
         dotColor: 'bg-emerald-500',
         accent: '#059669',
         description: 'Moderated poster presentations covering a broad range of urological topics, reviewed and discussed by expert faculty during dedicated poster sessions.',
-        downloadUrl: '#',
+        downloadUrl: '/files/NZUSICON-2025-ABSTRACT-BOOK-POSTERS.docx',
         highlights: ['Case series', 'Pilot studies', 'QI projects', 'Technology'],
     },
     {
@@ -62,7 +62,7 @@ export const CATEGORIES = [
         dotColor: 'bg-amber-500',
         accent: '#d97706',
         description: 'Electronic poster submissions displayed throughout the conference. Authors present at designated times for attendee interaction and discussion.',
-        downloadUrl: '#',
+        downloadUrl: '/files/NZUSICON-2025-ABSTRACT-BOOK-UNMODERATED-POSTERS.docx',
         highlights: ['Case reports', 'Observational studies', 'Reviews', 'Audits'],
     },
 ]
