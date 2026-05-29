@@ -237,13 +237,6 @@ export default function AboutConstitution() {
                     <div className="flex items-center gap-1.5 px-3 py-1.5 bg-fun-blue-50 border border-fun-blue-100 rounded-lg text-[11px] text-fun-blue-600 font-medium">
                         {SECTIONS.length} Sections
                     </div>
-                    <a
-                        href="/constitution.pdf"
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-fun-blue-600 text-white rounded-lg text-[11px] font-medium hover:bg-fun-blue-700 transition-colors"
-                    >
-                        <Download size={11} />
-                        Download PDF
-                    </a>
                 </div>
             </motion.div>
 
