@@ -105,6 +105,6 @@ export const ALL_EVENTS = [
         highlight: true,
         attendees: "600+",
         description: "The flagship annual congress of the North Zone chapter — three days of keynotes, live surgeries, industry exhibitions, workshops, and the prestigious NZUSI Awards ceremony.",
-        link: "https://www.nzusi.org/_files/ugd/02b867_fd810af167bf4228a16d526ef68be544.pdf",
+        link: "/files/NZ-USICON-REGISTRATION-FORM.pdf",
     },
 ]

@@ -94,20 +94,20 @@ function FeaturedCard({ event }: { event: typeof ALL_EVENTS[number] }) {
                     </div>
 
                     <div className="flex gap-3">
-                        <a
+                        <Link
                             href={event.link}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-white rounded-xl font-bold text-sm transition-colors"
                         >
                             Register Now <ArrowUpRight size={14} />
-                        </a>
-                        <a
-                            href="#"
+                        </Link>
+                        <Link
+                            href="/events"
                             className="inline-flex items-center gap-2 px-5 py-2.5 border border-fun-blue-700 text-fun-blue-300 hover:bg-fun-blue-800 rounded-xl font-semibold text-sm transition-colors"
                         >
                             Learn More
-                        </a>
+                        </Link>
                     </div>
                 </div>
 
