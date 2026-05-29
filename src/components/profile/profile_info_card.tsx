@@ -39,7 +39,7 @@ export default function PersonalInfoCard({ user }: { user: Member }) {
                 <ProfileField label='Phone' value={user.mobile_no} />
                 <ProfileField label='Gender' value={user.gender} />
                 <ProfileField label='Date of Birth' value={formatDate(user.dob)} />
-                <ProfileField label='Last Login' value={formatLastLogin(user.last_login_at)} />
+                {/* <ProfileField label='Last Login' value={formatLastLogin(user.last_login_at)} /> */}
             </div>
 
             {/* Address blocks */}
