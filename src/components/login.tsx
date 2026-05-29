@@ -7,6 +7,7 @@ import { AxiosError } from "axios";
 import { ArrowRight, Mail, RotateCcw, ShieldCheck, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react"
 import Image from "next/image";
+import Link from "next/link";
 import { Dispatch, SetStateAction, useEffect, useState, useRef } from "react";
 import toast from "react-hot-toast";
 
@@ -68,8 +69,8 @@ export default function Login({ isOpen, onClose }: Props) {
             // console.log(val.data);
             setCurrentStep("otp");
         },
-        onError: (err: AxiosError<{ error: string }>) =>
-            toast.error(err.response?.data?.error || "Failed"),
+        onError: (err: AxiosError<{ message: string }>) =>
+            toast.error(err.response?.data?.message || "Failed"),
     })
 
     const { mutate: verifyOtp, isPending: verifyingOtp } = useMutation({
@@ -224,10 +225,14 @@ function SentOtp({ email, setEmail, sendOtp, sendingOtp }: SentOtpProps) {
             </button>
 
             <p className="text-center text-xs text-stone-400 mt-5 leading-relaxed">
-                By continuing you agree to our{" "}
-                <a href="#" className="text-fun-blue-600 hover:underline">Terms</a>
-                {" & "}
-                <a href="#" className="text-fun-blue-600 hover:underline">Privacy Policy</a>
+                If you are not a Member,{" "}
+                <Link
+                    href="/files/NZUSI-MEMBERSHIP-APPLICATION-FORM.pdf"
+                    target='_blank'
+                    rel="noopener noreferrer"
+                    className="text-fun-blue-600 hover:underline">
+                    Apply Here
+                </Link>
             </p>
         </motion.div>
     )
