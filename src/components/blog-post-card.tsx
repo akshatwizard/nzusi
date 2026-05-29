@@ -52,7 +52,7 @@ export function PostCard({ post, index }: Props) {
                                 alt={post.title}
                                 fill
                                 sizes='(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw'
-                                className='object-cover transition-transform duration-500 group-hover:scale-105'
+                                className='object-contain transition-transform duration-500 group-hover:scale-105'
                             />
                             {/* Subtle dark scrim so text overlays stay readable */}
                             <div className='absolute inset-0 bg-linear-to-t from-fun-blue-950/40 via-transparent to-transparent' />
