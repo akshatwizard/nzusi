@@ -102,6 +102,25 @@ function AboutLeft({ inView }: { inView: boolean }) {
                     </motion.div>
                 ))}
             </div>
+
+            <motion.div
+                initial="hidden" animate={inView ? 'show' : 'hidden'} custom={0.52}
+                variants={fadeUp}
+                className="mt-8"
+            >
+                <Link
+                    href="/files/NZUSI-MEMBERSHIP-APPLICATION-FORM.pdf"
+                    // download={true}
+                    target='_blank'
+                    className="group inline-flex items-center gap-2 text-sm font-semibold text-fun-blue-600 hover:text-fun-blue-700 transition-colors duration-200"
+                >
+                    Register for membership
+                    <ArrowRight
+                        size={15}
+                        className="transition-transform duration-200 group-hover:translate-x-1"
+                    />
+                </Link>
+            </motion.div>
         </div>
     )
 }
@@ -222,7 +241,8 @@ function AscentCard({ inView }: { inView: boolean }) {
                     </div>
                 </div>
                 <Link
-                    href="/events"
+                    href="/files/NZ-USICON-REGISTRATION-FORM.pdf"
+                    target='_blank'
                     className="group shrink-0 flex items-center gap-1.5 text-[12px] font-semibold text-fun-blue-600 hover:text-fun-blue-700 whitespace-nowrap"
                 >
                     Register
