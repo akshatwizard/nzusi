@@ -112,6 +112,7 @@ function AboutLeft({ inView }: { inView: boolean }) {
                     href="/files/NZUSI-MEMBERSHIP-APPLICATION-FORM.pdf"
                     // download={true}
                     target='_blank'
+                    rel="noopener noreferrer"
                     className="group inline-flex items-center gap-2 text-sm font-semibold text-fun-blue-600 hover:text-fun-blue-700 transition-colors duration-200"
                 >
                     Register for membership
@@ -243,6 +244,7 @@ function AscentCard({ inView }: { inView: boolean }) {
                 <Link
                     href="/files/NZ-USICON-REGISTRATION-FORM.pdf"
                     target='_blank'
+                    rel="noopener noreferrer"
                     className="group shrink-0 flex items-center gap-1.5 text-[12px] font-semibold text-fun-blue-600 hover:text-fun-blue-700 whitespace-nowrap"
                 >
                     Register

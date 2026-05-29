@@ -5,6 +5,7 @@ import { motion, useInView } from "motion/react"
 import { ArrowRight, MapPin, Calendar } from "lucide-react"
 import { Section, Wrapper } from "@/components/ui/sections"
 import Image from "next/image"
+import Link from "next/link"
 
 function useCountdown(targetDate: Date) {
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
@@ -219,20 +220,20 @@ export default function NZUSICONBanner({ variant = "home", bgImage }: Props) {
                             transition={{ duration: 0.5, delay: 0.3 }}
                             className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start"
                         >
-                            <a
-                                href="https://www.nzusi.org/_files/ugd/02b867_fd810af167bf4228a16d526ef68be544.pdf"
+                            <Link
+                                href="/files/NZ-USICON-REGISTRATION-FORM.pdf"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className={`inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-bold text-sm transition-colors duration-200 ${t.btnPrimary}`}
                             >
                                 Register Now <ArrowRight size={14} />
-                            </a>
-                            <a
+                            </Link>
+                            <Link
                                 href="/events"
                                 className={`inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold text-sm transition-colors duration-200 ${t.btnSecondary}`}
                             >
                                 View All Events
-                            </a>
+                            </Link>
                         </motion.div>
                     </div>
 
