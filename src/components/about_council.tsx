@@ -1,72 +1,11 @@
 'use client'
 
 import { motion } from 'motion/react'
-import { MapPin } from 'lucide-react'
+import { MapPin, Stethoscope } from 'lucide-react'
+import Image from 'next/image'
+import { OFFICERS, COUNCIL_MEMBERS, USI_MEMBERS, Officer, CouncilMember, USIMember } from '@/constant/council_members'
 
-const OFFICERS = [
-    {
-        initials: 'KS',
-        name: 'Dr Kamaljeet Singh',
-        role: 'President',
-        city: 'Amritsar',
-        color: 'bg-fun-blue-700 text-fun-blue-100',
-        highlight: true,
-    },
-    {
-        initials: 'SY',
-        name: 'Dr Subhash Yadav',
-        role: 'President Elect',
-        city: 'Meerut',
-        color: 'bg-fun-blue-800 text-fun-blue-200',
-        highlight: false,
-    },
-    {
-        initials: 'PP',
-        name: 'Dr P.P. Singh',
-        role: 'Immediate Past President',
-        city: 'New Delhi',
-        color: 'bg-fun-blue-900 text-fun-blue-300',
-        highlight: false,
-    },
-    {
-        initials: 'ST',
-        name: 'Dr Sameer Trivedi',
-        role: 'Hon Secretary',
-        city: 'Varanasi',
-        color: 'bg-fun-blue-800 text-fun-blue-200',
-        highlight: false,
-    },
-    {
-        initials: 'US',
-        name: 'Dr Umesh Sharma',
-        role: 'Hon Treasurer',
-        city: 'New Delhi',
-        color: 'bg-fun-blue-900 text-fun-blue-300',
-        highlight: false,
-    },
-    {
-        initials: 'AM',
-        name: 'Dr Ankur Mittal',
-        role: 'Treasurer Elect',
-        city: 'Rishikesh',
-        color: 'bg-fun-blue-900 text-fun-blue-300',
-        highlight: false,
-    },
-]
-
-const COUNCIL_MEMBERS = [
-    { initials: 'GB', name: 'Dr Girdhar Bora', city: 'Chandigarh' },
-    { initials: 'KK', name: 'Dr Kawaljit Singh Kaura', city: 'Bathinda' },
-    { initials: 'LK', name: 'Dr Lalit Kumar', city: 'Varanasi' },
-    { initials: 'RS', name: 'Dr Ravimohan S.', city: 'Chandigarh' },
-    { initials: 'TB', name: 'Dr Tanuj Pal Bhatia', city: 'Faridabad' },
-]
-
-const USI_MEMBERS = [
-    { initials: 'SP', name: 'Dr Shivam Priyadarshi', city: 'Jaipur', role: 'Ex-Officio' },
-    { initials: 'SY', name: 'Dr S.P. Yadav', city: 'Gurugram', role: 'Ex-Officio' },
-]
-
+/* ─── Variants ───────────────────────────────────────────────── */
 const fadeUp = {
     hidden: { opacity: 0, y: 16 },
     show: (d = 0) => ({
@@ -75,7 +14,45 @@ const fadeUp = {
     }),
 }
 
-function OfficerCard({ officer, index }: { officer: (typeof OFFICERS)[number], index: number }) {
+/* ─── Avatar ─────────────────────────────────────────────────── */
+function Avatar({
+    image,
+    initials,
+    name,
+    size = 'md',
+    colorCls = 'bg-fun-blue-700 text-fun-blue-100',
+}: {
+    image?: string
+    initials: string
+    name: string
+    size?: 'sm' | 'md'
+    colorCls?: string
+}) {
+    const dim = size === 'sm' ? 'w-9 h-9 text-[11px]' : 'w-11 h-11 text-sm'
+
+    if (image) {
+        return (
+            <div className={`${dim} rounded-full overflow-hidden shrink-0 border-2 border-fun-blue-100`}>
+                <Image
+                    src={image}
+                    alt={name}
+                    width={size === 'sm' ? 36 : 44}
+                    height={size === 'sm' ? 36 : 44}
+                    className='w-full h-full object-cover object-top'
+                />
+            </div>
+        )
+    }
+
+    return (
+        <div className={`${dim} rounded-full flex items-center justify-center font-semibold shrink-0 ${colorCls}`}>
+            {initials}
+        </div>
+    )
+}
+
+/* ─── Officer card ───────────────────────────────────────────── */
+function OfficerCard({ officer, index }: { officer: Officer; index: number }) {
     return (
         <motion.div
             initial='hidden'
@@ -87,20 +64,32 @@ function OfficerCard({ officer, index }: { officer: (typeof OFFICERS)[number], i
                 : 'border-fun-blue-100 bg-white'
                 }`}
         >
-            <div className={`h-1.5 w-full ${officer.highlight ? 'bg-linear-to-r from-fun-blue-600 via-fun-blue-400 to-transparent' : 'bg-fun-blue-50'}`} />
+            {/* Top bar */}
+            <div className={`h-1.5 w-full ${officer.highlight
+                ? 'bg-linear-to-r from-fun-blue-600 via-fun-blue-400 to-transparent'
+                : 'bg-fun-blue-50'
+                }`}
+            />
 
             <div className='p-5'>
                 {/* Avatar */}
-                <div className={`w-11 h-11 rounded-full flex items-center justify-center text-sm font-semibold mb-4 ${officer.color}`}>
-                    {officer.initials}
-                </div>
+                <Avatar
+                    image={officer.image}
+                    initials={officer.initials}
+                    name={officer.name}
+                    size='md'
+                    colorCls={officer.highlight
+                        ? 'bg-fun-blue-700 text-fun-blue-100'
+                        : 'bg-fun-blue-100 text-fun-blue-700'
+                    }
+                />
 
                 {/* Role badge */}
-                <div className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full mb-2 tracking-wide ${officer.highlight
+                <div className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full mb-2 mt-4 tracking-wide ${officer.highlight
                     ? 'bg-fun-blue-600/20 text-fun-blue-300 border border-fun-blue-500/20'
                     : 'bg-fun-blue-50 text-fun-blue-600 border border-fun-blue-100'
-                    }
-        `}>
+                    }`}
+                >
                     {officer.role}
                 </div>
 
@@ -109,22 +98,38 @@ function OfficerCard({ officer, index }: { officer: (typeof OFFICERS)[number], i
                     {officer.name}
                 </div>
 
+                {/* Designation */}
+                {officer.designation && (
+                    <div className={`flex items-start gap-1 text-[11px] mb-1.5 ${officer.highlight ? 'text-fun-blue-300/70' : 'text-fun-blue-500/80'}`}>
+                        <Stethoscope size={10} className='mt-0.5 shrink-0' />
+                        <span>
+                            {officer.designation.title}
+                            {officer.designation.institution && (
+                                <>, {officer.designation.institution}</>
+                            )}
+                        </span>
+                    </div>
+                )}
+
                 {/* City */}
-                <div className={`flex items-center gap-1 text-[11px] ${officer.highlight ? 'text-fun-blue-400/50' : 'text-fun-blue-400/70'}`}>
-                    <MapPin size={10} />
-                    {officer.city}
-                </div>
+                {officer.city && (
+                    <div className={`flex items-center gap-1 text-[11px] ${officer.highlight ? 'text-fun-blue-400/50' : 'text-fun-blue-400/70'}`}>
+                        <MapPin size={10} />
+                        {officer.city}
+                    </div>
+                )}
             </div>
         </motion.div>
     )
 }
 
+/* ─── Member row (council + USI) ─────────────────────────────── */
 function MemberRow({
     member,
     index,
     role,
 }: {
-    member: { initials: string; name: string; city: string; role?: string }
+    member: CouncilMember | USIMember
     index: number
     role?: string
 }) {
@@ -136,23 +141,43 @@ function MemberRow({
             variants={fadeUp}
             className='group flex items-center gap-4 p-3.5 rounded-xl border border-fun-blue-100 bg-white hover:border-fun-blue-200 hover:bg-fun-blue-50/50 transition-all duration-200'
         >
-            <div className='w-9 h-9 rounded-full bg-fun-blue-50 border border-fun-blue-100 flex items-center justify-center text-[11px] font-semibold text-fun-blue-700 shrink-0'>
-                {member.initials}
-            </div>
+            <Avatar
+                image={member.image}
+                initials={member.initials}
+                name={member.name}
+                size='sm'
+                colorCls='bg-fun-blue-50 border border-fun-blue-100 text-fun-blue-700'
+            />
+
             <div className='flex-1 min-w-0'>
                 <div className='font-medium text-[13px] text-fun-blue-950 truncate'>{member.name}</div>
-                {role && (
+
+                {/* Designation if available */}
+                {member.designation && (
+                    <div className='text-[11px] text-fun-blue-500/70 mt-0.5 truncate'>
+                        {member.designation.title}
+                        {member.designation.institution && ` · ${member.designation.institution}`}
+                    </div>
+                )}
+
+                {/* Ex-Officio role */}
+                {role && !member.designation && (
                     <div className='text-[10px] text-fun-blue-500/70 mt-0.5'>{role}</div>
                 )}
             </div>
-            <div className='flex items-center gap-1 text-[11px] text-fun-blue-400/55 shrink-0'>
-                <MapPin size={9} />
-                {member.city}
-            </div>
+
+            {/* City */}
+            {member.city && (
+                <div className='flex items-center gap-1 text-[11px] text-fun-blue-400/55 shrink-0'>
+                    <MapPin size={9} />
+                    {member.city}
+                </div>
+            )}
         </motion.div>
     )
 }
 
+/* ─── Section header ─────────────────────────────────────────── */
 function SectionHeader({ label, delay = 0 }: { label: string; delay?: number }) {
     return (
         <motion.div
@@ -171,15 +196,13 @@ function SectionHeader({ label, delay = 0 }: { label: string; delay?: number }) 
     )
 }
 
+/* ─── Main component ─────────────────────────────────────────── */
 export default function AboutCouncil() {
     return (
         <div className='flex flex-col gap-12'>
 
-            <motion.div
-                initial='hidden' animate='show' custom={0}
-                variants={fadeUp}
-                className='max-w-2xl'
-            >
+            {/* Intro */}
+            <motion.div initial='hidden' animate='show' custom={0} variants={fadeUp} className='max-w-2xl'>
                 <h2 className='font-serif text-2xl text-fun-blue-950 mb-3 leading-snug'>
                     Executive Council — Current Term
                 </h2>
@@ -190,6 +213,7 @@ export default function AboutCouncil() {
                 </p>
             </motion.div>
 
+            {/* Executive Officers */}
             <div>
                 <SectionHeader label='Executive Officers' delay={0.05} />
                 <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4'>
@@ -199,7 +223,7 @@ export default function AboutCouncil() {
                 </div>
             </div>
 
-            {/* ── Council members ── */}
+            {/* Council members */}
             <div>
                 <SectionHeader label='Council Members' delay={0.1} />
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-2.5'>
@@ -209,7 +233,7 @@ export default function AboutCouncil() {
                 </div>
             </div>
 
-            {/* ── USI Council members from North Zone ── */}
+            {/* USI Council members from North Zone */}
             <div>
                 <SectionHeader label='USI Council Members from North Zone' delay={0.15} />
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-2.5'>
@@ -219,7 +243,7 @@ export default function AboutCouncil() {
                 </div>
             </div>
 
-            {/* ── Info note ── */}
+            {/* Info note */}
             <motion.div
                 initial='hidden' animate='show' custom={0.2}
                 variants={fadeUp}
@@ -234,8 +258,7 @@ export default function AboutCouncil() {
                         className='text-fun-blue-600 underline underline-offset-2 hover:text-fun-blue-700'
                     >
                         nzusioffice@gmail.com
-                    </a>
-                    .
+                    </a>.
                 </p>
             </motion.div>
 
