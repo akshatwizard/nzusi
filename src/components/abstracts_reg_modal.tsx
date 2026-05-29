@@ -77,6 +77,11 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
             toast.error('File must be under 100 MB.')
             return
         }
+        if (picked && picked.type !== "application/pdf") {
+            toast.error("Unsupported file...!");
+            return
+        }
+
         setFile(picked)
     }
 
@@ -289,7 +294,7 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
                                 </div>
                                 <button
                                     type="submit"
-                                    
+
                                     className="mt-2 w-full py-3 bg-fun-blue-950 text-white rounded-xl font-semibold text-sm hover:bg-fun-blue-800 transition-colors flex items-center justify-center gap-2"
                                 >
                                     Continue <ArrowRight size={14} />
@@ -387,7 +392,7 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
                                     <input
                                         ref={fileInputRef}
                                         type="file"
-                                        accept=".pdf,.doc,.docx,.ppt,.pptx"
+                                        accept=".pdf"
                                         className="hidden"
                                         onChange={handleFileChange}
                                     />
@@ -407,7 +412,7 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
                                             <>
                                                 <Upload size={20} className="text-fun-blue-300" />
                                                 <p className="text-sm font-medium text-fun-blue-700">Upload supporting file</p>
-                                                <p className="text-[11px] text-zinc-400">PDF, DOCX, PPT — max 100 MB (optional)</p>
+                                                <p className="text-[11px] text-zinc-400">PDF — max 100 MB (optional)</p>
                                             </>
                                         )}
                                     </div>
