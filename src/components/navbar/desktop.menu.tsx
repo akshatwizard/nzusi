@@ -115,6 +115,7 @@ export default function DesktopMenu({ openModal }: { openModal: () => void }) {
                         <Link
                           key={subItem.name}
                           href={subItem.path}
+                          target={subItem.open_in_new_tab && subItem.open_in_new_tab ? "_blank" : "_self"}
                           className={`flex items-center px-4 py-3 rounded-xl text-sm transition-all ${subActive
                             ? "bg-fun-blue-500/15 text-fun-blue-400"
                             : "text-white hover:bg-white/5"

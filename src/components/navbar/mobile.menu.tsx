@@ -151,6 +151,7 @@ export default function MobileMenu({ isOpen, onClose, openModal }: Props) {
                                 <Link
                                   key={subItem.name}
                                   href={subItem.path}
+                                  target={subItem.open_in_new_tab && subItem.open_in_new_tab ? "_blank" : "_self"}
                                   onClick={onClose}
                                   className="px-4 py-2.5 rounded-xl text-sm text-zinc-600 hover:bg-white hover:text-fun-blue-500 transition"
                                 >

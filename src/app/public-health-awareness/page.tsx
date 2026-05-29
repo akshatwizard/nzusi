@@ -252,7 +252,7 @@ export default function PublicHealthPage() {
                         </div>
                         <motion.div initial={{ opacity: 0, x: 24 }} animate={heroInView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6, delay: 0.3 }}
                             className='flex flex-row lg:flex-col gap-3 flex-wrap'>
-                            {[{ val: '11', label: 'Health sections' }, { val: '44', label: 'FAQs answered' }, { val: '6+', label: 'Lifestyle factors' }, { val: '4', label: 'Cancer types covered' }].map(s => (
+                            {[{ val: '11', label: 'Health sections' }, { val: '6+', label: 'Lifestyle factors' }, { val: '4', label: 'Cancer types covered' }].map(s => (
                                 <div key={s.label} className='flex items-center gap-3 px-4 py-3 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-sm'>
                                     <span className='font-serif text-2xl text-white tabular-nums'>{s.val}</span>
                                     <span className='text-fun-blue-400 text-xs leading-tight'>{s.label}</span>
@@ -520,7 +520,7 @@ export default function PublicHealthPage() {
                     <div className='grid grid-cols-1 md:grid-cols-2 gap-5 mt-2'>
                         <div className='relative rounded-2xl overflow-hidden aspect-video'>
                             <Image src={IMG.ageing} alt='Ageing and urological health — senior man' fill className='object-cover object-top' sizes='50vw' />
-                            <div className='absolute inset-0 bg-gradient-to-t from-fun-blue-950/80 to-transparent' />
+                            <div className='absolute inset-0 bg-linear-to-t from-fun-blue-950/80 to-transparent' />
                             <p className='absolute bottom-4 left-5 right-5 text-fun-blue-100 text-[13px] leading-snug font-medium'>Healthy ageing starts with regular urological check-ups.</p>
                         </div>
                         <div className='rounded-2xl bg-fun-blue-950 p-7 flex flex-col justify-between'>

@@ -2,11 +2,12 @@ export type MenuType = {
   name: string;
   path: string;
   subMenu:
-    | {
-        name: string;
-        path: string | null;
-      }[]
-    | null;
+  | {
+    name: string;
+    path: string | null;
+    open_in_new_tab?: boolean;
+  }[]
+  | null;
 };
 
 export const Menu: MenuType[] = [
@@ -54,8 +55,34 @@ export const Menu: MenuType[] = [
     subMenu: null,
   },
   {
-    name: "NZI YouTube Channel",
+    name: "NZI YouTube",
     path: "https://www.youtube.com/@nzusioffice7256",
     subMenu: null,
+  },
+  {
+    name: "Resources",
+    path: "#",
+    subMenu: [
+      {
+        name: "Bid Form",
+        path: "#",
+        open_in_new_tab: false
+      },
+      {
+        name: "Membership Form",
+        path: "/files/NZUSI-MEMBERSHIP-APPLICATION-FORM.pdf",
+        open_in_new_tab: true
+      },
+      {
+        name: "NZUSICON Form",
+        path: "/files/NZ-USICON-REGISTRATION-FORM.pdf",
+        open_in_new_tab: true
+      },
+      {
+        name: "Nomination Form",
+        path: "#",
+        open_in_new_tab: false
+      },
+    ],
   },
 ];
