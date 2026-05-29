@@ -1,9 +1,10 @@
 'use client'
 
-import { ComponentType} from 'react'
+import { ComponentType } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { ChevronRight } from 'lucide-react'
 import { About_Tab } from '@/constant/about_tabs'
+import Link from 'next/link'
 
 type Props = {
     active: ComponentType
@@ -68,6 +69,45 @@ export default function AboutSidebar({ active, onSelect }: Props) {
                     </div>
                 </div>
             ))}
+
+            <div>
+                <p className='text-[10px] font-semibold text-fun-blue-900/30 uppercase tracking-widest mb-1.5 px-2'>
+                    Important links
+                </p>
+                <div className='flex flex-col gap-0.5'>
+                    <Link
+                        href="/files/NZUSI-MEMBERSHIP-APPLICATION-FORM.pdf"
+                        target='_blank'
+                        rel="noopener noreferrer"
+                        className={`group relative w-full flex items-center justify-between px-3 py-2 rounded-lg text-[13px] font-medium text-left transition-colors duration-150 text-white bg-fun-blue-600`}
+                    >
+                        <span className='relative z-10'>
+                            Membership Registration
+                        </span>
+
+                        <span className='relative z-10'>
+                            <ChevronRight size={13} className='text-white/55' />
+                        </span>
+                    </Link>
+                </div>
+                <div className='flex flex-col gap-0.5 mt-1'>
+                    <Link
+                        href="/files/NZ-USICON-REGISTRATION-FORM.pdf"
+                        target='_blank'
+                        rel="noopener noreferrer"
+                        className={`group relative w-full flex items-center justify-between px-3 py-2 rounded-lg text-[13px] font-medium text-left transition-colors duration-150 text-white bg-amber-500`}
+                    >
+                        <span className='relative z-10'>
+                            NZ-USICON Registration
+                        </span>
+
+                        <span className='relative z-10'>
+                            <ChevronRight size={13} className='text-white/55' />
+                        </span>
+                    </Link>
+                </div>
+            </div>
+
         </aside>
     )
 }

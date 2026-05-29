@@ -110,7 +110,6 @@ function AboutLeft({ inView }: { inView: boolean }) {
             >
                 <Link
                     href="/files/NZUSI-MEMBERSHIP-APPLICATION-FORM.pdf"
-                    // download={true}
                     target='_blank'
                     rel="noopener noreferrer"
                     className="group inline-flex items-center gap-2 text-sm font-semibold text-fun-blue-600 hover:text-fun-blue-700 transition-colors duration-200"
