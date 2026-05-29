@@ -4,7 +4,8 @@ type OFFICERSDATA = {
     role: string,
     city: string,
     highlight: boolean,
-    image?: string
+    image: string
+    
 }
 
 export const OFFICERS: OFFICERSDATA[] = [
@@ -14,6 +15,7 @@ export const OFFICERS: OFFICERSDATA[] = [
         role: 'President',
         city: 'Amritsar',
         highlight: true,
+        image: "/images/council/dr-subhash-yadav.jpeg"
     },
     {
         initials: 'SY',
@@ -29,6 +31,7 @@ export const OFFICERS: OFFICERSDATA[] = [
         role: 'Immediate Past President',
         city: 'New Delhi',
         highlight: false,
+        image: "/images/council/dr-subhash-yadav.jpeg"
     },
     {
         initials: 'ST',

@@ -59,7 +59,8 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
             })
         },
         onSuccess: (res) => {
-            setAbstractId(res.data?.abstract_id ?? Math.random().toString(36).slice(2, 8).toUpperCase())
+            // console.log(res.data);?? Math.random().toString(36).slice(2, 8).toUpperCase()
+            setAbstractId(res.data?.data.abstract_id)
             setSubmitted(true)
         },
         onError: (err: any) => {
@@ -73,8 +74,8 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const picked = e.target.files?.[0] ?? null
-        if (picked && picked.size > 100 * 1024 * 1024) {
-            toast.error('File must be under 100 MB.')
+        if (picked && picked.size > 50 * 1024 * 1024) {
+            toast.error('File must be under 50 MB.')
             return
         }
         if (picked && picked.type !== "application/pdf") {
@@ -176,7 +177,7 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
                                     You will receive a confirmation at <strong>{form.email}</strong> within 48 hours.
                                 </p>
                                 <div className="mt-2 px-4 py-3 rounded-xl bg-fun-blue-50 border border-fun-blue-100 text-xs text-fun-blue-600 font-medium">
-                                    Abstract ID: NZUSI-2026-{abstractId}
+                                    Abstract ID: {abstractId}
                                 </div>
                                 <button
                                     onClick={onClose}
@@ -412,7 +413,7 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
                                             <>
                                                 <Upload size={20} className="text-fun-blue-300" />
                                                 <p className="text-sm font-medium text-fun-blue-700">Upload supporting file</p>
-                                                <p className="text-[11px] text-zinc-400">PDF — max 100 MB (optional)</p>
+                                                <p className="text-[11px] text-zinc-400">PDF — max 50 MB (optional)</p>
                                             </>
                                         )}
                                     </div>
