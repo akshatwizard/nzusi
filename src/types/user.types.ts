@@ -102,7 +102,7 @@ export type MemberListResponse = {
 export type MembersList = {
     membership_no: string | null
     name: string
-    email: string
+    email: string | null
     mobile_no: string | null
     city_name: string | null
     membership_type: {

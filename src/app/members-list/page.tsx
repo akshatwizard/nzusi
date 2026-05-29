@@ -208,7 +208,7 @@ export default function MembersPage() {
     }, [debouncedSearch, typeFilter]);
 
     const { data: res, isLoading, isFetching } = useQuery({
-        queryKey: ["members_list", page, debouncedSearch, typeFilter],
+        queryKey: ["members_list", page, typeFilter],
         queryFn: () => authService.getMembersList({
             page,
         }),
@@ -227,7 +227,7 @@ export default function MembersPage() {
                 m.name.toLowerCase().includes(q) ||
                 (m.membership_no?.toLowerCase().includes(q) ?? false) ||
                 (m.city_name?.toLowerCase().includes(q) ?? false) ||
-                m.email.toLowerCase().includes(q);
+                m.email?.toLowerCase().includes(q);
             return matchType && matchSearch;
         });
     }, [members, typeFilter, debouncedSearch]);
