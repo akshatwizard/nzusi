@@ -95,8 +95,9 @@ export default function MembershipSection() {
                             className="flex flex-col sm:flex-row gap-3"
                         >
                             <Link
-                                href="https://1c4098e6-0cb3-438e-8c36-f2acc1587c38.filesusr.com/ugd/02b867_fd810af167bf4228a16d526ef68be544.pdf"
+                                href="/files/NZUSI-MEMBERSHIP-APPLICATION-FORM.pdf"
                                 target="_blank"
+                                rel="noopener noreferrer"
                                 className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-fun-blue-100 text-fun-blue-900 rounded-lg font-semibold text-sm hover:bg-white transition-colors duration-200"
                             >
                                 Apply for Membership
