@@ -67,7 +67,7 @@ export function BlogSidebar() {
             </div>
 
             {/* Recent posts */}
-            <div className='bg-white rounded-xl border border-fun-blue-100 overflow-hidden'>
+            {/* <div className='bg-white rounded-xl border border-fun-blue-100 overflow-hidden'>
                 <div className='px-5 py-4 border-b border-fun-blue-50'>
                     <h3 className='font-serif text-[16px] text-fun-blue-950'>Recent Posts</h3>
                 </div>
@@ -88,7 +88,7 @@ export function BlogSidebar() {
                         </Link>
                     ))}
                 </div>
-            </div>
+            </div> */}
 
             {/* NZUSICON promo */}
             <div className='relative rounded-xl bg-fun-blue-950 overflow-hidden p-5'>
