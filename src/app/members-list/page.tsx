@@ -208,9 +208,10 @@ export default function MembersPage() {
     }, [debouncedSearch, typeFilter]);
 
     const { data: res, isLoading, isFetching } = useQuery({
-        queryKey: ["members_list", page, typeFilter],
+        queryKey: ["members_list", page, typeFilter, debouncedSearch],
         queryFn: () => authService.getMembersList({
             page,
+            search: debouncedSearch
         }),
         placeholderData: (prev) => prev,
     });

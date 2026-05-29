@@ -35,8 +35,8 @@ export const authService = {
     getMembersList: async ({ page = 1, search = '', type = 'All', }: GetMembersParams = {}): Promise<MemberListResponse> => {
         const params: Record<string, string | number> = { page }
 
-        // if (search.trim()) params.search = search.trim()
-        // if (type && type !== 'All') params.type = type
+        if (search.trim()) params.search = search.trim()
+        if (type && type !== 'All') params.type = type
 
         const { data } = await api.get<MemberListResponse>('/member/member-list', { params })
         return data
