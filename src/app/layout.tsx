@@ -7,6 +7,7 @@ import Footer from "@/components/footer";
 import { QueryProvider } from "@/lib/query-provider";
 import { AuthProvider } from "@/context/auth_context";
 import { Toaster } from "react-hot-toast";
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const serif_display = DM_Serif_Display({
   variable: "--font-dm-serif-display",
@@ -45,6 +46,7 @@ export default function RootLayout({
         </QueryProvider>
         {/* </SmoothScrollProvider> */}
         <Toaster />
+        <GoogleAnalytics gaId="G-QVBNP9NE2Y" />
       </body>
     </html>
   );
