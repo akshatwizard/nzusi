@@ -54,7 +54,7 @@ export default function Hero() {
                             variants={fadeUp}
                             className="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.08] text-fun-blue-50 mb-2"
                         >
-                            North Zone Chapter of
+                            North Zone Chapter of{" "}
                             <em className="text-fun-blue-400">
                                 Urological Society
                             </em>

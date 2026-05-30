@@ -542,7 +542,7 @@ export default function PublicHealthPage() {
             <Section id='faqs' className='bg-white scroll-mt-24'>
                 <Wrapper>
                     <SectionHeader eyebrow='Section 11' title='Frequently Asked' accent='Questions'
-                        body='44 questions answered by NZUSI urologists covering all common urological concerns.' />
+                        body='questions answered by NZUSI urologists covering all common urological concerns.' />
                     <div className='flex flex-wrap gap-2 mb-8'>
                         {FAQ_CATEGORIES.map(cat => (
                             <button key={cat} onClick={() => setFaqFilter(cat)}
