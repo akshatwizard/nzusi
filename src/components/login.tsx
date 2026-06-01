@@ -167,7 +167,7 @@ type SentOtpProps = {
 
 function SentOtp({ email, setEmail, sendOtp, sendingOtp }: SentOtpProps) {
     return (
-        <motion.div
+        <motion.form
             key="login"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -178,6 +178,7 @@ function SentOtp({ email, setEmail, sendOtp, sendingOtp }: SentOtpProps) {
                 damping: 12,
                 mass: 0.6,
             } as const}
+            onSubmit={(e) => (e.preventDefault(), sendOtp())}
         >
             <h2 className="text-center text-2xl text-fun-blue-950 tracking-tight">
                 Welcome back
@@ -201,6 +202,7 @@ function SentOtp({ email, setEmail, sendOtp, sendingOtp }: SentOtpProps) {
                 <input
                     type="email"
                     placeholder="you@example.com"
+                    pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && sendOtp()}
@@ -209,7 +211,6 @@ function SentOtp({ email, setEmail, sendOtp, sendingOtp }: SentOtpProps) {
             </div>
 
             <button
-                onClick={() => sendOtp()}
                 disabled={!email.trim() || sendingOtp}
                 className="mt-4 w-full flex items-center justify-center gap-2 py-3 px-5 rounded-2xl font-semibold text-sm text-white bg-fun-blue-500 hover:bg-fun-blue-400 disabled:opacity-40 disabled:cursor-not-allowed
                 active:scale-[0.98] transition-all duration-150 cursor-pointer"
@@ -234,7 +235,7 @@ function SentOtp({ email, setEmail, sendOtp, sendingOtp }: SentOtpProps) {
                     Apply Here
                 </Link>
             </p>
-        </motion.div>
+        </motion.form>
     )
 }
 

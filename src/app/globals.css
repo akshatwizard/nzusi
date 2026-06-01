@@ -60,7 +60,7 @@ button {
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 800;
   line-height: 1.1;
-  margin-top: 3rem;
+  /* margin-top: 3rem; */
   margin-bottom: 1.5rem;
   letter-spacing: -0.03em;
 }
