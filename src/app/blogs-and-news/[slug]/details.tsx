@@ -115,7 +115,7 @@ export default function BlogContent({ slug }: { slug: string }) {
 
                         {/* Article */}
                         <article>
-                            {post.main_image && (
+                            {/* {post.main_image && (
                                 <div className="relative overflow-hidden rounded-2xl mb-5 ">
 
                                     <div className="relative aspect-16/8 w-full">
@@ -135,10 +135,10 @@ export default function BlogContent({ slug }: { slug: string }) {
                                         </div>
                                     </div>
                                 </div>
-                            )}
+                            )} */}
 
                             <div
-                                className="blog-content prose prose-sm md:prose-base max-w-none
+                                className="leading-snug blog-content prose prose-sm md:prose-base max-w-none
                                 prose-headings:font-serif prose-headings:text-fun-blue-950
                                 prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4
                                 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
