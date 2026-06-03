@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
             openGraph: {
                 title: post.meta_title,
                 description: post.meta_description,
-                images: [post.main_image],
+                images: [post.main_image ?? "/images/logo/nzusi_logo.png"],
             },
         }
     } catch {
