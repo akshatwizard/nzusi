@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { Calendar, Clock, Eye, Tag, ChevronRight, ArrowLeft, User, ZoomIn, ChevronLeft, X } from "lucide-react"
+import { Calendar, Clock, Eye, Tag, ChevronRight, ArrowLeft, User, ZoomIn, ChevronLeft, X, ExternalLink, FileText } from "lucide-react"
 import { Section, Wrapper } from "@/components/ui/sections"
 import { AnimatePresence, motion } from "motion/react"
 import { useState } from "react"
@@ -154,6 +154,45 @@ export default function BlogContent({ slug }: { slug: string }) {
                                 dangerouslySetInnerHTML={{ __html: post.long_content }}
                             />
                             <ImageGallery images={galleryImages} />
+
+                            {/* PDF File Section */}
+                            {post.pdf_file && (
+                                <div className="mt-10 pt-8 border-t border-fun-blue-100">
+                                    <div className="rounded-2xl border border-fun-blue-100 bg-fun-blue-50/60 p-5 md:p-6">
+                                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                                            <div className="flex items-start gap-4">
+                                                <div className="w-12 h-12 rounded-xl bg-fun-blue-100 flex items-center justify-center shrink-0">
+                                                    <FileText size={22} className="text-fun-blue-700" />
+                                                </div>
+
+                                                <div>
+                                                    <p className="text-[11px] font-bold uppercase tracking-widest text-fun-blue-400 mb-1">
+                                                        Attached PDF
+                                                    </p>
+
+                                                    <h3 className="text-fun-blue-950 font-semibold text-base leading-snug">
+                                                        {post.pdf_file_title || "View PDF Document"}
+                                                    </h3>
+
+                                                    <p className="text-sm text-fun-blue-500 mt-1">
+                                                        Open and read the attached PDF document in a new tab.
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <a
+                                                href={post.pdf_file}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-fun-blue-700 text-white text-sm font-semibold hover:bg-fun-blue-800 transition-colors shrink-0"
+                                            >
+                                                Open PDF
+                                                <ExternalLink size={16} />
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
 
                             {post.youtube_id_or_link &&
                                 <div className="w-full overflow-hidden mt-10 pt-8 border-t border-fun-blue-100">

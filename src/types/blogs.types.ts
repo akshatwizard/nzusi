@@ -65,11 +65,13 @@ export type BlogDetails = {
     view_count: number
     short_content: string
     long_content: string
-    slug: string
+    slug: string;
+    pdf_file_title: null | string,
+    pdf_file: null | string
     published_at: string
     meta_title: string
     meta_description: string
-    main_image: string;
+    main_image: string | null;
     youtube_id_or_link: string | null
     category: { id: number; name: string; slug: string } | null
     user: { id: number; name: string }
