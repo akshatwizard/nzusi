@@ -154,7 +154,7 @@ export default function UpdateAddress({ user, name }: { user: Member; name: stri
                                         <button
                                             key={tab.key}
                                             type="button"
-                                            onClick={() => setActiveTab(tab.key)}
+                                            onClick={() => (setActiveTab(tab.key),setPreferred(tab.key))}
                                             className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${activeTab === tab.key
                                                 ? 'bg-white text-fun-blue-950 shadow-sm'
                                                 : 'text-zinc-400 hover:text-zinc-600'
