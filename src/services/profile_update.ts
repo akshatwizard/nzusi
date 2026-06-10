@@ -3,6 +3,17 @@ import { api } from "./api"
 
 
 export const profileUpdateService = {
+
+    updateProfilePic: async ({ profile_picture }: { profile_picture: File }) => {
+        const formData = new FormData()
+        formData.append('profile_picture', profile_picture)
+
+        const { data } = await api.post('/member/profile-image', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+        })
+        return data
+    },
+
     updateProfile: async ({ payload }: ProfileUpdate): Promise<ProfileUpdateResponse> => {
         const { data } = await api.post<ProfileUpdateResponse>("/member/update-profile", payload)
         return data
