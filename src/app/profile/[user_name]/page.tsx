@@ -44,7 +44,7 @@ export default function UserProfile() {
     return (
         <>
             <Section className='px-0! min-h-screen'>
-                <div className='h-36 md:h-44 bg-fun-blue-950 relative overflow-hidden'>
+                <div className='h-56 md:h-70 bg-fun-blue-950 relative overflow-hidden'>
                     <div
                         className='absolute inset-0 opacity-[0.04]'
                         style={{

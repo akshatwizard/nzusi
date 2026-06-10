@@ -49,6 +49,7 @@ export type Member = {
     email: string
     gender: string | null
     city_name: string | null
+    profile_image: null | string,
     mobile_no: string | null
     membership_type: string | null
     dob: string | null

@@ -1,10 +1,16 @@
 'use client'
 
+import { useAuth } from '@/context/auth_context'
 import { useProfileContext } from '@/context/profile_update_context'
 import { CompletionResult } from '@/lib/profile_completion'
+import { profileUpdateService } from '@/services/profile_update'
 import { Member } from '@/types/user.types'
-import { Camera, CheckCircle2, Pencil, Share2 } from 'lucide-react'
+import { useMutation } from '@tanstack/react-query'
+import { Camera, CheckCircle2, Loader2, Pencil, Share2 } from 'lucide-react'
 import { motion } from 'motion/react'
+import Image from 'next/image'
+import { useRef, useState } from 'react'
+import toast from 'react-hot-toast'
 
 type Props = { user: Member; completion: CompletionResult }
 
@@ -19,7 +25,12 @@ const STATUS_LABEL: Record<string, { label: string; color: string }> = {
 }
 
 export default function ProfileHero({ user, completion }: Props) {
-    const { setEditProfile } = useProfileContext()
+    const { setEditProfile } = useProfileContext();
+    const { refreshUser } = useAuth();
+
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const [preview, setPreview] = useState<string | null>(null)
+
     const status = STATUS_LABEL[user.status] ?? STATUS_LABEL.pending
     const pct = completion.percent
     const barColor = pct >= 80 ? 'bg-emerald-500' : pct >= 50 ? 'bg-amber-500' : 'bg-fun-blue-500'
@@ -28,21 +39,90 @@ export default function ProfileHero({ user, completion }: Props) {
     const city = user.city_name ?? user.office_address?.city ?? user.residence_address?.city
     const state = user.office_address?.state ?? user.residence_address?.state
 
+    const { mutate: uploadPic, isPending: uploading } = useMutation({
+        mutationFn: (file: File) => profileUpdateService.updateProfilePic({ profile_picture: file }),
+        onSuccess: () => {
+            toast.success('Profile photo updated')
+            refreshUser();
+        },
+        onError: () => {
+            toast.error('Failed to upload photo. Please try again.')
+            setPreview(null)
+        },
+    })
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        if (file.size > 10 * 1024 * 1024) {
+            toast.error('Image must be smaller than 10 MB')
+            return
+        }
+
+        if (!file.type.startsWith('image/')) {
+            toast.error('Please select an image file')
+            return
+        }
+
+        const reader = new FileReader()
+        reader.onload = () => setPreview(reader.result as string)
+        reader.readAsDataURL(file)
+
+        uploadPic(file)
+        e.target.value = ''
+    }
+
+    const avatarSrc = preview ?? (typeof user.profile_image === 'string' ? user.profile_image : null)
+
+
     return (
         <div className='bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden'>
             <div className='p-5 md:p-7 flex flex-col sm:flex-row items-start gap-5'>
 
                 {/* Avatar */}
                 <div className='relative shrink-0'>
-                    <div className='w-24 h-24 md:w-28 md:h-28 rounded-2xl border-4 border-white shadow-lg bg-fun-blue-100 flex items-center justify-center'>
-                        <span className='font-serif text-3xl text-fun-blue-600 select-none'>
-                            {getInitials(user.name)}
-                        </span>
+                    <div className='relative w-24 h-24 md:w-28 md:h-28 rounded-2xl border-4 border-white shadow-lg bg-fun-blue-100 flex items-center justify-center overflow-hidden'>
+                        {avatarSrc ? (
+                            <Image
+                                src={avatarSrc}
+                                alt={user.name}
+                                fill
+                                className='object-cover object-top'
+                                sizes='112px'
+                            />
+                        ) : (
+                            <span className='font-serif text-3xl text-fun-blue-600 select-none'>
+                                {getInitials(user.name)}
+                            </span>
+                        )}
+
+                        {/* Upload overlay while pending */}
+                        {uploading && (
+                            <div className='absolute inset-0 bg-black/40 flex items-center justify-center rounded-2xl'>
+                                <Loader2 size={22} className='text-white animate-spin' />
+                            </div>
+                        )}
                     </div>
-                    <button aria-label='Change profile photo'
-                        className='absolute -bottom-1.5 -right-1.5 w-8 h-8 rounded-full bg-fun-blue-600 border-2 border-white flex items-center justify-center text-white hover:bg-fun-blue-500 transition-colors duration-200 shadow-sm'>
+
+                    {/* Camera button */}
+                    <button
+                        aria-label='Change profile photo'
+                        disabled={uploading}
+                        onClick={() => fileInputRef.current?.click()}
+                        className='absolute -bottom-1.5 -right-1.5 w-8 h-8 rounded-full bg-fun-blue-600 border-2 border-white flex items-center justify-center text-white hover:bg-fun-blue-500 disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-200 shadow-sm cursor-pointer'
+                    >
                         <Camera size={13} />
                     </button>
+
+                    {/* Hidden file input */}
+                    <input
+                        ref={fileInputRef}
+                        type='file'
+                        accept='image/jpeg,image/png,image/webp,image/jpg'
+                        className='sr-only'
+                        onChange={handleFileChange}
+                    />
                 </div>
 
                 {/* Info */}
