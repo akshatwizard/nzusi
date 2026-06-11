@@ -56,31 +56,41 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         const storedToken = tokenStore.getAccessToken();
         const storedUser = userStorage.get();
+
+        if (!storedToken && storedUser) {
+            userStorage.remove();
+            setToken(null);
+            setCachedUser(null);
+            setIsMounted(true);
+            return;
+        }
+
         setToken(storedToken);
         setCachedUser(storedUser);
         setIsMounted(true);
     }, []);
 
-    const { data: user, isLoading } = useQuery<Member | null, AxiosError>({
+    const { data: user, isLoading, error } = useQuery<Member | null, AxiosError>({
         queryKey: ["user_profile"],
         queryFn: authService.getProfile,
         enabled: isMounted && !!token && !cachedUser,
-        placeholderData: () => cachedUser,
+        initialData: cachedUser ?? undefined,
         retry: (failureCount, error: AxiosError) => {
             if (error?.response?.status === 401) return false;
             return failureCount < 2;
         },
-        throwOnError: (error: AxiosError) => {
-            if (error?.response?.status === 401) {
-                tokenStore.removeAccessToken();
-                setToken(null);
-                setCachedUser(null);
-                userStorage.remove();
-                queryClient.removeQueries({ queryKey: ["user_profile"] });
-            }
-            return false;
-        },
     });
+
+
+    useEffect(() => {
+        if ((error as AxiosError)?.response?.status === 401) {
+            tokenStore.removeAccessToken();
+            userStorage.remove();
+            setToken(null);
+            setCachedUser(null);
+            queryClient.removeQueries({ queryKey: ["user_profile"] });
+        }
+    }, [error]);
 
     useEffect(() => {
         if (user && !cachedUser) {

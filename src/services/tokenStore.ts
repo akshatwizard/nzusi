@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 
 const TOKEN_NAME = "user_access_token";
-const MAX_AGE = 7 * 24 * 60 * 60;
+const MAX_AGE = 12 * 60 * 60;
 const isProd = process.env.NODE_ENV === "production";
 
 const buildCookieString = (value: string, maxAge: number): string => {
@@ -30,7 +30,7 @@ export const tokenStore = {
         for (const cookie of source.split(";")) {
             const [key, ...rest] = cookie.trim().split("=");
             if (key === TOKEN_NAME) {
-                return rest.join("=") || null; 
+                return rest.join("=") || null;
             }
         }
         return null;
