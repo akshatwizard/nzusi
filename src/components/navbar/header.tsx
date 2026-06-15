@@ -104,7 +104,7 @@ export default function Header() {
         className={`fixed top-0 z-40 w-full md:h-auto ${scrolled ? "h-16" : "h-20"}  lg:px-12 md:px-8 px-4 ${scrolled ? "bg-fun-blue-950/20 backdrop-blur border-b border-white/6" : "bg-transparent border-b border-white/0"} transition-colors duration-300 ease-in-out`}
       >
         <nav className="relative w-full max-w-7xl mx-auto flex items-center py-1 h-full gap-1.5">
-          <Link href={"/"} className="relative" aria-label="Logo">
+          <Link href={"/"} className="relative shrink-0" aria-label="Logo">
             <Image
               src={"/images/logo/nzusi_logo.png"}
               alt="North Zone chapter of Urological Society of India"

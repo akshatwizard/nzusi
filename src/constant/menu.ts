@@ -70,22 +70,22 @@ export const Menu: MenuType[] = [
     subMenu: [
       {
         name: "Bidding",
-        path: "#",
+        path: null,
         open_in_new_tab: false,
         subMenu: [
           {
             name: "Bidding Proforma",
-            path: "#",
+            path: "/files/NZUSICON_Bidding_Proforma.pdf",
             open_in_new_tab: true
           },
           {
             name: "Bidding Form",
-            path: "#",
+            path: "/files/NZUSI_Bidding_Form.pdf",
             open_in_new_tab: true
           },
           {
             name: "MOU",
-            path: "#",
+            path: "/files/MOU_Bidding.pdf",
             open_in_new_tab: true
           },
         ]
