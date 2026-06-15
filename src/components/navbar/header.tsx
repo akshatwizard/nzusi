@@ -9,7 +9,7 @@ import {
 } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import DesktopMenu from "./desktop.menu";
 import MobileMenu from "./mobile.menu";
 import Login from "../login";
@@ -18,6 +18,10 @@ import { useAuth } from "@/context/auth_context";
 import { useRouter } from "next/navigation";
 import { getInitials } from "@/lib/generate-initials";
 import RegisterModal from "../abstracts_reg_modal";
+import { useQuery } from "@tanstack/react-query";
+import { BlogCategoryResponse } from "@/types/blogs.types";
+import { blog } from "@/services/blog";
+import { Menu, MenuType } from "@/constant/menu";
 
 export default function Header() {
   const router = useRouter();
@@ -37,6 +41,18 @@ export default function Header() {
       setScrolled(null);
     }
   });
+
+  const { data, isLoading } = useQuery<BlogCategoryResponse>({
+    queryKey: ["nav_blog_categorys"],
+    queryFn: blog.getCategory
+  })
+
+  const categorySubMenu: MenuType["subMenu"] = isLoading ? [{ name: "Loading...", path: null }]
+    : (data?.data ?? []).map((cat) => ({
+      name: cat.title,
+      path: `/blogs-and-news?category=${cat.slug}`,
+      open_in_new_tab: false,
+    }));
 
   const containerVariants: Variants = {
     hide: {
@@ -98,29 +114,39 @@ export default function Header() {
     };
   }, []);
 
+  const resolvedMenu = useMemo<MenuType[]>(
+    () =>
+      Menu.map((item) =>
+        item.name === "Blogs & News"
+          ? { ...item, subMenu: categorySubMenu }
+          : item
+      ),
+    [categorySubMenu]
+  );
+
   return (
     <>
       <motion.header
-        className={`fixed top-0 z-40 w-full md:h-auto ${scrolled ? "h-16" : "h-20"}  lg:px-12 md:px-8 px-4 ${scrolled ? "bg-fun-blue-950/20 backdrop-blur border-b border-white/6" : "bg-transparent border-b border-white/0"} transition-colors duration-300 ease-in-out`}
+        className={`fixed top-0 z-40 w-full lg:h-auto ${scrolled ? "h-16" : "h-20"}  lg:px-12 md:px-8 px-4 ${scrolled ? "bg-fun-blue-950/20 backdrop-blur border-b border-white/6" : "bg-transparent border-b border-white/0"} transition-colors duration-300 ease-in-out`}
       >
         <nav className="relative w-full max-w-7xl mx-auto flex items-center py-1 h-full gap-1.5">
-          <Link href={"/"} className="relative" aria-label="Logo">
+          <Link href={"/"} className="relative shrink-0" aria-label="Logo">
             <Image
               src={"/images/logo/nzusi_logo.png"}
               alt="North Zone chapter of Urological Society of India"
               width={128}
               height={125}
               priority
-              className={`${scrolled ? "lg:w-18 md:w-16 w-14" : "lg:w-30 md:w-24 w-19"} h-auto transition-all duration-300 ease-in-out'`}
+              className={`${scrolled ? "lg:w-18 w-14" : "lg:w-30 w-19"} h-auto transition-all duration-300 ease-in-out'`}
             />
             <span className="sr-only">
               North Zone chapter of Urological Society of India Logo
             </span>
           </Link>
 
-          <DesktopMenu openModal={() => setModalOpen(true)} />
+          <DesktopMenu menu={resolvedMenu} openModal={() => setModalOpen(true)} />
 
-          <div className="max-md:flex-1 relative flex items-center justify-end gap-2 h-full">
+          <div className="max-lg:flex-1 relative flex items-center justify-end gap-2 h-full">
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() =>
@@ -217,9 +243,10 @@ export default function Header() {
                 )}
               </AnimatePresence>
             </div>
+
             <button
               aria-label="Open menu"
-              className="md:hidden relative h-full w-12 cursor-pointer"
+              className="lg:hidden relative h-full w-12 cursor-pointer"
               onClick={() => setOpenMenu(!openMenu)}
             >
               <motion.span
@@ -245,6 +272,7 @@ export default function Header() {
         </nav>
       </motion.header>
       <MobileMenu
+        menu={resolvedMenu}
         isOpen={openMenu}
         onClose={() => setOpenMenu(false)}
         openModal={() => setModalOpen(true)}
