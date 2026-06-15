@@ -93,7 +93,7 @@ export default function DesktopMenu({ openModal }: { openModal: () => void }) {
   };
 
   return (
-    <div className="flex-1 hidden md:flex items-center gap-1 h-10 justify-end">
+    <div className="flex-1 hidden lg:flex items-center gap-1 h-10 justify-end">
       {Menu.map((item, idx) => {
         const hasSubmenu = item.subMenu && item.subMenu.length > 0;
         const isActive = activePath(item.path);

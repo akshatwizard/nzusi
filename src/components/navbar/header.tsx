@@ -101,7 +101,7 @@ export default function Header() {
   return (
     <>
       <motion.header
-        className={`fixed top-0 z-40 w-full md:h-auto ${scrolled ? "h-16" : "h-20"}  lg:px-12 md:px-8 px-4 ${scrolled ? "bg-fun-blue-950/20 backdrop-blur border-b border-white/6" : "bg-transparent border-b border-white/0"} transition-colors duration-300 ease-in-out`}
+        className={`fixed top-0 z-40 w-full lg:h-auto ${scrolled ? "h-16" : "h-20"}  lg:px-12 md:px-8 px-4 ${scrolled ? "bg-fun-blue-950/20 backdrop-blur border-b border-white/6" : "bg-transparent border-b border-white/0"} transition-colors duration-300 ease-in-out`}
       >
         <nav className="relative w-full max-w-7xl mx-auto flex items-center py-1 h-full gap-1.5">
           <Link href={"/"} className="relative shrink-0" aria-label="Logo">
@@ -111,7 +111,7 @@ export default function Header() {
               width={128}
               height={125}
               priority
-              className={`${scrolled ? "lg:w-18 md:w-16 w-14" : "lg:w-30 md:w-24 w-19"} h-auto transition-all duration-300 ease-in-out'`}
+              className={`${scrolled ? "lg:w-18 w-14" : "lg:w-30 w-19"} h-auto transition-all duration-300 ease-in-out'`}
             />
             <span className="sr-only">
               North Zone chapter of Urological Society of India Logo
@@ -120,7 +120,7 @@ export default function Header() {
 
           <DesktopMenu openModal={() => setModalOpen(true)} />
 
-          <div className="max-md:flex-1 relative flex items-center justify-end gap-2 h-full">
+          <div className="max-lg:flex-1 relative flex items-center justify-end gap-2 h-full">
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() =>
@@ -217,9 +217,10 @@ export default function Header() {
                 )}
               </AnimatePresence>
             </div>
+
             <button
               aria-label="Open menu"
-              className="md:hidden relative h-full w-12 cursor-pointer"
+              className="lg:hidden relative h-full w-12 cursor-pointer"
               onClick={() => setOpenMenu(!openMenu)}
             >
               <motion.span

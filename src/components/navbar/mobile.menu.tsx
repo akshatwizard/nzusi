@@ -39,7 +39,7 @@ export default function MobileMenu({ isOpen, onClose, openModal }: Props) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             onClick={onClose}
-            className="md:hidden fixed inset-0 bg-fun-blue-400/20 backdrop-blur-sm z-40"
+            className="lg:hidden fixed inset-0 bg-fun-blue-400/20 backdrop-blur-sm z-40"
           />
 
           {/* SIDEBAR */}
@@ -53,7 +53,7 @@ export default function MobileMenu({ isOpen, onClose, openModal }: Props) {
               damping: 30,
               duration: 0.5,
             }}
-            className="md:hidden fixed inset-y-0 left-0 z-50 w-[85%] max-w-sm bg-white p-5 shadow-xl rounded-r-3xl flex flex-col overflow-y-auto"
+            className="lg:hidden fixed inset-y-0 left-0 z-50 w-[85%] max-w-sm bg-white p-5 shadow-xl rounded-r-3xl flex flex-col overflow-y-auto"
             data-lenis-prevent
             role="dialog"
             aria-modal="true"
