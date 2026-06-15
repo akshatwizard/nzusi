@@ -14,9 +14,18 @@ type Props = {
 
 export default function MobileMenu({ isOpen, onClose, openModal }: Props) {
   const [openSubmenu, setOpenSubmenu] = useState<number | null>(null);
+  // key = `${parentIdx}-${childIdx}`
+  const [openNestedSubmenu, setOpenNestedSubmenu] = useState<string | null>(
+    null
+  );
 
   const toggleSubmenu = (idx: number) => {
     setOpenSubmenu((prev) => (prev === idx ? null : idx));
+    setOpenNestedSubmenu(null); // collapse nested when parent toggles
+  };
+
+  const toggleNestedSubmenu = (key: string) => {
+    setOpenNestedSubmenu((prev) => (prev === key ? null : key));
   };
 
   return (
@@ -52,7 +61,6 @@ export default function MobileMenu({ isOpen, onClose, openModal }: Props) {
             {/* HEADER */}
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-fun-blue-950">Menu</h2>
-
               <button
                 onClick={onClose}
                 className="size-10 flex items-center justify-center rounded-full bg-zinc-100 hover:bg-zinc-200 transition"
@@ -70,9 +78,7 @@ export default function MobileMenu({ isOpen, onClose, openModal }: Props) {
               variants={{
                 hidden: {},
                 visible: {
-                  transition: {
-                    staggerChildren: 0.08,
-                  },
+                  transition: { staggerChildren: 0.08 },
                 },
               }}
             >
@@ -83,19 +89,10 @@ export default function MobileMenu({ isOpen, onClose, openModal }: Props) {
                   <motion.div
                     key={item.name}
                     variants={{
-                      hidden: {
-                        opacity: 0,
-                        x: -20,
-                      },
-                      visible: {
-                        opacity: 1,
-                        x: 0,
-                      },
+                      hidden: { opacity: 0, x: -20 },
+                      visible: { opacity: 1, x: 0 },
                     }}
-                    transition={{
-                      duration: 0.25,
-                      ease: "easeOut",
-                    }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
                     className="rounded-2xl overflow-hidden border border-zinc-100"
                   >
                     {/* MAIN ITEM */}
@@ -106,12 +103,10 @@ export default function MobileMenu({ isOpen, onClose, openModal }: Props) {
                         className="w-full flex items-center justify-between px-4 py-3 bg-white text-zinc-700 hover:bg-zinc-50 transition"
                       >
                         <span className="font-medium">{item.name}</span>
-
                         <ChevronDown
                           size={18}
-                          className={`transition-transform duration-300 ${
-                            openSubmenu === idx ? "rotate-180" : ""
-                          }`}
+                          className={`transition-transform duration-300 ${openSubmenu === idx ? "rotate-180" : ""
+                            }`}
                         />
                       </button>
                     ) : (
@@ -128,44 +123,110 @@ export default function MobileMenu({ isOpen, onClose, openModal }: Props) {
                     <AnimatePresence>
                       {hasSubmenu && openSubmenu === idx && (
                         <motion.div
-                          initial={{
-                            height: 0,
-                            opacity: 0,
-                          }}
-                          animate={{
-                            height: "auto",
-                            opacity: 1,
-                          }}
-                          exit={{
-                            height: 0,
-                            opacity: 0,
-                          }}
-                          transition={{
-                            duration: 0.25,
-                          }}
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.25 }}
                           className="overflow-hidden bg-zinc-50"
                         >
                           <div className="p-2 flex flex-col gap-1">
-                            {item.subMenu?.map((subItem) => {
-                              return subItem.path ? (
-                                <Link
-                                  key={subItem.name}
-                                  href={subItem.path}
-                                  target={subItem.open_in_new_tab && subItem.open_in_new_tab ? "_blank" : "_self"}
-                                  onClick={onClose}
-                                  className="px-4 py-2.5 rounded-xl text-sm text-zinc-600 hover:bg-white hover:text-fun-blue-500 transition"
-                                >
-                                  {subItem.name}
-                                </Link>
-                              ) : (
-                                <button
-                                  key={subItem.name}
-                                  onClick={openModal}
-                                  type="button"
-                                  className="w-full text-left px-4 py-2.5 rounded-xl text-sm text-zinc-600 hover:bg-white hover:text-fun-blue-500 transition"
-                                >
-                                  {subItem.name}
-                                </button>
+                            {item.subMenu?.map((subItem, subIdx) => {
+                              const nestedKey = `${idx}-${subIdx}`;
+                              const hasNestedSubmenu =
+                                subItem.subMenu && subItem.subMenu.length > 0;
+
+                              return (
+                                <div key={subItem.name}>
+                                  {/* SUB ITEM with nested submenu */}
+                                  {hasNestedSubmenu ? (
+                                    <>
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          toggleNestedSubmenu(nestedKey)
+                                        }
+                                        className="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-sm text-zinc-600 hover:bg-white hover:text-fun-blue-500 transition"
+                                      >
+                                        <span>{subItem.name}</span>
+                                        <ChevronDown
+                                          size={15}
+                                          className={`transition-transform duration-300 ${openNestedSubmenu === nestedKey
+                                              ? "rotate-180"
+                                              : ""
+                                            }`}
+                                        />
+                                      </button>
+
+                                      {/* NESTED SUBMENU */}
+                                      <AnimatePresence>
+                                        {openNestedSubmenu === nestedKey && (
+                                          <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{
+                                              height: "auto",
+                                              opacity: 1,
+                                            }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            transition={{ duration: 0.2 }}
+                                            className="overflow-hidden"
+                                          >
+                                            <div className="ml-3 mt-1 mb-1 pl-3 border-l-2 border-fun-blue-100 flex flex-col gap-0.5">
+                                              {subItem.subMenu?.map(
+                                                (nestedItem) =>
+                                                  nestedItem.path &&
+                                                    nestedItem.path !== "#" ? (
+                                                    <Link
+                                                      key={nestedItem.name}
+                                                      href={nestedItem.path}
+                                                      target={
+                                                        nestedItem.open_in_new_tab
+                                                          ? "_blank"
+                                                          : "_self"
+                                                      }
+                                                      onClick={onClose}
+                                                      className="px-3 py-2 rounded-lg text-xs text-zinc-500 hover:bg-white hover:text-fun-blue-500 transition"
+                                                    >
+                                                      {nestedItem.name}
+                                                    </Link>
+                                                  ) : (
+                                                    <button
+                                                      key={nestedItem.name}
+                                                      type="button"
+                                                      onClick={openModal}
+                                                      className="w-full text-left px-3 py-2 rounded-lg text-xs text-zinc-500 hover:bg-white hover:text-fun-blue-500 transition"
+                                                    >
+                                                      {nestedItem.name}
+                                                    </button>
+                                                  )
+                                              )}
+                                            </div>
+                                          </motion.div>
+                                        )}
+                                      </AnimatePresence>
+                                    </>
+                                  ) : subItem.path ? (
+                                    <Link
+                                      href={subItem.path}
+                                      target={
+                                        subItem.open_in_new_tab
+                                          ? "_blank"
+                                          : "_self"
+                                      }
+                                      onClick={onClose}
+                                      className="px-4 py-2.5 rounded-xl text-sm text-zinc-600 hover:bg-white hover:text-fun-blue-500 transition block"
+                                    >
+                                      {subItem.name}
+                                    </Link>
+                                  ) : (
+                                    <button
+                                      type="button"
+                                      onClick={openModal}
+                                      className="w-full text-left px-4 py-2.5 rounded-xl text-sm text-zinc-600 hover:bg-white hover:text-fun-blue-500 transition"
+                                    >
+                                      {subItem.name}
+                                    </button>
+                                  )}
+                                </div>
                               );
                             })}
                           </div>
