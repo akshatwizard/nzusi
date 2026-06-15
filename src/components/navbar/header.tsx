@@ -9,7 +9,7 @@ import {
 } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import DesktopMenu from "./desktop.menu";
 import MobileMenu from "./mobile.menu";
 import Login from "../login";
@@ -18,6 +18,10 @@ import { useAuth } from "@/context/auth_context";
 import { useRouter } from "next/navigation";
 import { getInitials } from "@/lib/generate-initials";
 import RegisterModal from "../abstracts_reg_modal";
+import { useQuery } from "@tanstack/react-query";
+import { BlogCategoryResponse } from "@/types/blogs.types";
+import { blog } from "@/services/blog";
+import { Menu, MenuType } from "@/constant/menu";
 
 export default function Header() {
   const router = useRouter();
@@ -37,6 +41,18 @@ export default function Header() {
       setScrolled(null);
     }
   });
+
+  const { data, isLoading } = useQuery<BlogCategoryResponse>({
+    queryKey: ["nav_blog_categorys"],
+    queryFn: blog.getCategory
+  })
+
+  const categorySubMenu: MenuType["subMenu"] = isLoading ? [{ name: "Loading...", path: null }]
+    : (data?.data ?? []).map((cat) => ({
+      name: cat.title,
+      path: `/blogs-and-news?category=${cat.slug}`,
+      open_in_new_tab: false,
+    }));
 
   const containerVariants: Variants = {
     hide: {
@@ -98,6 +114,16 @@ export default function Header() {
     };
   }, []);
 
+  const resolvedMenu = useMemo<MenuType[]>(
+    () =>
+      Menu.map((item) =>
+        item.name === "Blogs & News"
+          ? { ...item, subMenu: categorySubMenu }
+          : item
+      ),
+    [categorySubMenu]
+  );
+
   return (
     <>
       <motion.header
@@ -118,7 +144,7 @@ export default function Header() {
             </span>
           </Link>
 
-          <DesktopMenu openModal={() => setModalOpen(true)} />
+          <DesktopMenu menu={resolvedMenu} openModal={() => setModalOpen(true)} />
 
           <div className="max-lg:flex-1 relative flex items-center justify-end gap-2 h-full">
             <div className="relative" ref={dropdownRef}>
@@ -246,6 +272,7 @@ export default function Header() {
         </nav>
       </motion.header>
       <MobileMenu
+        menu={resolvedMenu}
         isOpen={openMenu}
         onClose={() => setOpenMenu(false)}
         openModal={() => setModalOpen(true)}

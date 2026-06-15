@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu } from "@/constant/menu";
+import { Menu, MenuType } from "@/constant/menu";
 import { ChevronDown, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
@@ -10,9 +10,10 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   openModal: () => void;
+  menu: MenuType[];
 };
 
-export default function MobileMenu({ isOpen, onClose, openModal }: Props) {
+export default function MobileMenu({ isOpen, onClose, openModal, menu }: Props) {
   const [openSubmenu, setOpenSubmenu] = useState<number | null>(null);
   // key = `${parentIdx}-${childIdx}`
   const [openNestedSubmenu, setOpenNestedSubmenu] = useState<string | null>(
@@ -82,7 +83,7 @@ export default function MobileMenu({ isOpen, onClose, openModal }: Props) {
                 },
               }}
             >
-              {Menu.map((item, idx) => {
+              {menu.map((item, idx) => {
                 const hasSubmenu = item.subMenu && item.subMenu.length > 0;
 
                 return (
@@ -151,8 +152,8 @@ export default function MobileMenu({ isOpen, onClose, openModal }: Props) {
                                         <ChevronDown
                                           size={15}
                                           className={`transition-transform duration-300 ${openNestedSubmenu === nestedKey
-                                              ? "rotate-180"
-                                              : ""
+                                            ? "rotate-180"
+                                            : ""
                                             }`}
                                         />
                                       </button>

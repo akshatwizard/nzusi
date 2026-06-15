@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu } from "@/constant/menu";
+import { Menu, MenuType } from "@/constant/menu";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
@@ -81,7 +81,12 @@ function NestedSubmenu({ items, openModal }: {
   );
 }
 
-export default function DesktopMenu({ openModal }: { openModal: () => void }) {
+type Props = {
+  menu: MenuType[];
+  openModal: () => void;
+};
+
+export default function DesktopMenu({ openModal, menu }: Props) {
   const currentPath = usePathname();
 
   const [hovered, setHovered] = useState<number | null>(null);
@@ -94,7 +99,7 @@ export default function DesktopMenu({ openModal }: { openModal: () => void }) {
 
   return (
     <div className="flex-1 hidden lg:flex items-center gap-1 h-10 justify-end">
-      {Menu.map((item, idx) => {
+      {menu.map((item, idx) => {
         const hasSubmenu = item.subMenu && item.subMenu.length > 0;
         const isActive = activePath(item.path);
         const isHovered = hovered === idx;
