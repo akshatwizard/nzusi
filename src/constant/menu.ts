@@ -6,6 +6,11 @@ export type MenuType = {
     name: string;
     path: string | null;
     open_in_new_tab?: boolean;
+    subMenu?: {
+      name: string;
+      path: string | null;
+      open_in_new_tab?: boolean;
+    }[],
   }[]
   | null;
 };
@@ -64,9 +69,26 @@ export const Menu: MenuType[] = [
     path: "#",
     subMenu: [
       {
-        name: "Bid Form",
+        name: "Bidding",
         path: "#",
-        open_in_new_tab: false
+        open_in_new_tab: false,
+        subMenu: [
+          {
+            name: "Bidding Proforma",
+            path: "#",
+            open_in_new_tab: true
+          },
+          {
+            name: "Bidding Form",
+            path: "#",
+            open_in_new_tab: true
+          },
+          {
+            name: "MOU",
+            path: "#",
+            open_in_new_tab: true
+          },
+        ]
       },
       {
         name: "Membership Form",
@@ -79,9 +101,19 @@ export const Menu: MenuType[] = [
         open_in_new_tab: true
       },
       {
-        name: "Nomination Form",
-        path: "#",
+        name: "Elections Nomination Form",
+        path: "/files/Nomination_Form.pdf",
         open_in_new_tab: false
+      },
+      {
+        name: "Fellowship Form",
+        path: "/files/App_Form_For_Fellowships.pdf",
+        open_in_new_tab: true
+      },
+      {
+        name: "Duscon Awards Form",
+        path: "/files/App_Form_For_Duscon_Awards.pdf",
+        open_in_new_tab: true
       },
     ],
   },

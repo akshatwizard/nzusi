@@ -104,7 +104,7 @@ export default function DesktopMenu({ openModal }: { openModal: () => void }) {
                   transition={{
                     duration: 0.2,
                   }}
-                  className="absolute top-full left-0 mt-3 min-w-55 rounded-xl border border-white/20 bg-fun-blue-900/95 backdrop-blur-xl shadow-2xl overflow-hidden z-50"
+                  className="absolute top-full left-0 mt-3 min-w-60 rounded-xl border border-white/20 bg-fun-blue-900/95 backdrop-blur-xl shadow-2xl overflow-hidden z-50"
                 >
                   <div className="p-2">
                     {item.subMenu?.map((subItem) => {
