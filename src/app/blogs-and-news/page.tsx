@@ -7,10 +7,18 @@ export const metadata = {
         'Latest events, clinical literature reviews (Adyatan), and academic updates from the North Zone Urological Society of India.',
 }
 
-export default function BlogPage() {
+interface BlogPageProps {
+    searchParams: Promise<{
+        category: string | undefined;
+    }>;
+}
+
+export default async function BlogPage({ searchParams }: BlogPageProps) {
+    const params = await searchParams;
+
     return (
         <main className='w-full bg-[#F7F6F2] min-h-screen'>
-            <BlogPageClient />
+            <BlogPageClient category={params.category ?? "all"} />
         </main>
     )
 }

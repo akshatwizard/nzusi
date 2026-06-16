@@ -100,7 +100,7 @@ export default function DesktopMenu({ openModal, menu }: Props) {
   return (
     <div className="flex-1 hidden lg:flex items-center gap-1 h-10 justify-end">
       {menu.map((item, idx) => {
-        const hasSubmenu = item.subMenu && item.subMenu.length > 0;
+        const hasSubmenu = item.name !== "Blogs & News" && item.subMenu && item.subMenu.length > 0;
         const isActive = activePath(item.path);
         const isHovered = hovered === idx;
 
@@ -110,7 +110,7 @@ export default function DesktopMenu({ openModal, menu }: Props) {
             className="relative h-full"
             onMouseEnter={() => {
               setHovered(idx);
-              if (hasSubmenu) setOpenSubmenu(idx);
+              if (hasSubmenu || item.name === "Blogs & News") setOpenSubmenu(idx);
             }}
             onMouseLeave={() => {
               setHovered(null);
@@ -139,6 +139,15 @@ export default function DesktopMenu({ openModal, menu }: Props) {
                   }`}
               >
                 <span>{item.name}</span>
+                {
+                  item.name === "Blogs & News" && (
+                    <ChevronDown
+                      size={16}
+                      className={`transition-transform duration-300 ${openSubmenu === idx ? "rotate-180" : ""
+                        }`}
+                    />
+                  )
+                }
               </Link>
             )}
 
@@ -159,7 +168,7 @@ export default function DesktopMenu({ openModal, menu }: Props) {
 
             {/* SUBMENU */}
             <AnimatePresence>
-              {hasSubmenu && openSubmenu === idx && (
+              {((item.name === "Blogs & News" && openSubmenu === idx) || hasSubmenu && openSubmenu === idx) && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}

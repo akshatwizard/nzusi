@@ -4,6 +4,7 @@ import { blog } from '@/services/blog'
 import { BlogCategoryResponse } from '@/types/blogs.types'
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'motion/react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { Dispatch, SetStateAction } from 'react'
 
 
@@ -19,11 +20,21 @@ type Props = {
 }
 
 export function CategoryFilter({ active, onChange }: Props) {
-
     const { data, isLoading, isFetching } = useQuery<BlogCategoryResponse>({
         queryKey: ["blog_categorys"],
         queryFn: blog.getCategory
     })
+
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+
+    const updateQuery = (category: string) => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("category", category);
+        router.replace(`${pathname}?${params.toString()}`);
+    };
+
 
     const allFilters: Array<{ id: number; title: string; slug: string }> =
         [
@@ -75,7 +86,7 @@ export function CategoryFilter({ active, onChange }: Props) {
                                 key={cat.id}
                                 role='tab'
                                 aria-selected={isActive}
-                                onClick={() => onChange(cat.slug)}
+                                onClick={() => (onChange(cat.slug), updateQuery(cat.slug))}
                                 className={`
                                     relative flex items-center gap-2 text-[12px] font-semibold
                                     px-4 py-2 rounded-full border transition-all duration-200 cursor-pointer

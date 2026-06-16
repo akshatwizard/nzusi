@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { Section, Wrapper } from '@/components/ui/sections'
 import { FeaturedPostCard } from '@/components/blog-feature-post-card'
@@ -22,8 +22,13 @@ const fadeUp = {
     }),
 }
 
-export default function BlogPageClient() {
-    const [activeFilter, setActiveFilter] = useState<string>('all')
+
+export default function BlogPageClient({ category }: { category: string }) {
+    const [activeFilter, setActiveFilter] = useState<string>(category ?? 'all')
+
+    useEffect(() => {
+        setActiveFilter(category ?? 'all')
+    }, [category])
 
     const allQuery = useInfiniteQuery<AllBlogsResponse>({
         queryKey: ['blogs', 'all', "blog_page"],
@@ -36,7 +41,7 @@ export default function BlogPageClient() {
     })
 
     const categoryQuery = useInfiniteQuery<CategoryBlogsResponse>({
-        queryKey: ['blogs', activeFilter],
+        queryKey: ['blogs', activeFilter, category],
         queryFn: ({ pageParam }) => blog.getBlogsByCategory({ pageParam: pageParam as number, slug: activeFilter }),
         initialPageParam: 1,
         getNextPageParam: (lastPage) => lastPage.pagination.has_next_page
