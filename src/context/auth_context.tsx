@@ -72,15 +72,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const { data: user, isLoading, error } = useQuery<Member | null, AxiosError>({
         queryKey: ["user_profile"],
-        queryFn: authService.getProfile,
+        queryFn: async () => (await authService.getProfile()) ?? null,
         enabled: isMounted && !!token && !cachedUser,
+        placeholderData: () => cachedUser,
         initialData: cachedUser ?? undefined,
         retry: (failureCount, error: AxiosError) => {
             if (error?.response?.status === 401) return false;
             return failureCount < 2;
         },
     });
-
 
     useEffect(() => {
         if ((error as AxiosError)?.response?.status === 401) {
@@ -93,11 +93,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, [error]);
 
     useEffect(() => {
-        if (user && !cachedUser) {
+        if (token && user && !cachedUser) {
             userStorage.set(user);
             setCachedUser(user);
         }
-    }, [user, cachedUser]);
+    }, [user, cachedUser, token]);
 
     const login = async (email: string, otp: string) => {
         const data = await authService.login({ contact: email, otp });
@@ -135,10 +135,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setIsLoggingOut(false);
     };
 
-
     const refreshUser = async () => {
         try {
             const freshUser = await authService.getProfile();
+            if (!freshUser) return;
             setCachedUser(freshUser);
             userStorage.set(freshUser);
             queryClient.setQueryData(["user_profile"], freshUser);
@@ -149,7 +149,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const resolvedUser = user ?? cachedUser ?? null;
     const isAuthLoading = isMounted && !!token && !cachedUser && isLoading;
-
+    
     return (
         <AuthContext.Provider
             value={{

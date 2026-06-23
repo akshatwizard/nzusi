@@ -27,9 +27,9 @@ export const authService = {
         await api.post(`/member/logout`);
     },
 
-    getProfile: async (): Promise<Member> => {
+    getProfile: async (): Promise<Member | null> => {
         const { data } = await api.get(`/member/profile`);
-        return data.data;
+        return data.data ?? null;
     },
 
     getMembersList: async ({ page = 1, search = '', type = 'All', }: GetMembersParams = {}): Promise<MemberListResponse> => {
