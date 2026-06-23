@@ -19,7 +19,7 @@ export function UpdateUserProfile({ user }: { user: Member }) {
     const [submitted, setSubmitted] = useState(false);
     const [profile, setProfile] = useState({
         name: user.name,
-        email: user.email,
+        // email: user.email,
         gender: user.gender,
         city_name: user.city_name,
         mobile_no: user.mobile_no,
@@ -98,13 +98,12 @@ export function UpdateUserProfile({ user }: { user: Member }) {
                                 />
                             </Field>
                             <Field label="Email Address" icon={Mail}>
-                                <input
-                                    type="email"
-                                    value={profile.email}
-                                    onChange={e => update('email', e.target.value)}
-                                    placeholder="doctor@hospital.in"
-                                    className={inputCls}
-                                />
+                                <div className={`${inputCls} flex items-center justify-between cursor-not-allowed opacity-60`}>
+                                    <span className="text-fun-blue-950">{user.email}</span>
+                                    <span className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wide bg-zinc-200 px-2 py-0.5 rounded-md">
+                                        Locked
+                                    </span>
+                                </div>
                             </Field>
                             <Field label="Phone Number" icon={Phone}>
                                 <input
