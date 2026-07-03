@@ -66,7 +66,7 @@ export default function UserProfile() {
 
                     <ProfileHero completion={completion} user={user} />
 
-                    <div className='mt-5 flex flex-col lg:flex-row gap-5 items-start'>
+                    <div className='mt-5 flex flex-row gap-5 items-start'>
 
                         {/* Left sidebar */}
                         <ProfileSidebar

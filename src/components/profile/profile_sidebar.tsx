@@ -31,7 +31,7 @@ export default function ProfileSidebar({ user, completion, active, onSelect }: P
     const topMissing = completion.missing.slice(0, 3)
 
     return (
-        <aside className='lg:w-60 xl:w-64 shrink-0 flex flex-col gap-4'>
+        <aside className='lg:w-60 xl:w-64 shrink-0 md:flex flex-col gap-4 hidden'>
 
             {/* ── Navigation ── */}
             <div className='bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden'>
@@ -107,7 +107,7 @@ export default function ProfileSidebar({ user, completion, active, onSelect }: P
                             {topMissing.map((field) => (
                                 <button
                                     key={field.key}
-                                    className='flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-left text-[12px] text-slate-500 hover:text-slate-700 hover:bg-slate-50 transition-colors duration-150 group w-full cursor-pointer'
+                                    className='flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-left text-[12px] text-slate-500 hover:text-slate-700 hover:bg-slate-50 transition-colors duration-150 group w-full'
                                 >
                                     <div className='w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0' />
                                     <span className='flex-1'>Add {field.label}</span>
