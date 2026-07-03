@@ -41,10 +41,10 @@ export default function MembershipCard({ user }: { user: Member }) {
 
                 {/* Grid of quick facts */}
                 <div className='grid grid-cols-2 sm:grid-cols-3 gap-4'>
-                    <div>
+                    {/* <div>
                         <div className='text-[10px] font-semibold text-slate-400 uppercase tracking-widest mb-1'>Approval Date</div>
                         <div className='text-[13px] text-slate-700'>{formatDate(user.membership_approved_date) ?? 'Pending'}</div>
-                    </div>
+                    </div> */}
                     <div>
                         <div className='text-[10px] font-semibold text-slate-400 uppercase tracking-widest mb-1'>Active</div>
                         <div className={`text-[13px] font-medium ${user.is_active ? 'text-emerald-600' : 'text-red-500'}`}>
@@ -76,10 +76,30 @@ export default function MembershipCard({ user }: { user: Member }) {
                     </div>
                 </div>
 
+                {/* Membership Notice */}
+                <div className="flex items-start gap-3 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3">
+                    <ShieldCheck
+                        size={16}
+                        className="mt-0.5 shrink-0 text-blue-600"
+                    />
+                    <div>
+                        <p className="text-[12px] font-medium text-fun-blue-600">
+                            Membership ID is managed by the administrator.
+                        </p>
+                        <p className="mt-0.5 text-[11px] leading-relaxed text-fun-blue-800">
+                            Your Membership Number can only be updated by the
+                            NZUSI administration. If you believe your Membership ID is
+                            incorrect or missing, please contact the administrator.
+                        </p>
+                    </div>
+                </div>
+
                 {/* Pending CTA */}
                 {user.status === 'pending' && (
                     <div className='pt-2 border-t border-slate-100'>
-                        <a href='/membership'
+                        <a
+                            href='/files/NZUSI-MEMBERSHIP-APPLICATION-FORM.pdf'
+                            target='_blank'
                             className='inline-flex items-center gap-2 bg-fun-blue-600 hover:bg-fun-blue-500 text-white text-[13px] font-semibold px-5 py-2.5 rounded-xl transition-colors duration-200'>
                             Complete Application
                         </a>

@@ -56,7 +56,7 @@ export type Member = {
     usi_member: 'yes' | 'no'
     usi_number: string | null
     preferred_address: 'office' | 'residence'
-    membership_approved_date: string | null
+    // membership_approved_date: string | null
     status: 'approved' | 'pending' | 'rejected'
     is_active: boolean
     is_verified: boolean

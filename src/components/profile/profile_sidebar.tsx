@@ -31,7 +31,7 @@ export default function ProfileSidebar({ user, completion, active, onSelect }: P
     const topMissing = completion.missing.slice(0, 3)
 
     return (
-        <aside className='lg:w-60 xl:w-64 shrink-0 md:flex flex-col gap-4 hidden'>
+        <aside className='sticky top-24 lg:w-60 xl:w-64 shrink-0 md:flex flex-col gap-4 hidden'>
 
             {/* ── Navigation ── */}
             <div className='bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden'>
