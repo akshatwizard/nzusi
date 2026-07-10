@@ -91,8 +91,8 @@ export default function UpdateAddress({ user, name }: { user: Member; name: stri
             setSubmitted(true);
             refreshUser();
         },
-        onError: (val: AxiosError<{ error?: string }>) => {
-            toast.error(val.response?.data?.error ?? 'Something went wrong');
+        onError: (val: AxiosError<{ message?: string }>) => {
+            toast.error(val.response?.data?.message ?? 'Something went wrong');
         },
     });
 

@@ -80,8 +80,8 @@ export default function Login({ isOpen, onClose }: Props) {
             setCurrentStep("otp");
             onClose()
         },
-        onError: (err: AxiosError<{ error: string }>) =>
-            toast.error(err.response?.data?.error || "Failed"),
+        onError: (err: AxiosError<{ message: string }>) =>
+            toast.error(err.response?.data?.message || "Failed"),
     })
 
     return (

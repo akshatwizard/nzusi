@@ -67,8 +67,8 @@ export default function UpdateAcademic({ data, name }: { data: AcademicQualifica
             setSubmitted(true);
             refreshUser();
         },
-        onError: (val: AxiosError<{ error?: string }>) => {
-            toast.error(val.response?.data?.error ?? 'Something went wrong');
+        onError: (val: AxiosError<{ message?: string }>) => {
+            toast.error(val.response?.data?.message ?? 'Something went wrong');
         },
     });
 
