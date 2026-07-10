@@ -205,7 +205,7 @@ function SentOtp({ email, setEmail, sendOtp, sendingOtp }: SentOtpProps) {
                     pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && sendOtp()}
+                    // onKeyDown={(e) => e.key === "Enter" && sendOtp()}
                     className="w-full pl-10 pr-4 py-3 rounded-lg border-2 border-fun-blue-200 bg-fun-blue-50/20 text-sm text-fun-blue-900 placeholder:text-stone-400 outline-none focus:border-fun-blue-400 focus:shadow-[0_0_0_4px_rgba(245,158,11,0.1)] transition-all duration-200 "
                 />
             </div>
