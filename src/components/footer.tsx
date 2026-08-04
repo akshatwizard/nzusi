@@ -54,7 +54,7 @@ export default function Footer() {
                             />
                         </Link>
                         <p className="text-fun-blue-300 text-sm leading-relaxed max-w-xs mb-6">
-                            North Zone Chapter of the Urological Society of India — connecting urologists across Haryana, Punjab, Himachal Pradesh, J&K, Uttarakhand, and Delhi.
+                            North Zone Chapter of the Urological Society of India — connecting urologists across  UP, Rajasthan, Delhi, Punjab, Haryana, Himachal Pradesh, Jammu, Kashmir, Ladakh, Uttarakhand.
                         </p>
 
                         <div className="space-y-2.5">

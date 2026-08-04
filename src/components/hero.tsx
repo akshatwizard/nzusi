@@ -113,7 +113,7 @@ export default function Hero() {
                             </div>
                             <p className="text-[11px] text-fun-blue-300/50 leading-snug">
                                 Trusted by <span className="text-fun-blue-300/80 font-medium">500+ urologists</span>
-                                <br />across 6 North Indian states
+                                <br />across 10 North Indian states
                             </p>
                         </motion.div>
                     </div>
