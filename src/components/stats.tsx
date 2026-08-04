@@ -28,7 +28,7 @@ const STATS = [
         icon: ClipboardList,
     },
     {
-        value: 6,
+        value: 10,
         suffix: '',
         label: 'States Covered',
         sublabel: 'across the North Zone',
