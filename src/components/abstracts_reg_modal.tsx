@@ -13,7 +13,7 @@ import toast from 'react-hot-toast';
 
 
 export default function RegisterModal({ onClose }: { onClose: () => void }) {
-    const [step, setStep] = useState(1)
+    const [step, setStep] = useState(3)
     const [submitted, setSubmitted] = useState(false)
     const [abstractId, setAbstractId] = useState('')
     const [file, setFile] = useState<File | null>(null)
@@ -88,7 +88,8 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        mutate()
+        // mutate()
+        toast.error("Abstract submission is now closed.")
     }
 
     const wordCount = form.abstract_body.trim().split(/\s+/).filter(Boolean).length
@@ -126,9 +127,9 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
                                     NZUSICON 2026 · Abstract Submission
                                 </span>
                             </div>
-                            <h2 className="text-xl text-white leading-snug">
+                            {/* <h2 className="text-xl text-white leading-snug">
                                 {submitted ? 'Abstract Submitted' : step === 1 ? 'Your Details' : 'Abstract Information'}
-                            </h2>
+                            </h2> */}
                         </div>
                         <button
                             onClick={onClose}
@@ -139,7 +140,7 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
                     </div>
 
                     {/* Step indicator */}
-                    {!submitted && (
+                    {/* {!submitted && (
                         <div className="flex items-center gap-2 mt-5">
                             {[1, 2].map(s => (
                                 <div key={s} className="flex items-center gap-2">
@@ -153,7 +154,7 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
                                 </div>
                             ))}
                         </div>
-                    )}
+                    )} */}
                 </div>
 
                 {/* Body */}
@@ -302,7 +303,7 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
                                 </button>
                             </motion.form>
 
-                        ) : (
+                        ) : step === 2 ? (
                             <motion.form
                                 key="step2"
                                 initial={{ opacity: 0, x: 16 }}
@@ -448,6 +449,24 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
                                     </button>
                                 </div>
                             </motion.form>
+                        ) : (
+
+                            <motion.div
+                                key="step3"
+                                initial={{ opacity: 0, x: -16 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: 16 }}
+                                transition={{ duration: 0.25 }}
+                                className="flex h-100 flex-col items-center justify-center p-7 text-center"
+                            >
+                                <h3 className="text-xl font-semibold text-ink">
+                                    Abstract submission is now closed.
+                                </h3>
+
+                                <p className="mt-2 max-w-md text-sm leading-relaxed text-muted">
+                                    The submission deadline has passed. Thank you for your interest.
+                                </p>
+                            </motion.div>
                         )}
                     </AnimatePresence>
                 </div>
