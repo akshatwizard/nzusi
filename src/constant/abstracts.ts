@@ -124,7 +124,7 @@ export const ABSTRACT_STRUCTURE = [
 export const IMPORTANT_NOTES = [
     'Previously published abstracts shall be summarily rejected.',
     'Submission of the abstract carries with it an obligation to present the accepted abstract in person without any change in scientific content during the allotted time in the above conference.',
-    'Withdrawal of presentation should be intimated to the scientific committee on or before 15th Oct, 2026.',
+    'Withdrawal of presentation should be intimated to the scientific committee on or before 23rd Oct, 2026.',
     'If the presenting author is not able to present the paper at the conference due to any reason, prior permission must be obtained from the Scientific Committee.',
     'More than one abstract can be submitted by any individual author, except for same prize competition category.',
     'One best poster/podium/video from each non-competition categories shall be awarded with a certificate.'

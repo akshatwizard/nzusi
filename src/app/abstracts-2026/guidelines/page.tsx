@@ -28,9 +28,9 @@ const NAV_ITEMS = [
 /* ─── Data ─────────────────────────────────────────────────────── */
 const IMPORTANT_DATES = [
     { date: '31st May 2026', label: 'Submission Opens', icon: '🟢', color: 'border-emerald-200 bg-emerald-50 text-emerald-700', dot: 'bg-emerald-500' },
-    { date: '15th Aug 2026', label: 'Submission Closes', icon: '🔴', color: 'border-red-200 bg-red-50 text-red-700', dot: 'bg-red-500' },
+    { date: '23rd Aug 2026', label: 'Submission Closes', icon: '🔴', color: 'border-red-200 bg-red-50 text-red-700', dot: 'bg-red-500' },
     { date: '31st Aug 2026', label: 'Acceptance Notification', icon: '📬', color: 'border-fun-blue-200 bg-fun-blue-50 text-fun-blue-700', dot: 'bg-fun-blue-500' },
-    { date: '15th Oct 2026', label: 'Withdrawal Deadline', icon: '⚠️', color: 'border-amber-200 bg-amber-50 text-amber-700', dot: 'bg-amber-500' },
+    { date: '23rd Oct 2026', label: 'Withdrawal Deadline', icon: '⚠️', color: 'border-amber-200 bg-amber-50 text-amber-700', dot: 'bg-amber-500' },
 ]
 
 const COMPETITION_CATEGORIES = [
@@ -56,7 +56,7 @@ const SCIENTIFIC_CATEGORIES = [
 const IMPORTANT_NOTES = [
     'Previously published abstracts shall be summarily rejected.',
     'Submission carries an obligation to present the accepted abstract in person without any change in scientific content during the allotted time.',
-    'Withdrawal of presentation must be intimated to the scientific committee on or before 15th Oct, 2026.',
+    'Withdrawal of presentation must be intimated to the scientific committee on or before 23rd Oct, 2026.',
     'If the presenting author is unable to present, prior permission must be obtained from the Scientific Committee regarding change of presenting author.',
     'More than one abstract can be submitted by any individual author, except for the same prize competition category.',
     'One best poster/podium/video from each non-competition category shall be awarded with a certificate.',
