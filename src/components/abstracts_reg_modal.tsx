@@ -88,7 +88,7 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        mutate()
+        // mutate()
         toast.error("Abstract submission is now closed.")
     }
 
