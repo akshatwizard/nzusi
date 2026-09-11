@@ -88,11 +88,11 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        // mutate()
+        mutate()
         toast.error("Abstract submission is now closed.")
     }
 
-    const wordCount = form.abstract_body.trim().split(/\s+/).filter(Boolean).length
+    // const wordCount = form.abstract_body.trim().split(/\s+/).filter(Boolean).length
 
     return (
         <motion.div
@@ -384,9 +384,9 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
                                         placeholder="Aims, Methods, Results, Conclusions (max 300 words)…"
                                         className={`${inputCls} resize-none`}
                                     />
-                                    <p className={`text-[11px] mt-1 ${wordCount > 300 ? 'text-red-400 font-medium' : 'text-zinc-400'}`}>
+                                    {/* <p className={`text-[11px] mt-1 ${wordCount > 300 ? 'text-red-400 font-medium' : 'text-zinc-400'}`}>
                                         {wordCount} / 300 words
-                                    </p>
+                                    </p> */}
                                 </Field>
 
                                 {/* File upload */}
@@ -431,7 +431,7 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
                                     </button>
                                     <button
                                         type="submit"
-                                        disabled={isPending || wordCount > 300}
+                                        disabled={isPending}
                                         className="flex-1 py-3 bg-fun-blue-950 text-white rounded-xl font-semibold text-sm hover:bg-fun-blue-800 transition-colors flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
                                     >
                                         {isPending ? (
