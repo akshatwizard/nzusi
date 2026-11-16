@@ -58,7 +58,8 @@ export default function UpdateAcademic({ data, name }: { data: AcademicQualifica
             profileUpdateService.updateAcademicDetails({
                 qualifications: qualifications.map((q) => ({
                     ...q,
-                    year_of_passing: Number(q.year_of_passing),
+                    // Optional: send null when left blank (Number('') would be 0)
+                    year_of_passing: q.year_of_passing ? Number(q.year_of_passing) : null,
                 })),
             }
             ),
@@ -166,11 +167,10 @@ export default function UpdateAcademic({ data, name }: { data: AcademicQualifica
                                             />
                                         </Field>
 
-                                        <Field label="Year of Passing" required icon={CalendarDays}>
+                                        <Field label="Year of Passing (optional)" icon={CalendarDays}>
                                             <input
-                                                required
                                                 type="number"
-                                                value={q.year_of_passing}
+                                                value={q.year_of_passing ?? ''}
                                                 onChange={(e) => updateField(index, 'year_of_passing', e.target.value)}
                                                 placeholder="2018"
                                                 className={inputCls}

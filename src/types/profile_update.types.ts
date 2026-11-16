@@ -32,7 +32,7 @@ export type ProfileAcademic = {
     qualifications: {
         degree: string,
         institution: string,
-        year_of_passing: number
+        year_of_passing: number | null
     }[]
 }
 export type ProfileAcademicResponse = {
@@ -43,8 +43,8 @@ export type ProfileAcademicResponse = {
 export type ProfileUrologyTrainings = {
     trainings: {
         institution: string,
-        from_date: string | Date,
-        to_date: string | Date
+        from_date: string | Date | null,
+        to_date: string | Date | null
     }[]
 }
 export type ProfileUrologyTrainingsResponse = {

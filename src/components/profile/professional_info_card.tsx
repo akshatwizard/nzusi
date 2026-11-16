@@ -5,9 +5,12 @@ import { Stethoscope, GraduationCap, FlaskConical, Plus, CalendarDays } from 'lu
 import { ProfileCard } from './profile_card'
 import { useProfileContext } from '@/context/profile_update_context'
 
-function formatTrainingDate(raw: string) {
-    try { return new Date(raw).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) }
-    catch { return raw }
+// Dates are optional: blank shows as "—" (new Date(null) would show 01 Jan 1970)
+function formatTrainingDate(raw: string | null | undefined) {
+    if (!raw) return '—'
+    const d = new Date(raw)
+    if (isNaN(d.getTime())) return raw
+    return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
 }
 
 function StatusDot({ status }: { status: 'done' | 'pending' }) {
@@ -133,12 +136,14 @@ export default function ProfessionalInfoCard({ user }: { user: Member }) {
                                     </div>
                                     <div className='flex-1 min-w-0'>
                                         <div className='font-medium text-[13px] text-slate-800 mb-1'>{t.institution}</div>
-                                        <div className='flex items-center gap-1.5 text-[11px] text-slate-400'>
-                                            <CalendarDays size={10} />
-                                            {formatTrainingDate(t.from_date)}
-                                            <span>→</span>
-                                            {formatTrainingDate(t.to_date)}
-                                        </div>
+                                        {(t.from_date || t.to_date) && (
+                                            <div className='flex items-center gap-1.5 text-[11px] text-slate-400'>
+                                                <CalendarDays size={10} />
+                                                {formatTrainingDate(t.from_date)}
+                                                <span>→</span>
+                                                {formatTrainingDate(t.to_date)}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             ))}

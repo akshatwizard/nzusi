@@ -117,12 +117,10 @@ export default function UpdateDesignation({ data, name }: { data: Des, name: str
                             </Field>
 
                             <Field
-                                label="Year of Joining"
-                                required
+                                label="Year of Joining (optional)"
                                 icon={CalendarDays}
                             >
                                 <input
-                                    required
                                     type="number"
                                     value={designation.year_of_joining}
                                     onChange={e => update('year_of_joining', e.target.value)}

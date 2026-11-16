@@ -25,21 +25,21 @@ export type Designation = {
     id: number
     designation: string
     institution: string
-    year_of_joining: string
+    year_of_joining: string | null
 }
 
 export type AcademicQualification = {
     id: number
     degree: string
     institution: string
-    year_of_passing: string
+    year_of_passing: string | null
 }
 
 export type UrologyTraining = {
     id: number
     institution: string
-    from_date: string
-    to_date: string
+    from_date: string | null
+    to_date: string | null
 }
 
 export type Member = {

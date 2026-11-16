@@ -155,22 +155,20 @@ export default function UpdateUrologyTrainings({ data, name }: { data: UrologyTr
                                             />
                                         </Field>
 
-                                        <Field label="From date" required icon={CalendarDays}>
+                                        <Field label="From date (optional)" icon={CalendarDays}>
                                             <input
-                                                required
                                                 type="date"
-                                                value={q.from_date}
+                                                value={q.from_date ?? ''}
                                                 onChange={(e) => updateField(index, 'from_date', e.target.value)}
                                                 placeholder="2020-01-01"
                                                 className={inputCls}
                                             />
                                         </Field>
 
-                                        <Field label="To date" required icon={CalendarDays}>
+                                        <Field label="To date (optional)" icon={CalendarDays}>
                                             <input
-                                                required
                                                 type="date"
-                                                value={q.to_date}
+                                                value={q.to_date ?? ''}
                                                 onChange={(e) => updateField(index, 'to_date', e.target.value)}
                                                 placeholder="2021-01-01"
                                                 className={inputCls}
