@@ -2,7 +2,7 @@
 import { Section, Wrapper } from './ui/sections'
 import { motion } from 'motion/react'
 import { HeroBackground } from './hero-background';
-import { Calendar } from 'lucide-react';
+import { Calendar, ExternalLink } from 'lucide-react';
 import { HeroCarousel } from './hero_slider';
 import Link from 'next/link';
 
@@ -90,6 +90,15 @@ export default function Hero() {
                             <Link href={"/events"} className="group flex items-center gap-2 bg-fun-blue-600 hover:bg-fun-blue-500 text-fun-blue-50 font-semibold text-sm px-5 py-3 rounded-lg border border-fun-blue-400/40 transition-all duration-200 cursor-pointer">
                                 <Calendar size={14} />
                                 View Events
+                            </Link>
+                            <Link
+                                href="https://icsglobalevents.com/demo/NZUSICON-2027/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group flex items-center gap-2 bg-white/5 hover:bg-white/10 text-fun-blue-50 font-semibold text-sm px-5 py-3 rounded-lg border border-fun-blue-300/40 transition-all duration-200 cursor-pointer"
+                            >
+                                NZUSICON &apos;27
+                                <ExternalLink size={14} />
                             </Link>
                         </motion.div>
 
