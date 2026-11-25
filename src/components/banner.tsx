@@ -2,10 +2,11 @@
 
 import { useEffect, useRef, useState } from "react"
 import { motion, useInView } from "motion/react"
-import { ArrowRight, MapPin, Calendar } from "lucide-react"
+import { ArrowRight, MapPin, Calendar, BookOpen } from "lucide-react"
 import { Section, Wrapper } from "@/components/ui/sections"
 import Image from "next/image"
 import Link from "next/link"
+import { SP_BASE, SP_TITLE } from "@/constant/scientific_programs"
 
 function useCountdown(targetDate: Date) {
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
@@ -233,6 +234,26 @@ export default function NZUSICONBanner({ variant = "home", bgImage }: Props) {
                                 className={`inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold text-sm transition-colors duration-200 ${t.btnSecondary}`}
                             >
                                 View All Events
+                            </Link>
+                        </motion.div>
+
+                        {/* Scientific programme & abstracts */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 16 }}
+                            animate={isInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ duration: 0.5, delay: 0.38 }}
+                            className="mt-3 flex justify-center lg:justify-start"
+                        >
+                            <Link
+                                href={SP_BASE}
+                                className={`group inline-flex w-full sm:w-auto items-center justify-center gap-2.5 px-6 py-3 rounded-lg font-semibold text-sm transition-colors duration-200 ${isHero
+                                    ? "bg-amber-400/15 border border-amber-300/40 text-amber-100 hover:bg-amber-400/25"
+                                    : "bg-amber-50 border border-amber-300 text-amber-900 hover:bg-amber-100"
+                                    }`}
+                            >
+                                <BookOpen size={15} />
+                                {SP_TITLE}
+                                <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
                             </Link>
                         </motion.div>
                     </div>

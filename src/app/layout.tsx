@@ -21,6 +21,7 @@ const dm_sans = DM_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.nzusi.org"),
   title: "North Zone Chapter of Urological Society of India",
   description: "The North Zone Section of the Urological Society of India is the most vibrant and happening section of the society for Indian Urologist.",
 };

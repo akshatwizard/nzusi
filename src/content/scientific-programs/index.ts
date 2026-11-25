@@ -1,0 +1,21 @@
+// Generated: slug -> lazily imported HTML section
+export const sectionLoaders: Record<string, () => Promise<{ default: string }>> = {
+    "programme-at-a-glance": () => import("./sections/programme-at-a-glance"),
+    "message-from-hon-secretary": () => import("./sections/message-from-hon-secretary"),
+    "day-1": () => import("./sections/day-1"),
+    "day-2": () => import("./sections/day-2"),
+    "day-3": () => import("./sections/day-3"),
+    "unmoderated-posters-and-videos": () => import("./sections/unmoderated-posters-and-videos"),
+    "faculty-index": () => import("./sections/faculty-index"),
+    "selected-best-video-sessions": () => import("./sections/selected-best-video-sessions"),
+    "selected-best-paper-sessions": () => import("./sections/selected-best-paper-sessions"),
+    "selected-best-poster-sessions": () => import("./sections/selected-best-poster-sessions"),
+    "selected-moderated-podium": () => import("./sections/selected-moderated-podium"),
+    "selected-moderated-video": () => import("./sections/selected-moderated-video"),
+    "selected-moderated-poster": () => import("./sections/selected-moderated-poster"),
+    "selected-unmoderated": () => import("./sections/selected-unmoderated"),
+    "submissions-podium": () => import("./sections/submissions-podium"),
+    "submissions-video": () => import("./sections/submissions-video"),
+    "submissions-eposter": () => import("./sections/submissions-eposter"),
+    "submissions-poster": () => import("./sections/submissions-poster"),
+}
