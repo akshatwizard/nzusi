@@ -41,7 +41,7 @@ export const Menu: MenuType[] = [
     subMenu: null,
   },
   {
-    name: "NZUSICON '26'",
+    name: "NZUSICON",
     path: "#",
     subMenu: [
       {
@@ -51,6 +51,11 @@ export const Menu: MenuType[] = [
       {
         name: "Submission Guidelines",
         path: "/abstracts-2026/guidelines",
+      },
+      {
+        name: "NZUSICON '27",
+        path: "https://icsglobalevents.com/demo/NZUSICON-2027/",
+        open_in_new_tab: true,
       },
     ],
   },
