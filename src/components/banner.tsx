@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { motion, useInView } from "motion/react"
-import { ArrowRight, MapPin, Calendar, BookOpen } from "lucide-react"
+import { ArrowRight, MapPin, Calendar, BookOpen, ExternalLink } from "lucide-react"
 import { Section, Wrapper } from "@/components/ui/sections"
 import Image from "next/image"
 import Link from "next/link"
@@ -219,7 +219,7 @@ export default function NZUSICONBanner({ variant = "home", bgImage }: Props) {
                             initial={{ opacity: 0, y: 16 }}
                             animate={isInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.5, delay: 0.3 }}
-                            className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start"
+                            className="flex flex-col sm:flex-row sm:flex-wrap gap-3 justify-center lg:justify-start"
                         >
                             <Link
                                 href="/files/NZ-USICON-REGISTRATION-FORM.pdf"
@@ -234,6 +234,14 @@ export default function NZUSICONBanner({ variant = "home", bgImage }: Props) {
                                 className={`inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold text-sm transition-colors duration-200 ${t.btnSecondary}`}
                             >
                                 View All Events
+                            </Link>
+                            <Link
+                                href="https://icsglobalevents.com/demo/NZUSICON-2027/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold text-sm transition-colors duration-200 ${t.btnSecondary}`}
+                            >
+                                NZUSICON &apos;27 <ExternalLink size={14} />
                             </Link>
                         </motion.div>
 
