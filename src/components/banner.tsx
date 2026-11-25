@@ -247,8 +247,8 @@ export default function NZUSICONBanner({ variant = "home", bgImage }: Props) {
                             <Link
                                 href={SP_BASE}
                                 className={`group inline-flex w-full sm:w-auto items-center justify-center gap-2.5 px-6 py-3 rounded-lg font-semibold text-sm transition-colors duration-200 ${isHero
-                                    ? "bg-amber-400/15 border border-amber-300/40 text-amber-100 hover:bg-amber-400/25"
-                                    : "bg-amber-50 border border-amber-300 text-amber-900 hover:bg-amber-100"
+                                    ? "bg-fun-blue-950 border border-white/20 text-white hover:bg-fun-blue-900"
+                                    : "bg-fun-blue-950 border border-fun-blue-950 text-white hover:bg-fun-blue-900"
                                     }`}
                             >
                                 <BookOpen size={15} />
