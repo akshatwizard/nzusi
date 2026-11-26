@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { Mail, Phone, MapPin, ExternalLink } from "lucide-react"
+import { Mail, Phone, MapPin } from "lucide-react"
 
 interface FooterLinks {
     About: Links[];
@@ -128,14 +128,6 @@ export default function Footer() {
                         </a>
                     </p>
                     <div className="flex items-center gap-4">
-                        <a
-                            href="https://www.nzusi.org"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-xs text-fun-blue-600 hover:text-fun-blue-400 flex items-center gap-1 transition-colors"
-                        >
-                            Old site <ExternalLink size={10} />
-                        </a>
                         <Link href="/privacy" className="text-xs text-fun-blue-600 hover:text-fun-blue-400 transition-colors">
                             Privacy
                         </Link>
