@@ -115,7 +115,17 @@ export default function Footer() {
             <div className="w-full border-t border-fun-blue-900 lg:px-12 md:px-8 px-4">
                 <div className="w-full max-w-7xl mx-auto py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
                     <p className="text-xs text-fun-blue-600">
-                        © {new Date().getFullYear()} North Zone Urological Society of India. All rights reserved | Design & Developed by Wizards Next.
+                        © {new Date().getFullYear()} North Zone Urological Society of India. All rights reserved | Designed & Developed by{" "}
+                        {/* Credit backlink: followed link, referrer kept so the visit shows in Wizards' analytics */}
+                        <a
+                            href="https://www.wizards.co.in"
+                            target="_blank"
+                            rel="noopener"
+                            title="Wizards – Website Design & Development Company in Varanasi"
+                            className="text-fun-blue-400 hover:text-fun-blue-300 underline-offset-2 hover:underline transition-colors"
+                        >
+                            Wizards – Website Design &amp; Development Company
+                        </a>
                     </p>
                     <div className="flex items-center gap-4">
                         <a
